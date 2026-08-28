@@ -1,0 +1,79 @@
+@import 'tailwindcss';
+
+/**
+ * Design tokens extracted from the Figma file
+ * (커리어링크 홈페이지 리뉴얼 — node 2230:131).
+ * Expand this file as more sections are pulled in; keep names
+ * aligned with the Figma variable names where practical.
+ */
+@theme {
+  --font-sans: 'PretendardVariable', 'Pretendard', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Brand */
+  --color-primary: #0042b7;
+  --color-primary-lightest: #e6ecf8;
+  --color-accent-blue: #3379f3;
+  --color-accent-yellow: #ffeb00;
+  --color-navy-950: #0a1128;
+  --color-navy-900: #0f1a3d;
+
+  /* Neutrals */
+  --color-ink: #212121;
+  --color-text: #4d5761;
+  --color-surface: #f8f9fa;
+  --color-surface-blue: #f4f8ff;
+  --color-placeholder: #e6e6e6;
+  --color-divider: #eceef2;
+  --color-gray-100: #f9fafb;
+  --color-gray-150: #f3f4f6;
+  --color-gray-200: #9499a2;
+  --color-gray-250: #aaaaaa;
+  --color-gray-300: #51565f;
+  --color-gray-400: #d2d6db;
+
+  /* Shadows */
+  --shadow-card: 0 2px 16px 0 rgba(0, 0, 0, 0.08);
+  --shadow-card-subtle: 0 4px 8px 0 rgba(0, 0, 0, 0.02);
+
+  /* Spacing (Figma "spacing/*" scale) */
+  --spacing-5xs: 2px;
+  --spacing-100: 8px;
+
+  /* Layout */
+  --container-page: 1920px;
+  --breakpoint-3xl: 1920px;
+
+  /* Animation */
+  --animate-marquee: marquee 36s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes hero1-cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: #ffffff;
+  }
+}
