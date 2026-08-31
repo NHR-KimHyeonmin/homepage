@@ -4,7 +4,7 @@ import { Section } from '../ui/Section'
 
 export function Hero2Highlight() {
   return (
-    <Section id="hero2-highlight" className="flex flex-col items-center bg-[#f8f9fa] px-6 pt-14 md:px-16 md:pt-20">
+    <Section id="hero2-highlight" className="flex flex-col items-center bg-white px-6 pt-14 md:px-16 md:pt-20">
       <Container maxWidth={1208}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}

@@ -1,12 +1,12 @@
 import clsx from 'clsx'
 import iconCheckbox from '../../assets/sections/hero2-theme-showcase/icon-checkbox.svg'
 import iconChevronDown from '../../assets/sections/hero2-theme-showcase/icon-chevron-down.svg'
+import iconFaqChevron from '../../assets/sections/hero2-theme-showcase/icon-faq-chevron.svg'
 import iconEyeToggle from '../../assets/sections/hero2-theme-showcase/icon-eye-toggle.svg'
 import iconRailBuilder from '../../assets/sections/hero2-theme-showcase/icon-rail-builder.svg'
 import iconRailOff from '../../assets/sections/hero2-theme-showcase/icon-rail-off.svg'
 import iconRailPage from '../../assets/sections/hero2-theme-showcase/icon-rail-page.svg'
 import iconRailTheme from '../../assets/sections/hero2-theme-showcase/icon-rail-theme.svg'
-import iconUndo from '../../assets/sections/hero2-theme-showcase/icon-undo.svg'
 import logoCareerlinkWhite from '../../assets/sections/hero2-theme-showcase/logo-careerlink-white.png'
 import { getThemeShades } from '../../lib/colorShades'
 
@@ -29,6 +29,30 @@ const NAV_LINKS = ['회사소개', '직무소개', '복리후생', '채용정보
 const JOB_CARDS = [
   { title: 'IT직군 상시 채용 (FE/BE)' },
   { title: '광고 사업 서비스 기획 인턴 채용' },
+]
+
+const FAQ_TABS = ['전체', '채용', '일반']
+
+/** Figma node 2329:12676 — the "자주 묻는 질문" block that closes the live
+ *  preview, below the 채용공고 cards. The first two rows are shown expanded,
+ *  exactly as in the design. */
+const FAQ_ITEMS: { question: string; answer?: string[] }[] = [
+  {
+    question: '채용 과정은 어떻게 진행 되나요?',
+    answer: ['서류 전형 > 직무 관련 면접 > 임원 면접 > 최종 합격 순으로 진행됩니다.'],
+  },
+  {
+    question: '최종 제출한 지원서를 수정할 수 있나요?',
+    answer: [
+      '모집 마감 이후에는 지원자 간 형평성 및 채용의 투명성을 위하여 수정이',
+      '불가합니다. 모집 기간 내 수정이 필요한 경우 기존 지원서 삭제 후',
+      '재지원해주시기 바랍니다. 제출 전 여러 번 검토하실 것을 당부드리며,',
+      '기타 문의는 [1:1 문의]에 남겨주세요.',
+    ],
+  },
+  { question: '합격/불합격 결과는 어디에서 확인하나요?' },
+  { question: '공고 간 중복지원이 가능한가요?' },
+  { question: '회원을 탈퇴하고 싶습니다. 어떻게 하나요?' },
 ]
 
 function SliderRow({
@@ -84,18 +108,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
         {/* Admin toolbar */}
         <div className="flex h-[57px] w-full shrink-0 items-center justify-between border-b border-gray-150 px-4">
           <div className="flex items-center gap-4">
-            <span className="whitespace-nowrap text-sm text-text">01 기본형 (A Type)_신규</span>
-            <div className="flex items-center gap-1 text-gray-300">
-              <img src={iconUndo} alt="" className="size-5 opacity-60" />
-              <img src={iconUndo} alt="" className="size-5 -scale-x-100 opacity-60" />
-              <span className="ml-2 text-xs">100%</span>
-            </div>
-            <input
-              readOnly
-              value="id-zhq3Bqk2-Vs3E-4gbC-avoH-GpVDQI1hN53r"
-              aria-label="페이지 ID"
-              className="hidden w-[220px] rounded-lg border border-[#d2d6db] px-3 py-2 text-xs text-gray-300 outline-none xl:block"
-            />
+            <span className="whitespace-nowrap text-sm text-text">홈페이지 빌더 템플릿 (2026년 업데이트 버전)</span>
           </div>
           <div className="flex items-center gap-3">
             <span className="hidden whitespace-nowrap text-xs text-gray-300 md:inline">23시간 전 저장됨</span>
@@ -284,6 +297,63 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
                     </p>
                   </div>
                 ))}
+              </div>
+
+              {/* 자주 묻는 질문 (Figma node 2329:12676) */}
+              <div className="flex flex-col gap-4 px-8 pb-10 pt-10">
+                <div className="flex flex-col items-center">
+                  <p className={clsx('py-2 text-lg font-bold leading-[27px]', TRANSITION)} style={{ color: shades.dark1 }}>
+                    FAQ
+                  </p>
+                  <p className="py-2 text-[28px] font-bold leading-[48px] text-[#212121]">자주 묻는 질문</p>
+                </div>
+
+                <div className="flex flex-col gap-4">
+                  <div className="relative flex border-b border-[#e0e0e0] px-4">
+                    {FAQ_TABS.map((tab, index) => (
+                      <span
+                        key={tab}
+                        className={clsx(
+                          'flex min-h-[48px] items-center px-5 text-sm font-medium leading-[17.5px]',
+                          TRANSITION,
+                        )}
+                        style={{ color: index === 0 ? shades.base : '#616161' }}
+                      >
+                        {tab}
+                      </span>
+                    ))}
+                    <span
+                      aria-hidden
+                      className={clsx('absolute bottom-0 left-4 h-[2px] w-[64px]', TRANSITION)}
+                      style={{ backgroundColor: shades.base }}
+                    />
+                  </div>
+
+                  <div className="flex flex-col px-2">
+                    {FAQ_ITEMS.map((item, index) => (
+                      <div key={item.question} className="flex flex-col">
+                        <div className="flex items-center justify-between px-4">
+                          <p className="flex-1 py-2 text-lg font-bold leading-[27px] text-[#212121]">{item.question}</p>
+                          <img
+                            src={iconFaqChevron}
+                            alt=""
+                            className={clsx('size-[35px] shrink-0', item.answer && 'rotate-180')}
+                          />
+                        </div>
+                        {item.answer && (
+                          <div className="flex justify-center">
+                            <div className="w-[73%] py-2 text-base leading-6 text-[#6b7684]">
+                              {item.answer.map((line) => (
+                                <p key={line}>{line}</p>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {index < FAQ_ITEMS.length - 1 && <div className="mx-2 my-2 border-b border-[#e0e0e0]" />}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -44,7 +44,7 @@
   --breakpoint-3xl: 1920px;
 
   /* Animation */
-  --animate-marquee: marquee 36s linear infinite;
+  --animate-marquee: marquee 60s linear infinite;
 }
 
 @keyframes marquee {

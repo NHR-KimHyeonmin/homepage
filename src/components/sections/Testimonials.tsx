@@ -9,6 +9,7 @@ import iconLogout from '../../assets/sections/testimonials/icon-5-logout.png'
 import iconPrinter from '../../assets/sections/testimonials/icon-6-printer.png'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
+import { SectionEyebrow } from '../ui/SectionEyebrow'
 
 interface SecurityCard {
   icon: string
@@ -111,7 +112,7 @@ export function Testimonials() {
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="flex flex-col items-center gap-4 text-center"
         >
-          <p className="text-xl font-semibold tracking-[-0.1px] text-white/55">보안</p>
+          <SectionEyebrow tone="onDark">보안</SectionEyebrow>
           <h2 className="text-[40px] font-bold leading-[1.4] tracking-[-1.12px] text-white md:text-[56px]">
             지원자와 기업 정보
             <br />

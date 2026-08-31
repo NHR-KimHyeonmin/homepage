@@ -33,7 +33,7 @@ const CARDS: CardData[] = [
  */
 export function Hero2SeoAnalyticsGrid() {
   return (
-    <Section className="bg-[#f8f9fa] px-6 pt-20 md:px-16">
+    <Section className="bg-white px-6 pt-20 md:px-16">
       <Container maxWidth={1208}>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {CARDS.map((card, i) => (

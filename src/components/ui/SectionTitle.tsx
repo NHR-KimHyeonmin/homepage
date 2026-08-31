@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
 import { Container } from './Container'
+import { SectionEyebrow } from './SectionEyebrow'
 import { Section } from './Section'
 
 interface SectionTitleProps {
@@ -46,7 +47,7 @@ export function SectionTitle({
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className={clsx('flex w-full flex-col gap-5', isCenter ? 'items-center text-center' : 'items-start text-left')}
         >
-          {eyebrow && <p className="text-xl font-semibold tracking-[-0.1px] text-gray-200">{eyebrow}</p>}
+          {eyebrow && <SectionEyebrow>{eyebrow}</SectionEyebrow>}
           <h2
             className={clsx(
               'font-bold leading-[1.4] tracking-[-1.12px] text-black',

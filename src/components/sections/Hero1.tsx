@@ -4,14 +4,23 @@ import cursorImg from '../../assets/sections/hero1/cursor/cursor.png'
 import dashboardHomeMain from '../../assets/sections/hero1/dashboard-home-main.webp'
 import dashboardJobPostingsMain from '../../assets/sections/hero1/dashboard-jobpostings-main.webp'
 import heroBg from '../../assets/sections/hero1/hero-bg.webp'
+import viewApplicants from '../../assets/sections/hero1/views/applicants.webp'
+import viewHiringProcess from '../../assets/sections/hero1/views/hero-process.webp'
+import viewSending from '../../assets/sections/hero1/views/sending.webp'
+import viewSiteBuilder from '../../assets/sections/hero1/views/site-builder.webp'
 import { Button } from '../ui/Button'
 import { Section } from '../ui/Section'
 import { Hero1Sidebar, type Hero1MainView } from './Hero1Sidebar'
+import { Hero1TopBar } from './Hero1TopBar'
 import { Hero1TypedHeadline } from './Hero1TypedHeadline'
 
 const MAIN_IMAGES: Record<Hero1MainView, { src: string; alt: string }> = {
   home: { src: dashboardHomeMain, alt: '커리어링크 관리자 대시보드 홈' },
   jobPostings: { src: dashboardJobPostingsMain, alt: '채용 공고 현황' },
+  hiringProcess: { src: viewHiringProcess, alt: '채용 전형 관리' },
+  applicants: { src: viewApplicants, alt: '지원자 관리' },
+  sending: { src: viewSending, alt: '발송 관리' },
+  siteBuilder: { src: viewSiteBuilder, alt: '채용 사이트 빌더' },
 }
 
 // Figma node 2323:26304 — custom branded cursor (arrow + "careerlink" pill),
@@ -19,8 +28,14 @@ const MAIN_IMAGES: Record<Hero1MainView, { src: string; alt: string }> = {
 // alike) — hotspot (22, 27) lines up with the arrow's own tip.
 const DASHBOARD_CARD_STYLE = { aspectRatio: '1280 / 740', cursor: `url(${cursorImg}) 22 27, auto` }
 
+// The admin page background behind every content-pane screenshot — sampled
+// straight out of the exported views, so the strip left over below a
+// screenshot (at viewport widths where the card is narrower than its full
+// 1280px) is indistinguishable from the image itself.
+const MAIN_PANE_BG = '#f0f4f9'
+
 // How long the fully-typed headline sits still before it starts fading out.
-const HOLD_TITLE_MS = 1500
+const HOLD_TITLE_MS = 1000
 // A brief beat after the title has fully faded out, before the rest of the
 // hero starts rising into view.
 const POST_TITLE_PAUSE_MS = 300
@@ -28,6 +43,17 @@ const REVEAL_STAGGER_MS = 500
 const REVEAL_TRANSITION = { duration: 1, ease: [0.16, 1, 0.3, 1] as const }
 
 type IntroPhase = 'typing' | 'holding' | 'exiting' | 'paused' | 'revealing' | 'done'
+
+/** Entering on a deep link (e.g. "/#hero2-highlight") means the visitor is
+ *  being sent straight to another section — playing the typing intro there
+ *  would lock the page around an animation nobody is looking at, so the
+ *  hero starts already settled in its final state. "#top" (and no hash at
+ *  all) is a normal landing and still gets the full intro. */
+function initialPhase(): IntroPhase {
+  if (typeof window === 'undefined') return 'typing'
+  const target = window.location.hash.slice(1)
+  return target && target !== 'top' ? 'done' : 'typing'
+}
 
 // Delay (seconds) before each reveal element's own rise-in transition
 // starts, so they stagger visually without staggering when they *mount* —
@@ -41,28 +67,11 @@ const IMAGE_DELAY_S = (REVEAL_STAGGER_MS * 2) / 1000
 
 export function Hero1() {
   const [activeNav, setActiveNav] = useState<Hero1MainView>('home')
-  const [jobsExpanded, setJobsExpanded] = useState(false)
-  const [phase, setPhase] = useState<IntroPhase>('typing')
+  const [phase, setPhase] = useState<IntroPhase>(initialPhase)
   // Subtitle, 메인텍스트2, CTA and the dashboard image all mount together —
   // only their individual transition `delay` staggers when each visually
   // rises into place.
   const revealed = phase === 'revealing' || phase === 'done'
-
-  const goHome = () => {
-    setActiveNav('home')
-    setJobsExpanded(false)
-  }
-
-  // Lock page scroll for the whole intro (type -> title fades out -> pause
-  // -> sequential reveal). Released once the reveal finishes.
-  useEffect(() => {
-    if (phase === 'done') return
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = previousOverflow
-    }
-  }, [phase])
 
   // Once typing finishes, hold the fully-typed headline in place for a
   // beat before it starts fading out.
@@ -80,8 +89,10 @@ export function Hero1() {
     return () => clearTimeout(timer)
   }, [phase])
 
-  // Unlock scroll once the slowest-staggered element (the dashboard image)
-  // has finished rising into place.
+  // Mark the intro finished once the slowest-staggered element (the
+  // dashboard image) has risen into place. The page is never scroll-locked
+  // during any of this — a visitor who wants to move on can scroll straight
+  // past the intro while it plays.
   useEffect(() => {
     if (phase !== 'revealing') return
     const doneTimer = setTimeout(() => setPhase('done'), REVEAL_STAGGER_MS * 2 + REVEAL_TRANSITION.duration * 1000)
@@ -154,26 +165,32 @@ export function Hero1() {
             <div className="absolute inset-0 flex">
               <Hero1Sidebar
                 activeNav={activeNav}
-                jobsExpanded={jobsExpanded}
-                onSelectHome={goHome}
-                onToggleJobs={() => setJobsExpanded((v) => !v)}
-                onSelectJobPostings={() => setActiveNav('jobPostings')}
+                onSelectView={setActiveNav}
                 className="w-[260px] shrink-0 border-r border-[#e8eaee]"
               />
 
-              <div className="relative flex-1 overflow-hidden">
-                <AnimatePresence initial={false}>
-                  <motion.img
-                    key={activeNav}
-                    src={MAIN_IMAGES[activeNav].src}
-                    alt={MAIN_IMAGES[activeNav].alt}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35, ease: 'easeInOut' }}
-                    className="absolute inset-0 size-full object-cover"
-                  />
-                </AnimatePresence>
+              {/* Right pane = a fixed top bar that never moves, plus the
+                  content-pane screenshot below it. The screenshot is sized
+                  by width only (`w-full`, auto height) so it is never
+                  cropped horizontally — every view shares the same
+                  1020 x 680 content-pane framing. */}
+              <div className="relative flex flex-1 flex-col overflow-hidden" style={{ backgroundColor: MAIN_PANE_BG }}>
+                <Hero1TopBar />
+
+                <div className="relative flex-1 overflow-hidden">
+                  <AnimatePresence initial={false}>
+                    <motion.img
+                      key={activeNav}
+                      src={MAIN_IMAGES[activeNav].src}
+                      alt={MAIN_IMAGES[activeNav].alt}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.35, ease: 'easeInOut' }}
+                      className="absolute inset-x-0 top-0 w-full"
+                    />
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
           </div>

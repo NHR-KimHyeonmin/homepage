@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
+import { useFitScale } from '../../hooks/useFitScale'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
 import { Hero2ThemeColorPicker } from './Hero2ThemeColorPicker'
@@ -22,9 +23,13 @@ const DEFAULT_COLOR = '#6E23D7'
  */
 export function Hero2ThemeShowcase() {
   const [selectedColor, setSelectedColor] = useState(DEFAULT_COLOR)
+  // The mockup is real DOM laid out at a fixed 1000px width, so on a
+  // narrow window it is scaled down as one block rather than clipped —
+  // matching how the 서류 접수 screenshot below simply shrinks.
+  const { ref: fitRef, scale } = useFitScale(1000)
 
   return (
-    <Section className="flex flex-col items-center gap-10 overflow-hidden bg-[#f8f9fa] px-6 pb-24 pt-16 md:px-16">
+    <Section className="flex flex-col items-center gap-10 overflow-hidden bg-white px-6 pb-24 pt-16 md:px-16">
       <Container maxWidth={1280} className="flex flex-col items-center gap-10">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -62,17 +67,28 @@ export function Hero2ThemeShowcase() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
-          className="relative w-full max-w-[1280px] overflow-visible rounded-[20px] border-[12px] border-[#e8eaee] bg-white shadow-card"
+          className="relative h-[760px] w-full max-w-[1280px] overflow-visible rounded-[20px] border-[12px] border-[#e8eaee] bg-white shadow-card"
         >
-          <div className="h-[710px] w-full overflow-hidden rounded-[8px]">
-            <Hero2ThemeFrame117 color={selectedColor} />
+          <div ref={fitRef} className="size-full overflow-hidden rounded-[8px]">
+            <div
+              style={
+                scale < 1
+                  ? { width: 1000, transform: `scale(${scale})`, transformOrigin: 'top left' }
+                  : undefined
+              }
+            >
+              <Hero2ThemeFrame117 color={selectedColor} />
+            </div>
           </div>
 
           {/* Aligned to sit directly under the "메인 색상" swatch in the 테마
               설정 panel, top-edge matched to the "모서리 둥글기" row —
               measured against the live mockup rather than the original
               Figma popup offset, which assumed a different mockup width. */}
-          <div className="absolute left-[77px] top-[161px] hidden drop-shadow-[0_8px_24px_rgba(15,26,61,0.16)] md:block">
+          <div
+            className="absolute hidden drop-shadow-[0_8px_24px_rgba(15,26,61,0.16)] md:block"
+            style={{ left: 77 * scale, top: 161 * scale, transform: `scale(${scale})`, transformOrigin: 'top left' }}
+          >
             <Hero2ThemeColorPicker color={selectedColor} />
           </div>
         </motion.div>

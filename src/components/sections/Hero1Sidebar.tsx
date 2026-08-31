@@ -1,49 +1,54 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import type { ComponentType } from 'react'
 import clsx from 'clsx'
 import iconChevronSelect from '../../assets/sections/hero1/icons/icon-chevron-select.svg'
 import iconNavAdminSite from '../../assets/sections/hero1/icons/icon-nav-admin-site.svg'
-import iconNavApplicants from '../../assets/sections/hero1/icons/icon-nav-applicants.svg'
 import iconNavCareerSite from '../../assets/sections/hero1/icons/icon-nav-career-site.svg'
 import iconNavEvaluation from '../../assets/sections/hero1/icons/icon-nav-evaluation.svg'
-import iconNavHiringProcess from '../../assets/sections/hero1/icons/icon-nav-hiring-process.svg'
 import iconNavInquiry from '../../assets/sections/hero1/icons/icon-nav-inquiry.svg'
 import iconNavPrivacyLog from '../../assets/sections/hero1/icons/icon-nav-privacy-log.svg'
-import iconNavSend from '../../assets/sections/hero1/icons/icon-nav-send.svg'
-import iconNavSiteBuilder from '../../assets/sections/hero1/icons/icon-nav-site-builder.svg'
 import iconNavSiteShortcut from '../../assets/sections/hero1/icons/icon-nav-site-shortcut.svg'
 import logoCareerlink from '../../assets/sections/hero1/icons/logo-careerlink.png'
-import { BulletIcon, ChevronIcon, DashboardIcon, JobPostingsIcon } from './Hero1SidebarIcons'
+import { ApplicantsIcon, DashboardIcon, HiringProcessIcon, JobPostingsIcon, SendIcon, SiteBuilderIcon } from './Hero1SidebarIcons'
 
-export type Hero1MainView = 'home' | 'jobPostings'
+export type Hero1MainView = 'home' | 'jobPostings' | 'hiringProcess' | 'applicants' | 'sending' | 'siteBuilder'
 
 interface Hero1SidebarProps {
   activeNav: Hero1MainView
-  jobsExpanded: boolean
-  onSelectHome: () => void
-  onToggleJobs: () => void
-  onSelectJobPostings: () => void
+  onSelectView: (view: Hero1MainView) => void
   className?: string
 }
 
-/** Static (always-gray, decorative-only) top-level nav rows, in exact Figma order. */
-const STATIC_NAV_ITEMS = [
-  { label: '채용 사이트 빌더', icon: iconNavSiteBuilder, chevron: false },
-  { label: '채용 사이트 바로가기', icon: iconNavSiteShortcut, chevron: false },
-] as const
+interface NavItem {
+  label: string
+  /** Present = this row is wired to a real view and renders as a button;
+   *  absent = still a placeholder row (not clickable yet), shown at 30%
+   *  opacity. */
+  view?: Hero1MainView
+  /** Static (always-gray) rows render this raster icon directly — it can
+   *  never change color, so it doesn't matter that it's not clickable. */
+  icon?: string
+  /** Clickable rows render this `currentColor` icon component instead, so
+   *  the glyph turns blue right alongside the label on hover/active. */
+  Icon?: ComponentType<{ className?: string }>
+}
 
-const STATIC_NAV_ITEMS_AFTER_JOBS = [
-  { label: '채용 전형 관리', icon: iconNavHiringProcess },
-  { label: '지원자 관리', icon: iconNavApplicants },
-  { label: '발송 관리', icon: iconNavSend },
+/** Flat (1-depth) nav rows, in exact Figma order — "채용 공고 관리" used to
+ *  expand into a submenu; that's gone now, it's a plain row like the rest. */
+const NAV_ITEMS_BEFORE_JOBS: NavItem[] = [
+  { label: '채용 사이트 빌더', Icon: SiteBuilderIcon, view: 'siteBuilder' },
+  { label: '채용 사이트 바로가기', icon: iconNavSiteShortcut },
+]
+
+const NAV_ITEMS_AFTER_JOBS: NavItem[] = [
+  { label: '채용 전형 관리', Icon: HiringProcessIcon, view: 'hiringProcess' },
+  { label: '지원자 관리', Icon: ApplicantsIcon, view: 'applicants' },
+  { label: '발송 관리', Icon: SendIcon, view: 'sending' },
   { label: '1:1 문의', icon: iconNavInquiry },
   { label: '채용 사이트', icon: iconNavCareerSite },
   { label: '평가 관리', icon: iconNavEvaluation },
   { label: '관리자 사이트', icon: iconNavAdminSite },
   { label: '개인정보 로그', icon: iconNavPrivacyLog },
-] as const
-
-/** Sub-items under "채용 공고 관리"; only "채용 공고 현황" is wired to a real action. */
-const JOB_POSTING_SUBITEMS = ['공고 등록', '동의서/서약서 관리', '직무 관리', '지원서 양식 관리', '채용 코드 관리'] as const
+]
 
 // `<button>` gets `cursor: default` from the browser's own UA stylesheet,
 // which breaks inheritance of the custom dashboard-card cursor set on an
@@ -54,15 +59,45 @@ const ROW_BASE = 'flex h-11 w-full items-center rounded-lg pl-6 pr-4 text-left t
 const ROW_ACTIVE = 'bg-[#e6ecf8]/50 font-medium text-[#0042b7]'
 const ROW_INACTIVE = 'font-normal text-[#4d5761]'
 const ROW_HOVERABLE = 'hover:bg-[#e6ecf8]/50 hover:text-[#0042b7]'
+const ICON_ACTIVE = 'text-[#0042b7]'
+const ICON_INACTIVE = 'text-[#4d5761] group-hover:text-[#0042b7]'
 
-export function Hero1Sidebar({
-  activeNav,
-  jobsExpanded,
-  onSelectHome,
-  onToggleJobs,
-  onSelectJobPostings,
-  className,
-}: Hero1SidebarProps) {
+function StaticRow({ item }: { item: NavItem }) {
+  return (
+    <div className={clsx(ROW_BASE, ROW_INACTIVE, 'opacity-30')}>
+      <span className="mr-4 flex w-5 shrink-0 items-center justify-center">
+        <img src={item.icon} alt="" className="size-5" />
+      </span>
+      <span className="flex-1">{item.label}</span>
+    </div>
+  )
+}
+
+function ClickableRow({ item, isActive, onSelect }: { item: NavItem; isActive: boolean; onSelect: (view: Hero1MainView) => void }) {
+  const Icon = item.Icon!
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(item.view!)}
+      className={clsx('group', ROW_BASE, isActive ? ROW_ACTIVE : clsx(ROW_INACTIVE, ROW_HOVERABLE))}
+    >
+      <span className="mr-4 flex w-5 shrink-0 items-center justify-center">
+        <Icon className={clsx('size-5', isActive ? ICON_ACTIVE : ICON_INACTIVE)} />
+      </span>
+      <span className="flex-1">{item.label}</span>
+    </button>
+  )
+}
+
+function NavRow({ item, activeNav, onSelectView }: { item: NavItem; activeNav: Hero1MainView; onSelectView: (view: Hero1MainView) => void }) {
+  return item.view ? (
+    <ClickableRow item={item} isActive={activeNav === item.view} onSelect={onSelectView} />
+  ) : (
+    <StaticRow item={item} />
+  )
+}
+
+export function Hero1Sidebar({ activeNav, onSelectView, className }: Hero1SidebarProps) {
   return (
     <nav
       aria-label="대시보드 사이드바"
@@ -87,102 +122,32 @@ export function Hero1Sidebar({
       <div className="flex flex-col gap-1 px-[10px] pb-10">
         <button
           type="button"
-          onClick={onSelectHome}
+          onClick={() => onSelectView('home')}
           className={clsx('group', ROW_BASE, activeNav === 'home' ? ROW_ACTIVE : clsx(ROW_INACTIVE, ROW_HOVERABLE))}
         >
           <span className="mr-4 flex w-5 shrink-0 items-center justify-center">
-            <DashboardIcon
-              className={clsx('size-5', activeNav === 'home' ? 'text-[#0042b7]' : 'text-[#4d5761] group-hover:text-[#0042b7]')}
-            />
+            <DashboardIcon className={clsx('size-5', activeNav === 'home' ? ICON_ACTIVE : ICON_INACTIVE)} />
           </span>
           <span className="flex-1">대시보드</span>
         </button>
 
-        {STATIC_NAV_ITEMS.map((item) => (
-          <div key={item.label} className={clsx(ROW_BASE, ROW_INACTIVE)}>
-            <span className="mr-4 flex w-5 shrink-0 items-center justify-center">
-              <img src={item.icon} alt="" className="size-5" />
-            </span>
-            <span className="flex-1">{item.label}</span>
-          </div>
+        {NAV_ITEMS_BEFORE_JOBS.map((item) => (
+          <NavRow key={item.label} item={item} activeNav={activeNav} onSelectView={onSelectView} />
         ))}
 
         <button
           type="button"
-          onClick={onToggleJobs}
-          aria-expanded={jobsExpanded}
-          className={clsx('group', ROW_BASE, jobsExpanded ? ROW_ACTIVE : clsx(ROW_INACTIVE, ROW_HOVERABLE))}
+          onClick={() => onSelectView('jobPostings')}
+          className={clsx('group', ROW_BASE, activeNav === 'jobPostings' ? ROW_ACTIVE : clsx(ROW_INACTIVE, ROW_HOVERABLE))}
         >
           <span className="mr-4 flex w-5 shrink-0 items-center justify-center">
-            <JobPostingsIcon
-              className={clsx('size-5', jobsExpanded ? 'text-[#0042b7]' : 'text-[#4d5761] group-hover:text-[#0042b7]')}
-            />
+            <JobPostingsIcon className={clsx('size-5', activeNav === 'jobPostings' ? ICON_ACTIVE : ICON_INACTIVE)} />
           </span>
           <span className="flex-1">채용 공고 관리</span>
-          <motion.span
-            animate={{ rotate: jobsExpanded ? 180 : 0 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-            className="ml-2 flex w-4 shrink-0 items-center justify-center"
-          >
-            <ChevronIcon
-              className={clsx('size-4', jobsExpanded ? 'text-[#0042b7]' : 'text-[#4d5761] group-hover:text-[#0042b7]')}
-            />
-          </motion.span>
         </button>
 
-        <AnimatePresence initial={false}>
-          {jobsExpanded && (
-            <motion.div
-              key="job-postings-submenu"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25, ease: 'easeInOut' }}
-              className="overflow-hidden"
-            >
-              <div className="flex flex-col gap-1 py-1">
-                <button
-                  type="button"
-                  onClick={onSelectJobPostings}
-                  className={clsx(
-                    'group flex h-11 w-full items-center rounded-lg pl-12 pr-4 text-left text-sm transition-colors cursor-[inherit]',
-                    activeNav === 'jobPostings' ? ROW_ACTIVE : clsx(ROW_INACTIVE, ROW_HOVERABLE),
-                  )}
-                >
-                  <span className="mr-3 flex w-[6px] shrink-0 items-center justify-center">
-                    <BulletIcon
-                      className={clsx(
-                        'size-[6px]',
-                        activeNav === 'jobPostings' ? 'text-[#0042b7]' : 'text-[#4d5761] group-hover:text-[#0042b7]',
-                      )}
-                    />
-                  </span>
-                  <span className="flex-1">채용 공고 현황</span>
-                </button>
-
-                {JOB_POSTING_SUBITEMS.map((label) => (
-                  <div key={label} className="flex h-11 w-full items-center rounded-lg pl-12 pr-4 text-left text-sm font-normal text-[#4d5761]">
-                    <span className="mr-3 flex w-[6px] shrink-0 items-center justify-center">
-                      <BulletIcon className="size-[6px] text-[#4d5761]" />
-                    </span>
-                    <span className="flex-1">{label}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {STATIC_NAV_ITEMS_AFTER_JOBS.map((item) => (
-          <div key={item.label} className={clsx(ROW_BASE, ROW_INACTIVE)}>
-            <span className="mr-4 flex w-5 shrink-0 items-center justify-center">
-              <img src={item.icon} alt="" className="size-5" />
-            </span>
-            <span className="flex-1">{item.label}</span>
-            <span className="ml-2 flex w-4 shrink-0 items-center justify-center">
-              <ChevronIcon className="size-4 text-[#4d5761]" />
-            </span>
-          </div>
+        {NAV_ITEMS_AFTER_JOBS.map((item) => (
+          <NavRow key={item.label} item={item} activeNav={activeNav} onSelectView={onSelectView} />
         ))}
       </div>
     </nav>

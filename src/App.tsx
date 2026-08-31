@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Footer } from './components/layout/Footer'
 import { Header } from './components/layout/Header'
 import { CtaBanner } from './components/sections/CtaBanner'
@@ -6,15 +7,14 @@ import { Hero00Screening } from './components/sections/Hero00Screening'
 import { Hero1 } from './components/sections/Hero1'
 import { Hero2ApplicationBuilder } from './components/sections/Hero2ApplicationBuilder'
 import { Hero2ApplicationCards } from './components/sections/Hero2ApplicationCards'
-import { Hero2ApplicationHighlight } from './components/sections/Hero2ApplicationHighlight'
 import { Hero2ApplicationTitle } from './components/sections/Hero2ApplicationTitle'
 import { Hero2ClientShowcase } from './components/sections/Hero2ClientShowcase'
 import { Hero2DbOgMobileGrid } from './components/sections/Hero2DbOgMobileGrid'
 import { Hero2Headline } from './components/sections/Hero2Headline'
 import { Hero2Highlight } from './components/sections/Hero2Highlight'
+import { Hero2LogoMarquee } from './components/sections/Hero2LogoMarquee'
 import { Hero2SeoAnalyticsGrid } from './components/sections/Hero2SeoAnalyticsGrid'
 import { Hero2ThemeShowcase } from './components/sections/Hero2ThemeShowcase'
-import { Hero2Title } from './components/sections/Hero2Title'
 import { Hero3Dashboard } from './components/sections/Hero3Dashboard'
 import { Hero4FeatureCards } from './components/sections/Hero4FeatureCards'
 import { Hero6FeatureGallery } from './components/sections/Hero6FeatureGallery'
@@ -24,21 +24,34 @@ import { Testimonials } from './components/sections/Testimonials'
 import { SectionTitle } from './components/ui/SectionTitle'
 
 function App() {
+  // A deep link's own scroll fires before React has rendered the page, so the
+  // browser finds no #target to jump to and the visitor lands on the hero
+  // instead. Re-run it once the sections exist. `instant` opts out of the
+  // global smooth scrolling — a deep link should already be at its target
+  // rather than gliding down to it.
+  useEffect(() => {
+    const target = window.location.hash.slice(1)
+    if (!target) return
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(target)?.scrollIntoView({ behavior: 'instant' as ScrollBehavior })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [])
+
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-white">
       <Header />
       <main>
         <Hero1 />
-        <Hero2Title />
+        <Hero2LogoMarquee />
         <Hero2Headline />
         <Hero2ThemeShowcase />
-        <Hero2ClientShowcase />
         <Hero2Highlight />
         <Hero2SeoAnalyticsGrid />
         <Hero2ApplicationCards />
+        <Hero2ClientShowcase />
         <Hero2ApplicationTitle />
         <Hero2ApplicationBuilder />
-        <Hero2ApplicationHighlight />
         <Hero2DbOgMobileGrid />
 
         <SectionTitle

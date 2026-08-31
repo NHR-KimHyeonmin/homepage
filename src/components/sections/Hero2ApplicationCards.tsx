@@ -4,6 +4,7 @@ import iconPlus from '../../assets/sections/hero2-application-cards/icon-plus.sv
 import iconSignal from '../../assets/sections/hero2-application-cards/icon-signal.svg'
 import iconSmiley from '../../assets/sections/hero2-application-cards/icon-smiley.svg'
 import iconWifi from '../../assets/sections/hero2-application-cards/icon-wifi.svg'
+import jobPromoChannels from '../../assets/sections/hero2-application-cards/job-promo-channels.webp'
 import ogPreviewImage from '../../assets/sections/hero2-application-cards/og-preview-image.webp'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
@@ -11,13 +12,13 @@ import { Section } from '../ui/Section'
 /**
  * Figma node 2287:3751 — "Hero 2-Feature cards". Two-column card grid:
  * Card 1 ("공고별 OG설정") has a full phone-frame mockup of a KakaoTalk-style
- * share sheet with a live OG preview card; Card 2 ("채용 공고 홍보") has an
- * empty phone frame — the designer left it unfilled in Figma, so it's
- * reproduced as-is with no invented content.
+ * share sheet with a live OG preview card; Card 2 ("채용 공고 홍보") shows the
+ * "공고 홍보하기" menu wired to the external job channels (Figma node
+ * 2337:13527).
  */
 export function Hero2ApplicationCards() {
   return (
-    <Section className="bg-[#f8f9fa] px-6 pb-16 pt-6 md:px-16 md:pb-[120px] md:pt-[24px]">
+    <Section className="bg-white px-6 pb-16 pt-6 md:px-16 md:pb-[120px] md:pt-[24px]">
       <Container maxWidth={1208}>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <motion.div
@@ -94,8 +95,15 @@ export function Hero2ApplicationCards() {
               </p>
             </div>
 
-            {/* Phone frame left empty by design — the designer hasn't filled it in yet. */}
-            <div className="h-[409px] w-[370px] shrink-0 rounded-t-[40px] border-x-[10px] border-t-[10px] border-white bg-[#cfe2f0]" />
+            {/* Figma node 2337:13527 — 공고 목록의 "공고 홍보하기" 메뉴에서 외부
+                채널(인디스워크·캐치·디맨드·페이스북)로 연동되는 흐름. */}
+            <div className="flex w-full flex-1 items-end justify-center overflow-hidden px-6">
+              <img
+                src={jobPromoChannels}
+                alt="공고 홍보하기 메뉴에서 인디스워크 · 캐치 · 디맨드 · 페이스북 채널로 공고가 연동되는 화면"
+                className="w-full max-w-[528px] object-contain"
+              />
+            </div>
           </motion.div>
         </div>
       </Container>

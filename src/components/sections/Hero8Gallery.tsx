@@ -9,6 +9,7 @@ import card6 from '../../assets/sections/hero8-gallery/card-6.webp'
 import chevronRight from '../../assets/sections/hero8-gallery/chevron-right.svg'
 import iconChevronLeft from '../../assets/sections/hero4-cards/icon-chevron-left.svg'
 import iconChevronNext from '../../assets/sections/hero4-cards/icon-chevron-right.svg'
+import { useContentInsetLeft } from '../../hooks/useContentInsetLeft'
 import { useDragScroll } from '../../hooks/useDragScroll'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
@@ -54,26 +55,47 @@ const CARDS: ServiceCard[] = [
 
 export function Hero8Gallery() {
   const { scrollRef, isDragging, dragHandlers } = useDragScroll<HTMLDivElement>()
+  // First card starts exactly under the "채용을 더 완벽하게" headline, which
+  // sits in a 1208px column with this section's own outer padding.
+  const { probeRef, inset } = useContentInsetLeft<HTMLDivElement, HTMLDivElement>(scrollRef)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
 
-  // No center-focus needed here (unlike the 평가 section) — just bring the
-  // target card's leading edge into view.
+  // No center-focus needed here (unlike the 평가 section) — page so the
+  // target card's leading edge lands on the track's own left inset.
+  // (`scrollIntoView` would align it to the container edge instead, undoing
+  // the headline alignment.)
   const goTo = (index: number) => {
+    const container = scrollRef.current
+    const cardEl = cardRefs.current[Math.max(0, Math.min(CARDS.length - 1, index))]
+    if (!container || !cardEl) return
     const clamped = Math.max(0, Math.min(CARDS.length - 1, index))
     setActiveIndex(clamped)
-    cardRefs.current[clamped]?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' })
+    const target = container.scrollLeft + cardEl.getBoundingClientRect().left - container.getBoundingClientRect().left - inset
+    const maxScrollLeft = container.scrollWidth - container.clientWidth
+    container.scrollTo({ left: Math.max(0, Math.min(target, maxScrollLeft)), behavior: 'smooth' })
   }
 
   return (
     <Section className="flex flex-col items-center pb-[100px] pt-10">
-      <Container
+      {/* Zero-height mirror of the headline's column — measured, not
+          hard-coded, so the track's left edge tracks it at every width. */}
+      <div aria-hidden className="pointer-events-none absolute left-0 top-0 h-0 w-full">
+        {/* Same nesting as the SectionTitle above: section padding, then a
+            centered 1208px Container with its own padding. */}
+        <div className="h-0 w-full px-6 md:px-[100px] lg:px-[168px]">
+          <div className="mx-auto h-0 w-full max-w-[1208px] px-6 md:px-10 lg:px-16">
+            <div ref={probeRef} className="h-0" />
+          </div>
+        </div>
+      </div>
+
+      <div
         ref={scrollRef}
-        maxWidth={1592}
         {...dragHandlers}
-        className={`overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
+        className={`w-full overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
       >
-        <div className="flex items-stretch gap-6">
+        <div className="flex items-stretch gap-6" style={{ paddingLeft: inset, paddingRight: 24 }}>
           {CARDS.map((card, index) => (
             <motion.div
               key={card.name}
@@ -109,7 +131,7 @@ export function Hero8Gallery() {
             </motion.div>
           ))}
         </div>
-      </Container>
+      </div>
 
       <Container maxWidth={1592} className="flex justify-end pt-6">
         <div className="flex items-center gap-3">

@@ -1,17 +1,11 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import clsx from 'clsx'
-import chartCumulative from '../../assets/sections/hero3-dashboard/chart-cumulative-applications.png'
-import chartFlow from '../../assets/sections/hero3-dashboard/chart-application-flow.png'
-import chartRegion from '../../assets/sections/hero3-dashboard/chart-school-region.png'
-import chartMajor from '../../assets/sections/hero3-dashboard/chart-major-status.png'
-import iconClose from '../../assets/sections/hero3-dashboard/icon-close.svg'
-import iconPlus from '../../assets/sections/hero3-dashboard/icon-plus.svg'
-import iconPlusActive from '../../assets/sections/hero3-dashboard/icon-plus-active.svg'
-import tabEvalGroup from '../../assets/sections/hero3-tabs/tab-eval-group.webp'
-import tabGeneral from '../../assets/sections/hero3-tabs/tab-general.webp'
-import tabMypage from '../../assets/sections/hero3-tabs/tab-mypage.webp'
 import { Section } from '../ui/Section'
+import { Hero3CustomDashboard } from './Hero3CustomDashboard'
+import { Hero3EvalGroups } from './Hero3EvalGroups'
+import { Hero3MypagePreview } from './Hero3MypagePreview'
+import { Hero3ScreeningToggle } from './Hero3ScreeningToggle'
 
 type TabId = 'dashboard' | 'general' | 'mypage' | 'evalGroup'
 
@@ -23,15 +17,9 @@ const TABS: { id: TabId; label: string }[] = [
 ]
 
 /**
- * "커스텀 대시보드" keeps its original real-DOM panel (chart grid + sidebar
- * list). The other three tabs are flattened admin-mockup screenshots — same
- * pattern used elsewhere in this codebase for deeply-nested panels — each
- * paired with the description copy given for that tab.
- *
- * NOTE: these three mockups (일반/간편전형 토글, 마이페이지 발송 안내, 평가
- * 그룹 설정) contain their own internal interactive affordances that will
- * get dedicated interaction specs later — for now they render as static
- * reference images.
+ * Every tab is its own interactive panel now — see Hero3CustomDashboard,
+ * Hero3ScreeningToggle, Hero3MypagePreview and Hero3EvalGroups. This
+ * component only owns the tab bar and the per-tab description copy.
  */
 const TAB_DESCRIPTIONS: Record<TabId, string> = {
   dashboard:
@@ -40,26 +28,6 @@ const TAB_DESCRIPTIONS: Record<TabId, string> = {
   mypage: '채용 인원에 따라 알맞는 전형 유형을 선택하여 채용을 운영할 수 있습니다.',
   evalGroup: '채용 인원에 따라 알맞는 전형 유형을 선택하여 채용을 운영할 수 있습니다.',
 }
-
-const TAB_IMAGES: Partial<Record<TabId, { src: string; alt: string }>> = {
-  general: { src: tabGeneral, alt: '일반 전형과 간편 전형을 전환하는 미리보기 화면' },
-  mypage: { src: tabMypage, alt: '지원자 마이페이지로 안내 메시지를 발송하는 미리보기 화면' },
-  evalGroup: { src: tabEvalGroup, alt: '면접 평가 그룹을 생성하고 관리하는 미리보기 화면' },
-}
-
-const CHARTS = [
-  { src: chartCumulative, alt: '누적 지원 추이 차트' },
-  { src: chartFlow, alt: '지원 흐름 현황 차트' },
-  { src: chartRegion, alt: '학교 지역 분포 차트' },
-  { src: chartMajor, alt: '전공(학과) 현황 차트' },
-]
-
-const DASHBOARD_ITEMS = [
-  { label: '누적 지원 추이', active: false },
-  { label: '지원 흐름 현황', active: true },
-  { label: '학교 지역 분포', active: false },
-  { label: '전공(학과) 현황', active: false },
-]
 
 export function Hero3Dashboard() {
   const [activeTab, setActiveTab] = useState<TabId>('dashboard')
@@ -98,70 +66,19 @@ export function Hero3Dashboard() {
         </p>
 
         <AnimatePresence mode="wait" initial={false}>
-          {activeTab === 'dashboard' ? (
-            <motion.div
-              key="dashboard"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25, ease: 'easeInOut' }}
-              className="w-full overflow-hidden rounded-2xl bg-white p-8 shadow-card"
-            >
-              <div className="flex flex-col gap-5 md:flex-row">
-                <div className="grid flex-1 grid-cols-1 gap-5 sm:grid-cols-2">
-                  {CHARTS.map((chart) => (
-                    <div
-                      key={chart.alt}
-                      className="relative overflow-hidden rounded-lg border border-gray-150 bg-white"
-                      style={{ aspectRatio: '380 / 300' }}
-                    >
-                      <img src={chart.src} alt={chart.alt} className="size-full object-cover" />
-                      <button
-                        type="button"
-                        aria-label="차트 제거"
-                        className="absolute -right-2 -top-2 flex size-5 items-center justify-center rounded-full bg-black shadow-[0_2px_10px_0_rgba(0,0,0,0.08)]"
-                      >
-                        <img src={iconClose} alt="" className="size-3.5 -rotate-45" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex w-full flex-col gap-2 md:w-[293px]">
-                  {DASHBOARD_ITEMS.map((item) => (
-                    <div
-                      key={item.label}
-                      className={clsx(
-                        'flex items-center justify-between gap-2 rounded-lg border px-5 py-[13px]',
-                        item.active ? 'border-[#3379f3] bg-[#3379f3]/5' : 'border-gray-150',
-                      )}
-                    >
-                      <span
-                        className={clsx(
-                          'text-sm font-semibold tracking-[-0.07px]',
-                          item.active ? 'text-[#3379f3]' : 'text-black',
-                        )}
-                      >
-                        {item.label}
-                      </span>
-                      <img src={item.active ? iconPlusActive : iconPlus} alt="" className="size-6 shrink-0" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.img
-              key={activeTab}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25, ease: 'easeInOut' }}
-              src={TAB_IMAGES[activeTab]?.src}
-              alt={TAB_IMAGES[activeTab]?.alt}
-              className="w-full overflow-hidden rounded-2xl"
-            />
-          )}
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="w-full"
+          >
+            {activeTab === 'dashboard' && <Hero3CustomDashboard />}
+            {activeTab === 'general' && <Hero3ScreeningToggle />}
+            {activeTab === 'mypage' && <Hero3MypagePreview />}
+            {activeTab === 'evalGroup' && <Hero3EvalGroups />}
+          </motion.div>
         </AnimatePresence>
       </motion.div>
     </Section>
