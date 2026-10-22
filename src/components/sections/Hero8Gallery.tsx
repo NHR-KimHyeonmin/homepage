@@ -107,7 +107,7 @@ export function Hero8Gallery() {
               className="flex w-[380px] shrink-0 flex-col gap-5"
             >
               <div className="relative h-[240px] w-full shrink-0 overflow-hidden rounded-media">
-                <img src={card.image} alt="" className="absolute inset-0 size-full object-cover" />
+                <img loading="lazy" decoding="async" src={card.image} alt="" className="absolute inset-0 size-full object-cover" />
                 <div
                   aria-hidden
                   className="absolute inset-0"
@@ -123,7 +123,7 @@ export function Hero8Gallery() {
                   <h5 className="whitespace-nowrap text-sm font-bold leading-[1.2] tracking-[-0.28px] text-gray-200">
                     자세히 보기
                   </h5>
-                  <img src={chevronRight} alt="" className="size-5" />
+                  <img loading="lazy" decoding="async" src={chevronRight} alt="" className="size-5" />
                 </div>
               </div>
             </motion.div>
@@ -140,7 +140,7 @@ export function Hero8Gallery() {
             aria-label="이전 카드 보기"
             className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#eeeeee]/[0.93] transition-opacity disabled:cursor-default disabled:opacity-40"
           >
-            <img src={iconChevronLeft} alt="" className="size-7" />
+            <img loading="lazy" decoding="async" src={iconChevronLeft} alt="" className="size-7" />
           </button>
           <button
             type="button"
@@ -149,7 +149,7 @@ export function Hero8Gallery() {
             aria-label="다음 카드 보기"
             className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#eeeeee]/[0.93] transition-opacity disabled:cursor-default disabled:opacity-40"
           >
-            <img src={iconChevronNext} alt="" className="size-7" />
+            <img loading="lazy" decoding="async" src={iconChevronNext} alt="" className="size-7" />
           </button>
         </div>
       </Container>

@@ -45,7 +45,7 @@ function GalleryCardItem({ card, index }: { card: GalleryCard; index: number }) 
       className="flex w-full flex-col overflow-hidden rounded-card bg-card"
     >
       <div className="w-full overflow-hidden" style={{ height: card.imageHeight }}>
-        <img src={card.image} alt="" className="size-full object-cover" />
+        <img loading="lazy" decoding="async" src={card.image} alt="" className="size-full object-cover" />
       </div>
       <div className="flex flex-col gap-2 p-8">
         <h3 className="text-2xl font-semibold tracking-[-0.48px] text-black">{card.title}</h3>

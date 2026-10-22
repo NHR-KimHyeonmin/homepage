@@ -50,7 +50,7 @@ export function Hero2SeoAnalyticsGrid() {
                 <p className="text-lg leading-[1.45] tracking-[-0.08px] text-black/55">{card.description}</p>
               </div>
               <div className="flex w-full flex-1 items-start justify-center overflow-hidden">
-                <img src={card.image} alt={card.imageAlt} className="w-auto max-w-[90%] object-contain" />
+                <img loading="lazy" decoding="async" src={card.image} alt={card.imageAlt} className="w-auto max-w-[90%] object-contain" />
               </div>
             </motion.div>
           ))}

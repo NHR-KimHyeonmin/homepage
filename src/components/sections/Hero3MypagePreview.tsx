@@ -75,13 +75,13 @@ export function Hero3MypagePreview() {
                 한민지 <span className="text-[14px] font-medium leading-[22.4px]">님</span>
               </p>
               <span className="flex items-center justify-center rounded-full bg-[#f9fafb] p-[5px]">
-                <img src={iconEdit} alt="" className="size-[18px]" />
+                <img loading="lazy" decoding="async" src={iconEdit} alt="" className="size-[18px]" />
               </span>
             </div>
             <div className="flex flex-col gap-4 pt-3">
               {PROFILE.map((row) => (
                 <div key={row.text} className="flex items-center gap-2">
-                  <img src={row.icon} alt="" className="size-5 shrink-0" />
+                  <img loading="lazy" decoding="async" src={row.icon} alt="" className="size-5 shrink-0" />
                   <span className="text-[14px] leading-5 text-[#212121]">{row.text}</span>
                 </div>
               ))}

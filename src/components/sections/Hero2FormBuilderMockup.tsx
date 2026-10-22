@@ -55,7 +55,7 @@ function SidebarRow({
       )}
     >
       <span className="flex h-[28px] w-[27.33px] shrink-0 items-center justify-center">
-        <img src={disabled ? chevronDisabled : chevron} alt="" className="size-[18px]" />
+        <img loading="lazy" decoding="async" src={disabled ? chevronDisabled : chevron} alt="" className="size-[18px]" />
       </span>
       <span
         className="flex-1 pl-1 text-[16px] leading-6"
@@ -105,7 +105,7 @@ export function Hero2FormBuilderMockup() {
           transformOrigin: 'top left',
         }}
       >
-        <img src={toolbar} alt="" className="block w-full" style={{ height: TOOLBAR_HEIGHT }} />
+        <img loading="lazy" decoding="async" src={toolbar} alt="" className="block w-full" style={{ height: TOOLBAR_HEIGHT }} />
 
         <div className="flex" style={{ height: DESIGN_HEIGHT - TOOLBAR_HEIGHT }}>
           {/* Sidebar — the interactive part */}
@@ -148,7 +148,7 @@ export function Hero2FormBuilderMockup() {
             </div>
           </div>
 
-          <img src={rightPanel} alt="" className="block w-[350px] shrink-0 self-start" />
+          <img loading="lazy" decoding="async" src={rightPanel} alt="" className="block w-[350px] shrink-0 self-start" />
         </div>
       </div>
     </div>

@@ -33,7 +33,7 @@ function FieldCard({ title, fields }: { title: string; fields: FieldData[] }) {
                   <span className="rounded-full bg-primary-lightest px-1.5 py-0.5 text-[9px] font-medium text-primary">{field.chip}</span>
                 )}
               </span>
-              <img src={iconChevron} alt="" className="size-5" />
+              <img loading="lazy" decoding="async" src={iconChevron} alt="" className="size-5" />
             </div>
           </div>
         ))}
@@ -69,8 +69,8 @@ export function Hero2DbOgMobileGrid() {
 
           <div className="flex flex-wrap items-center gap-8">
             <div className="flex shrink-0 items-center gap-3">
-              <img src={logoUnivcert} alt="대학알리미" className="h-8 w-auto" />
-              <img src={logoYbm} alt="YBM" className="h-6 w-auto" />
+              <img loading="lazy" decoding="async" src={logoUnivcert} alt="대학알리미" className="h-8 w-auto" />
+              <img loading="lazy" decoding="async" src={logoYbm} alt="YBM" className="h-6 w-auto" />
             </div>
             <div className="flex flex-1 flex-wrap gap-4">
               <FieldCard title="외국어시험" fields={[{ label: '시험명', value: 'TOEIC' }, { label: '점수', value: '880' }]} />
@@ -105,7 +105,7 @@ export function Hero2DbOgMobileGrid() {
                 clipped by the card, so this card takes its height from its
                 sibling (회원 · 비회원) instead of driving the grid row. */}
             <div className="relative mt-6 h-0 w-[370px]">
-              <img
+              <img loading="lazy" decoding="async"
                 src={phoneMobileForm}
                 alt="모바일 화면에서 작성하는 지원서 미리보기"
                 className="absolute left-0 top-0 w-full max-w-none"
@@ -147,7 +147,7 @@ export function Hero2DbOgMobileGrid() {
                 회원전용 공고 또는 비회원전용 공고로 구분하여 공고를 생성할 수 있습니다.
               </p>
             </div>
-            <img
+            <img loading="lazy" decoding="async"
               src={memberGuestApply}
               alt="회원 로그인 화면과 비회원용 지원서 작성 창으로 나뉘는 서류접수 흐름"
               className="w-full max-w-[587px]"

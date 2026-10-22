@@ -154,7 +154,7 @@ export function Hero00Screening() {
                     isActive ? 'border-[#3379f3] text-[#3379f3]' : 'border-transparent text-black/30 hover:text-black/50',
                   )}
                 >
-                  <img src={isActive ? tab.iconActive : tab.iconInactive} alt="" className="size-7 shrink-0" />
+                  <img loading="lazy" decoding="async" src={isActive ? tab.iconActive : tab.iconInactive} alt="" className="size-7 shrink-0" />
                   {tab.label}
                 </button>
               )
@@ -190,7 +190,7 @@ export function Hero00Screening() {
                 style={{ width: CARD_WIDTH }}
               >
                 <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-ui border border-gray-150 bg-white">
-                  <img src={card.logo} alt={`${card.name} 로고`} className="h-full w-full object-contain" />
+                  <img loading="lazy" decoding="async" src={card.logo} alt={`${card.name} 로고`} className="h-full w-full object-contain" />
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-0.5">

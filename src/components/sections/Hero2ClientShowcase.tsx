@@ -43,7 +43,7 @@ function cardsInView(viewportWidth: number): number {
 function ShowcaseCardItem({ card }: { card: ShowcaseCard }) {
   const body = (
     <>
-      <img src={card.image} alt={card.label} className="absolute inset-0 size-full object-cover" />
+      <img loading="lazy" decoding="async" src={card.image} alt={card.label} className="absolute inset-0 size-full object-cover" />
       {/* Reference scrim (tana.inc UseCaseSection_scrim): a touch of black at
           the very top, then weighted to the bottom so the company name reads
           against any screenshot underneath it. */}

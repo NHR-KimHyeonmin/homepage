@@ -104,7 +104,7 @@ export function Hero4FeatureCards() {
             aria-label="이전 카드 보기"
             className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#eeeeee]/[0.93] transition-opacity disabled:cursor-default disabled:opacity-40"
           >
-            <img src={iconChevronLeft} alt="" className="size-7" />
+            <img loading="lazy" decoding="async" src={iconChevronLeft} alt="" className="size-7" />
           </button>
           <button
             type="button"
@@ -113,7 +113,7 @@ export function Hero4FeatureCards() {
             aria-label="다음 카드 보기"
             className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#eeeeee]/[0.93] transition-opacity disabled:cursor-default disabled:opacity-40"
           >
-            <img src={iconChevronRight} alt="" className="size-7" />
+            <img loading="lazy" decoding="async" src={iconChevronRight} alt="" className="size-7" />
           </button>
         </div>
       </Container>
@@ -133,7 +133,7 @@ export function Hero4FeatureCards() {
               }}
               className="flex w-[58%] shrink-0 flex-col items-start gap-5"
             >
-              <img
+              <img loading="lazy" decoding="async"
                 src={card.image}
                 alt={card.title}
                 className="aspect-[952/580] w-full rounded-media object-cover"

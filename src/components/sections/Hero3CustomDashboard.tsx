@@ -23,7 +23,7 @@ const CHARTS: ChartCard[] = [
 /**
  * Same two strokes as the exported `icon-plus.svg`, drawn inline so the
  * glyph can drop its vertical bar (turning into a minus) and pick up the
- * row's `currentColor` — neither of which an `<img>` can do.
+ * row's `currentColor` — neither of which an `<img loading="lazy" decoding="async">` can do.
  */
 function PlusMinusIcon({ showing }: { showing: boolean }) {
   return (

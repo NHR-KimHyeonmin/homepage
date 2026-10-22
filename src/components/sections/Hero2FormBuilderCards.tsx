@@ -47,7 +47,7 @@ function StarRow({ stars }: { stars: number }) {
   return (
     <span className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((n) => (
-        <img key={n} src={n <= stars ? starFilled : starEmpty} alt="" className="size-4" />
+        <img loading="lazy" decoding="async" key={n} src={n <= stars ? starFilled : starEmpty} alt="" className="size-4" />
       ))}
     </span>
   )
@@ -73,12 +73,12 @@ function ProfileBody() {
         <div className="flex flex-1 flex-col gap-2">
           {contacts.map((contact) => (
             <div key={contact.text + contact.icon} className="flex items-center gap-2">
-              <img src={contact.icon} alt="" className="size-[18px] shrink-0" />
+              <img loading="lazy" decoding="async" src={contact.icon} alt="" className="size-[18px] shrink-0" />
               <span className="text-[15px] leading-[22px] text-[#212121]">{contact.text}</span>
             </div>
           ))}
         </div>
-        <img
+        <img loading="lazy" decoding="async"
           src={applicantPhoto}
           alt="지원자 증명사진"
           className="h-[150px] w-[116px] shrink-0 rounded-ui object-cover shadow-[0px_2px_14px_0px_rgba(32,40,45,0.2)]"

@@ -40,15 +40,15 @@ export function Hero2ApplicationCards() {
               <div className="flex items-center justify-between px-9 pt-5">
                 <p className="text-[18px] font-semibold tracking-[-0.09px] text-black">17:21</p>
                 <div className="flex items-center gap-1.5">
-                  <img src={iconSignal} alt="" className="h-[13px] w-[9px]" />
-                  <img src={iconWifi} alt="" className="h-[16px] w-[16px]" />
-                  <img src={iconBattery} alt="" className="h-[16px] w-[16px]" />
+                  <img loading="lazy" decoding="async" src={iconSignal} alt="" className="h-[13px] w-[9px]" />
+                  <img loading="lazy" decoding="async" src={iconWifi} alt="" className="h-[16px] w-[16px]" />
+                  <img loading="lazy" decoding="async" src={iconBattery} alt="" className="h-[16px] w-[16px]" />
                 </div>
               </div>
 
               {/* OG share preview card */}
               <div className="absolute right-[13px] top-[76px] h-[193px] w-[236px] overflow-hidden rounded-ui bg-white shadow-card">
-                <img
+                <img loading="lazy" decoding="async"
                   src={ogPreviewImage}
                   alt="NHR 신규 채용 오픈그래프 미리보기 이미지"
                   className="h-[124px] w-full object-cover"
@@ -67,8 +67,8 @@ export function Hero2ApplicationCards() {
                 </p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <img src={iconPlus} alt="" className="size-6" />
-                    <img src={iconSmiley} alt="" className="size-6" />
+                    <img loading="lazy" decoding="async" src={iconPlus} alt="" className="size-6" />
+                    <img loading="lazy" decoding="async" src={iconSmiley} alt="" className="size-6" />
                   </div>
                   <button
                     type="button"
@@ -98,7 +98,7 @@ export function Hero2ApplicationCards() {
             {/* Figma node 2337:13527 — 공고 목록의 "공고 홍보하기" 메뉴에서 외부
                 채널(인디스워크·캐치·디맨드·페이스북)로 연동되는 흐름. */}
             <div className="flex w-full flex-1 items-end justify-center overflow-hidden px-6">
-              <img
+              <img loading="lazy" decoding="async"
                 src={jobPromoChannels}
                 alt="공고 홍보하기 메뉴에서 인디스워크 · 캐치 · 디맨드 · 페이스북 채널로 공고가 연동되는 화면"
                 className="w-full max-w-[528px] object-contain"

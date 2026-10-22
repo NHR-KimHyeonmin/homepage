@@ -92,6 +92,14 @@ const STAGE_FOOT = 'linear-gradient(to bottom, #000 82%, transparent 100%)'
 const STAGE_MASK = `${STAGE_ARCH}, ${STAGE_FOOT}`
 
 /**
+ * 대시보드 목업 그림자. 검정은 한색 그라데이션 위에서 탁하게 뜨므로,
+ * 베이스 그라데이션의 블루그레이(#bfcde9)보다 어두운 쪽으로 내린
+ * 청색 슬레이트를 쓴다. 넓게 퍼지는 한 겹과 바짝 붙는 한 겹을 겹쳐
+ * 떠 있는 느낌만 주고 윤곽은 흐리지 않는다.
+ */
+const DASHBOARD_SHADOW = '0 24px 60px -12px rgba(47, 68, 116, 0.28), 0 2px 10px 0 rgba(47, 68, 116, 0.12)'
+
+/**
  * 아치가 천천히 눌렸다 부풀기를 반복한다. 가로는 건드리지 않고 scaleY 만
  * 쓴다 — 양축을 함께 줄이면 레이어가 화면보다 좁아지는 순간 양옆에 잘린
  * 가장자리가 드러난다. 세로 위치도 아래를 축으로 고정해, 인트로 중과
@@ -102,7 +110,7 @@ const BREATH_SCALE = [0.94, 1.11, 0.94]
 const BREATH_TRANSITION = {
   // 진폭을 키운 만큼 주기도 늘린다 — 크게 움직이는데 빠르면 숨이 아니라
   // 들썩임으로 보인다.
-  duration: 7.5,
+  duration: 5,
   repeat: Infinity,
   ease: 'easeInOut' as const,
 }
@@ -222,7 +230,8 @@ export function Hero1() {
         initial={{ opacity: 0, y: 48 }}
         animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 48 }}
         transition={{ ...REVEAL_TRANSITION, delay: revealed ? IMAGE_DELAY_S : 0 }}
-        className={`relative w-full max-w-[1280px] overflow-hidden rounded-media bg-white shadow-card ${revealed ? '' : 'pointer-events-none'}`}
+        className={`relative w-full max-w-[1280px] overflow-hidden rounded-media bg-white ${revealed ? '' : 'pointer-events-none'}`}
+        style={{ boxShadow: DASHBOARD_SHADOW }}
       >
           <div className="relative w-full" style={DASHBOARD_CARD_STYLE}>
             <div className="absolute inset-0 flex">

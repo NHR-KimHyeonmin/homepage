@@ -42,7 +42,7 @@ export function Hero7() {
                 디자인과 사용자 편의성, 계속되는 업데이트가 매우 만족스럽습니다.
               </p>
             </div>
-            <img src={badge} alt="대학내일ES" className="h-8 w-[106px] object-contain" />
+            <img loading="lazy" decoding="async" src={badge} alt="대학내일ES" className="h-8 w-[106px] object-contain" />
           </div>
 
           <div className="flex items-start gap-4">
@@ -51,14 +51,14 @@ export function Hero7() {
               aria-label="이전 후기"
               className="flex size-10 shrink-0 items-center justify-center rounded-full transition-opacity hover:opacity-70"
             >
-              <img src={arrowPrev} alt="" className="size-7" />
+              <img loading="lazy" decoding="async" src={arrowPrev} alt="" className="size-7" />
             </button>
             <button
               type="button"
               aria-label="다음 후기"
               className="flex size-10 shrink-0 items-center justify-center rounded-full transition-opacity hover:opacity-70"
             >
-              <img src={arrowNext} alt="" className="size-7" />
+              <img loading="lazy" decoding="async" src={arrowNext} alt="" className="size-7" />
             </button>
           </div>
         </motion.div>

@@ -96,7 +96,7 @@ export function Testimonials() {
           }}
         />
         <div className="absolute inset-0 overflow-hidden mix-blend-difference opacity-20">
-          <img
+          <img loading="lazy" decoding="async"
             src={bgTexture}
             alt=""
             className="absolute left-[-27.78%] top-[18.45%] h-[91.71%] w-[127.78%] max-w-none object-cover"
@@ -130,7 +130,7 @@ export function Testimonials() {
               transition={{ duration: 0.6, ease: 'easeOut', delay: (i % 3) * 0.08 }}
               className="flex h-40 flex-col justify-center gap-3 rounded-card border border-white/15 bg-[#292e54]/50 px-8 py-5 shadow-card"
             >
-              <img src={card.icon} alt="" style={{ width: card.iconSize, height: card.iconSize }} />
+              <img loading="lazy" decoding="async" src={card.icon} alt="" style={{ width: card.iconSize, height: card.iconSize }} />
               <div className="flex flex-col gap-0.5">
                 <p className="text-lg font-bold tracking-[-0.09px] text-white">{card.title}</p>
                 <p className="text-sm tracking-[-0.07px] text-[#d9e3f4]">{card.description}</p>

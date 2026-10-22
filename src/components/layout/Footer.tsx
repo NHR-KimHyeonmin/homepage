@@ -20,7 +20,7 @@ export function Footer() {
     <footer className="flex flex-col items-center justify-between gap-8 border-t border-black/10 px-5 py-12 md:flex-row md:px-8">
       <div className="flex flex-col items-center gap-6 md:flex-row md:gap-8">
         <a href="#top" aria-label="커리어링크 홈">
-          <img src={logoMark} alt="커리어링크" className="h-[20px] w-auto" />
+          <img loading="lazy" decoding="async" src={logoMark} alt="커리어링크" className="h-[20px] w-auto" />
         </a>
         <nav className="flex items-center gap-8 text-base font-medium tracking-[-0.08px] text-black/55">
           {NAV_LINKS.map((link) => (
@@ -39,7 +39,7 @@ export function Footer() {
             aria-label={link.label}
             className="block size-6 shrink-0 transition-opacity hover:opacity-70"
           >
-            <img src={link.icon} alt="" className="size-full" />
+            <img loading="lazy" decoding="async" src={link.icon} alt="" className="size-full" />
           </a>
         ))}
       </nav>

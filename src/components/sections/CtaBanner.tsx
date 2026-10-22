@@ -15,7 +15,7 @@ export function CtaBanner() {
   return (
     <Section className="flex flex-col items-center justify-center gap-9 overflow-hidden px-5 py-12 text-center md:px-8 md:py-24">
       <div aria-hidden className="absolute inset-0 -z-10">
-        <img src={background} alt="" className="size-full object-cover" />
+        <img loading="lazy" decoding="async" src={background} alt="" className="size-full object-cover" />
         <div className="absolute inset-0 bg-black/10" />
       </div>
 

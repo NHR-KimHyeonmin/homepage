@@ -26,9 +26,12 @@ const RAIL_ITEMS = [
 
 const NAV_LINKS = ['회사소개', '직무소개', '복리후생', '채용정보']
 
+/* 세 번째 카드는 반만 보이도록 잘린다 — 가로로 더 있다는 것을 알리는
+   용도라, 목록이 두 장에서 끝나 보이지 않게 한다. */
 const JOB_CARDS = [
   { title: 'IT직군 상시 채용 (FE/BE)' },
   { title: '광고 사업 서비스 기획 인턴 채용' },
+  { title: '브랜드 디자인 신입 채용' },
 ]
 
 const FAQ_TABS = ['전체', '채용', '일반']
@@ -135,7 +138,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
                   item.active && 'bg-[#e6ecf8]',
                 )}
               >
-                <img src={item.icon} alt="" className="size-5" />
+                <img loading="lazy" decoding="async" src={item.icon} alt="" className="size-5" />
                 <span className={clsx('text-[11px]', item.active ? 'font-bold text-[#0042b7]' : 'text-gray-300')}>
                   {item.label}
                 </span>
@@ -164,7 +167,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
                 <p className="text-sm leading-5 text-[#212121]">테마 폰트</p>
                 <div className="flex items-center justify-between rounded-ui border border-[#d2d6db] px-3.5 py-2">
                   <span className="text-base leading-[23px] text-[#212121]">Pretendard</span>
-                  <img src={iconChevronDown} alt="" className="size-5" />
+                  <img loading="lazy" decoding="async" src={iconChevronDown} alt="" className="size-5" />
                 </div>
               </div>
 
@@ -179,7 +182,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
               <div className="flex flex-col gap-2 pt-1">
                 <div className="flex items-center justify-between">
                   <p className="text-sm leading-5 text-[#212121]">테마 미리보기</p>
-                  <img src={iconEyeToggle} alt="" className="size-[18px]" />
+                  <img loading="lazy" decoding="async" src={iconEyeToggle} alt="" className="size-[18px]" />
                 </div>
                 <div className="relative flex flex-col gap-4 rounded-ui border border-[#e5e7eb] bg-white p-3 shadow-[0px_8px_16px_-4px_rgba(32,41,57,0.08)]">
                   <div className="relative flex h-10 items-center rounded-chip border border-[#d2d6db] px-3.5">
@@ -190,7 +193,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
                   </div>
                   <div className="relative flex h-10 items-center rounded-chip border border-[#d2d6db] px-3.5">
                     <span className="text-sm text-[#6c737f]">선택영역</span>
-                    <img src={iconChevronDown} alt="" className="absolute right-2 size-5" />
+                    <img loading="lazy" decoding="async" src={iconChevronDown} alt="" className="absolute right-2 size-5" />
                   </div>
                   <div className="flex gap-2">
                     <button
@@ -224,7 +227,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
                     </button>
                   </div>
                   <label className="flex items-center gap-2">
-                    <img src={iconCheckbox} alt="" className="size-6" />
+                    <img loading="lazy" decoding="async" src={iconCheckbox} alt="" className="size-6" />
                     <span className="text-base text-[#212121]">동의합니다.</span>
                   </label>
                   <button
@@ -242,36 +245,36 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
           {/* Live job-site preview */}
           <div className="flex-1 bg-[#f4f8ff] p-4">
             <div className="overflow-hidden rounded-ui border border-gray-150 bg-white shadow-[0px_2px_14px_0px_rgba(32,40,45,0.08)]">
-              <nav className={clsx('flex items-center justify-between px-8 py-4', TRANSITION)} style={{ backgroundColor: shades.base }}>
-                <img src={logoCareerlinkWhite} alt="careerlink" className="h-[26px]" />
-                <div className="hidden items-center gap-6 text-[15px] font-medium text-white md:flex">
+              <nav className={clsx('flex items-center justify-between px-8 py-3', TRANSITION)} style={{ backgroundColor: shades.base }}>
+                <img loading="lazy" decoding="async" src={logoCareerlinkWhite} alt="careerlink" className="h-[18px]" />
+                <div className="hidden items-center gap-5 text-[13px] font-medium text-white md:flex">
                   {NAV_LINKS.map((link) => (
                     <span key={link}>{link}</span>
                   ))}
                 </div>
               </nav>
 
-              <div className="flex flex-col items-center px-8 py-10 text-center">
-                <p className="text-lg font-bold text-[#212121]">Recruit</p>
-                <h3 className="pt-4 text-3xl font-bold text-[#212121]">채용공고</h3>
-                <p className="max-w-[420px] pt-3 text-sm leading-5 text-[#6c737f]">
+              <div className="flex flex-col items-center px-8 pb-7 pt-11 text-center">
+                <p className="text-base font-bold text-[#212121]">Recruit</p>
+                <h3 className="pt-3 text-2xl font-bold text-[#212121]">채용공고</h3>
+                <p className="max-w-[380px] pt-2.5 text-[13px] leading-[18px] text-[#6c737f]">
                   커리어링크와 함께 하실 분을 모집합니다.
                   <br />
                   채용 브랜딩부터 지원자 관리까지 지원자와 기업 모두에게 편리한 채용 솔루션을 제공합니다.
                   <br />
                   커리어링크에서 현재 진행중인 채용공고를 확인해보세요.
                 </p>
-                <div className="flex gap-2 pt-5">
+                <div className="flex gap-2 pt-4">
                   <button
                     type="button"
-                    className={clsx('rounded-chip px-4 py-1.5 text-[13px] font-medium text-white', TRANSITION)}
+                    className={clsx('rounded-chip px-3.5 py-1 text-xs font-medium text-white', TRANSITION)}
                     style={{ backgroundColor: shades.base }}
                   >
                     채용공고
                   </button>
                   <button
                     type="button"
-                    className={clsx('rounded-chip border px-4 py-1.5 text-[13px] font-medium', TRANSITION)}
+                    className={clsx('rounded-chip border px-3.5 py-1 text-xs font-medium', TRANSITION)}
                     style={{ borderColor: `${shades.base}aa`, color: shades.base }}
                   >
                     지원하기
@@ -279,20 +282,20 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-4 px-8 pb-8 sm:grid-cols-2">
+              <div className="flex gap-4 px-8 pb-7 pt-4">
                 {JOB_CARDS.map((card) => (
-                  <div key={card.title} className="rounded-ui border-0 p-8 shadow-[0px_2px_14px_0px_rgba(32,40,45,0.16)]">
+                  <div key={card.title} className="w-[calc((100%-32px)/2.5)] shrink-0 rounded-ui border-0 p-5 shadow-[0px_2px_14px_0px_rgba(32,40,45,0.16)]">
                     <div className="flex items-center justify-between">
-                      <span className="text-base font-semibold text-[#212121]">커리어링크</span>
+                      <span className="text-xs font-medium text-[#8b919c]">커리어링크</span>
                       <span
-                        className={clsx('rounded-full px-3 py-1.5 text-[11px] font-medium text-white', TRANSITION)}
+                        className={clsx('shrink-0 rounded-full px-2.5 py-1 text-[10px] font-medium text-white', TRANSITION)}
                         style={{ backgroundColor: shades.base, borderColor: shades.base }}
                       >
                         신입 / 계약직
                       </span>
                     </div>
-                    <p className="pt-2 text-lg font-medium text-[#212121]">{card.title}</p>
-                    <p className={clsx('pt-8 text-base font-bold', TRANSITION)} style={{ color: shades.base }}>
+                    <p className="pt-2 text-[15px] font-medium leading-[22px] text-[#212121]">{card.title}</p>
+                    <p className={clsx('pt-6 text-sm font-bold', TRANSITION)} style={{ color: shades.base }}>
                       상시채용
                     </p>
                   </div>
@@ -300,7 +303,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
               </div>
 
               {/* 자주 묻는 질문 (Figma node 2329:12676) */}
-              <div className="flex flex-col gap-4 px-8 pb-10 pt-10">
+              <div className="flex flex-col gap-4 px-8 pb-10 pt-6">
                 <div className="flex flex-col items-center">
                   <p className={clsx('py-2 text-lg font-bold leading-[27px]', TRANSITION)} style={{ color: shades.dark1 }}>
                     FAQ
@@ -334,7 +337,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
                       <div key={item.question} className="flex flex-col">
                         <div className="flex items-center justify-between px-4">
                           <p className="flex-1 py-2 text-lg font-bold leading-[27px] text-[#212121]">{item.question}</p>
-                          <img
+                          <img loading="lazy" decoding="async"
                             src={iconFaqChevron}
                             alt=""
                             className={clsx('size-[35px] shrink-0', item.answer && 'rotate-180')}
