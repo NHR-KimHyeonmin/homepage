@@ -78,7 +78,12 @@ export function Hero2ThemeShowcase() {
           className="relative flex w-full flex-col items-center gap-10 overflow-hidden rounded-media px-6 pt-10 md:aspect-[5/3] md:px-[120px] md:pt-14"
           style={{ backgroundImage: PANEL_GRADIENT }}
         >
-          <div className="flex items-center gap-[2px]">
+          {/* 스와치를 반투명 유리 알약 위에 올린다. 고채도 칩은 밝은 한색
+              그라데이션 위에서 대비가 1.6~2.7 까지 떨어지는데, 색을 어둡게
+              바꾸면 탁해지므로 색 대신 바탕을 중화했다. 흰색 55% 에서
+              최소 대비가 1.61 → 2.19, 평균 2.42 → 3.30 으로 올라가면서도
+              뒤 그라데이션이 비쳐 유리 느낌이 남는다. */}
+          <div className="flex items-center gap-[2px] rounded-full bg-white/55 px-2 py-1 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65),0_8px_24px_rgba(15,26,61,0.12)] backdrop-blur-md">
             {PALETTE.map((hex) => {
               const isSelected = hex.toLowerCase() === selectedColor.toLowerCase()
               return (
@@ -88,7 +93,7 @@ export function Hero2ThemeShowcase() {
                   aria-label={`테마 색상 ${hex} 선택`}
                   aria-pressed={isSelected}
                   onClick={() => setSelectedColor(hex)}
-                  className="flex size-[58px] items-center justify-center rounded-full"
+                  className="flex size-[50px] items-center justify-center rounded-full"
                 >
                   {/* 선택 표시는 테두리 대신 "집어 올린 칩" — 한 칸 커지고
                       그림자가 생기며 흰 체크가 들어온다. 테두리 링은 칩
