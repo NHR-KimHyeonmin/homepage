@@ -20,9 +20,9 @@ function Switch({ on, disabled }: { on: boolean; disabled?: boolean }) {
 
   return (
     <span aria-hidden className="relative flex h-6 w-10 shrink-0 items-center px-[7px]">
-      <span className="h-2.5 w-full rounded-[7px] opacity-50" style={{ backgroundColor: color }} />
+      <span className="h-2.5 w-full rounded-chip opacity-50" style={{ backgroundColor: color }} />
       <span
-        className="absolute top-1 size-4 rounded-lg shadow-[0px_2px_1px_-1px_rgba(0,0,0,0.2),0px_1px_1px_0px_rgba(0,0,0,0.14),0px_1px_3px_0px_rgba(0,0,0,0.12)] transition-[left,background-color] duration-200"
+        className="absolute top-1 size-4 rounded-ui shadow-[0px_2px_1px_-1px_rgba(0,0,0,0.2),0px_1px_1px_0px_rgba(0,0,0,0.14),0px_1px_3px_0px_rgba(0,0,0,0.12)] transition-[left,background-color] duration-200"
         style={{ left: on ? 20 : 4, backgroundColor: color }}
       />
     </span>
@@ -51,7 +51,7 @@ function SidebarRow({
       className={clsx(
         'flex w-full items-center border py-2 pr-[3.667px] text-left transition-colors',
         disabled ? 'cursor-default border-[#f3f4f6]' : 'cursor-pointer',
-        !disabled && (isActive ? 'rounded-lg border-[#0042b7] bg-[#e6ecf8]' : 'border-[#f3f4f6] hover:bg-[#f9fafb]'),
+        !disabled && (isActive ? 'rounded-ui border-[#0042b7] bg-[#e6ecf8]' : 'border-[#f3f4f6] hover:bg-[#f9fafb]'),
       )}
     >
       <span className="flex h-[28px] w-[27.33px] shrink-0 items-center justify-center">
@@ -97,7 +97,7 @@ export function Hero2FormBuilderMockup() {
   return (
     <div ref={ref} className="w-full overflow-hidden" style={{ height: DESIGN_HEIGHT * scale }}>
       <div
-        className="overflow-hidden rounded-[12px] border border-[#e5e7eb] bg-white shadow-[0px_2px_14px_0px_rgba(32,40,45,0.08)]"
+        className="overflow-hidden rounded-card border border-[#e5e7eb] bg-white shadow-[0px_2px_14px_0px_rgba(32,40,45,0.08)]"
         style={{
           width: DESIGN_WIDTH,
           height: DESIGN_HEIGHT,
@@ -111,11 +111,11 @@ export function Hero2FormBuilderMockup() {
           {/* Sidebar — the interactive part */}
           <div className="flex w-[350px] shrink-0 flex-col bg-white">
             <div className="w-[319px] shrink-0 border-r-[0.667px] border-[#f9fafb] px-4 py-2">
-              <div className="inline-flex rounded-lg">
-                <span className="rounded-l-lg border-y-[0.667px] border-l-[0.667px] border-[#929294] bg-[#f3f4f6] px-[9px] py-[3px] text-[13px] font-medium leading-[19.5px] text-black">
+              <div className="inline-flex rounded-ui">
+                <span className="rounded-l-ui border-y-[0.667px] border-l-[0.667px] border-[#929294] bg-[#f3f4f6] px-[9px] py-[3px] text-[13px] font-medium leading-[19.5px] text-black">
                   전체보기
                 </span>
-                <span className="rounded-r-lg border-[0.667px] border-[#929294] bg-white px-[8.667px] py-[2.667px] text-[13px] font-medium leading-[19.5px] text-[#6c737f]">
+                <span className="rounded-r-ui border-[0.667px] border-[#929294] bg-white px-[8.667px] py-[2.667px] text-[13px] font-medium leading-[19.5px] text-[#6c737f]">
                   활성보기
                 </span>
               </div>

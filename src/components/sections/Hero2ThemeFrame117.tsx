@@ -69,10 +69,10 @@ function SliderRow({
   return (
     <div className="flex flex-col gap-1">
       <p className="text-sm leading-5 text-[#212121]">{label}</p>
-      <div className="rounded-lg border border-[#f3f4f6] bg-[#f9fafb] px-4 py-1.5">
+      <div className="rounded-ui border border-[#f3f4f6] bg-[#f9fafb] px-4 py-1.5">
         <div className="relative flex h-[30px] items-center justify-between">
-          <div className="relative h-1 flex-1 rounded-xl bg-[#e5e7eb]">
-            <div className="absolute inset-y-0 left-0 rounded-xl bg-[#0042b7]" style={{ width: `${percent}%` }} />
+          <div className="relative h-1 flex-1 rounded-card bg-[#e5e7eb]">
+            <div className="absolute inset-y-0 left-0 rounded-card bg-[#0042b7]" style={{ width: `${percent}%` }} />
             <div
               className="absolute top-1/2 size-5 -translate-y-1/2 rounded-full bg-[#0042b7]"
               style={{ left: `calc(${percent}% - 10px)` }}
@@ -117,7 +117,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
             </span>
             <button
               type="button"
-              className="whitespace-nowrap rounded-lg bg-[#0042b7] px-4 py-2 text-sm font-medium text-white"
+              className="whitespace-nowrap rounded-ui bg-[#0042b7] px-4 py-2 text-sm font-medium text-white"
             >
               변경사항 저장하기
             </button>
@@ -131,7 +131,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
               <div
                 key={item.label}
                 className={clsx(
-                  'flex size-[52px] flex-col items-center justify-center gap-1 rounded-lg',
+                  'flex size-[52px] flex-col items-center justify-center gap-1 rounded-ui',
                   item.active && 'bg-[#e6ecf8]',
                 )}
               >
@@ -162,7 +162,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
 
               <div className="flex flex-col gap-1">
                 <p className="text-sm leading-5 text-[#212121]">테마 폰트</p>
-                <div className="flex items-center justify-between rounded-lg border border-[#d2d6db] px-3.5 py-2">
+                <div className="flex items-center justify-between rounded-ui border border-[#d2d6db] px-3.5 py-2">
                   <span className="text-base leading-[23px] text-[#212121]">Pretendard</span>
                   <img src={iconChevronDown} alt="" className="size-5" />
                 </div>
@@ -181,14 +181,14 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
                   <p className="text-sm leading-5 text-[#212121]">테마 미리보기</p>
                   <img src={iconEyeToggle} alt="" className="size-[18px]" />
                 </div>
-                <div className="relative flex flex-col gap-4 rounded-lg border border-[#e5e7eb] bg-white p-3 shadow-[0px_8px_16px_-4px_rgba(32,41,57,0.08)]">
-                  <div className="relative flex h-10 items-center rounded border border-[#d2d6db] px-3.5">
+                <div className="relative flex flex-col gap-4 rounded-ui border border-[#e5e7eb] bg-white p-3 shadow-[0px_8px_16px_-4px_rgba(32,41,57,0.08)]">
+                  <div className="relative flex h-10 items-center rounded-chip border border-[#d2d6db] px-3.5">
                     <span className="text-sm text-[#6c737f]">입력영역</span>
                     <span className={clsx('pl-1 text-sm', TRANSITION)} style={{ color: shades.base }}>
                       *
                     </span>
                   </div>
-                  <div className="relative flex h-10 items-center rounded border border-[#d2d6db] px-3.5">
+                  <div className="relative flex h-10 items-center rounded-chip border border-[#d2d6db] px-3.5">
                     <span className="text-sm text-[#6c737f]">선택영역</span>
                     <img src={iconChevronDown} alt="" className="absolute right-2 size-5" />
                   </div>
@@ -207,7 +207,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
                       계약직
                     </button>
                   </div>
-                  <div className="flex overflow-hidden rounded">
+                  <div className="flex overflow-hidden rounded-chip">
                     <button
                       type="button"
                       className={clsx('flex-1 border py-2 text-[15px] font-medium', TRANSITION)}
@@ -229,7 +229,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
                   </label>
                   <button
                     type="button"
-                    className={clsx('rounded py-2 text-[15px] font-medium text-white', TRANSITION)}
+                    className={clsx('rounded-chip py-2 text-[15px] font-medium text-white', TRANSITION)}
                     style={{ backgroundColor: shades.base }}
                   >
                     버튼
@@ -241,7 +241,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
 
           {/* Live job-site preview */}
           <div className="flex-1 bg-[#f4f8ff] p-4">
-            <div className="overflow-hidden rounded-lg border border-gray-150 bg-white shadow-[0px_2px_14px_0px_rgba(32,40,45,0.08)]">
+            <div className="overflow-hidden rounded-ui border border-gray-150 bg-white shadow-[0px_2px_14px_0px_rgba(32,40,45,0.08)]">
               <nav className={clsx('flex items-center justify-between px-8 py-4', TRANSITION)} style={{ backgroundColor: shades.base }}>
                 <img src={logoCareerlinkWhite} alt="careerlink" className="h-[26px]" />
                 <div className="hidden items-center gap-6 text-[15px] font-medium text-white md:flex">
@@ -264,14 +264,14 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
                 <div className="flex gap-2 pt-5">
                   <button
                     type="button"
-                    className={clsx('rounded px-4 py-1.5 text-[13px] font-medium text-white', TRANSITION)}
+                    className={clsx('rounded-chip px-4 py-1.5 text-[13px] font-medium text-white', TRANSITION)}
                     style={{ backgroundColor: shades.base }}
                   >
                     채용공고
                   </button>
                   <button
                     type="button"
-                    className={clsx('rounded border px-4 py-1.5 text-[13px] font-medium', TRANSITION)}
+                    className={clsx('rounded-chip border px-4 py-1.5 text-[13px] font-medium', TRANSITION)}
                     style={{ borderColor: `${shades.base}aa`, color: shades.base }}
                   >
                     지원하기
@@ -281,7 +281,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
 
               <div className="grid grid-cols-1 gap-4 px-8 pb-8 sm:grid-cols-2">
                 {JOB_CARDS.map((card) => (
-                  <div key={card.title} className="rounded-lg border-0 p-8 shadow-[0px_2px_14px_0px_rgba(32,40,45,0.16)]">
+                  <div key={card.title} className="rounded-ui border-0 p-8 shadow-[0px_2px_14px_0px_rgba(32,40,45,0.16)]">
                     <div className="flex items-center justify-between">
                       <span className="text-base font-semibold text-[#212121]">커리어링크</span>
                       <span

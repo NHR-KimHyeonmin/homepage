@@ -20,7 +20,7 @@ function FieldCell({ field }: { field: Field }) {
 
 function GroupBox({ group }: { group: Group }) {
   return (
-    <div className="flex flex-1 flex-col rounded-lg border border-[#e5e7eb] bg-white p-2">
+    <div className="flex flex-1 flex-col rounded-ui border border-[#e5e7eb] bg-white p-2">
       {(group.dateRange || group.badge) && (
         <div className="flex items-center gap-2 px-2 pt-1">
           {group.dateRange && <span className="text-[14px] leading-[21px] text-[#8e949e]">{group.dateRange}</span>}
@@ -81,7 +81,7 @@ function ProfileBody() {
         <img
           src={applicantPhoto}
           alt="지원자 증명사진"
-          className="h-[150px] w-[116px] shrink-0 rounded-lg object-cover shadow-[0px_2px_14px_0px_rgba(32,40,45,0.2)]"
+          className="h-[150px] w-[116px] shrink-0 rounded-ui object-cover shadow-[0px_2px_14px_0px_rgba(32,40,45,0.2)]"
         />
       </div>
       <div className="grid w-full grid-cols-2 px-6 py-4">
@@ -115,7 +115,7 @@ export function FormPreviewCard({ section }: { section: FormSection }) {
   if (!body) return null
 
   return (
-    <div className="mt-4 w-full overflow-hidden rounded-lg border border-[#e5e7eb] bg-white first:mt-0">
+    <div className="mt-4 w-full overflow-hidden rounded-ui border border-[#e5e7eb] bg-white first:mt-0">
       {body.kind === 'profile' ? (
         <ProfileBody />
       ) : (
@@ -143,7 +143,7 @@ export function FormPreviewCard({ section }: { section: FormSection }) {
             {body.kind === 'ratings' && (
               <div className="grid grid-cols-2 gap-4">
                 {body.languages.map((language) => (
-                  <div key={language.name} className="rounded-lg border border-[#e5e7eb] bg-white p-2">
+                  <div key={language.name} className="rounded-ui border border-[#e5e7eb] bg-white p-2">
                     <p className="px-2 py-2 text-[16px] font-semibold leading-[24px] text-[#212121]">{language.name}</p>
                     {language.levels.map((level) => (
                       <div key={level.label} className="flex items-center justify-between px-2 py-2">

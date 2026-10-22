@@ -55,7 +55,7 @@ const NAV_ITEMS_AFTER_JOBS: NavItem[] = [
 // ancestor — `cursor-[inherit]` forces it back to whatever the ancestor set.
 // (Tailwind's built-in cursor scale has no "inherit" keyword, so this must
 // be an arbitrary value, not the bare `cursor-inherit` utility class.)
-const ROW_BASE = 'flex h-11 w-full items-center rounded-lg pl-6 pr-4 text-left text-sm transition-colors cursor-[inherit]'
+const ROW_BASE = 'flex h-11 w-full items-center rounded-ui pl-6 pr-4 text-left text-sm transition-colors cursor-[inherit]'
 const ROW_ACTIVE = 'bg-[#e6ecf8]/50 font-medium text-[#0042b7]'
 const ROW_INACTIVE = 'font-normal text-[#4d5761]'
 const ROW_HOVERABLE = 'hover:bg-[#e6ecf8]/50 hover:text-[#0042b7]'
@@ -112,7 +112,7 @@ export function Hero1Sidebar({ activeNav, onSelectView, className }: Hero1Sideba
           <span className="absolute -top-[8px] left-[14px] z-10 bg-white px-1 text-[11px] leading-none text-[#6c737f]">
             기업 선택
           </span>
-          <div className="flex items-center justify-between rounded-lg border border-[#d2d6db] py-[7px] pl-[14px] pr-[9px]">
+          <div className="flex items-center justify-between rounded-ui border border-[#d2d6db] py-[7px] pl-[14px] pr-[9px]">
             <span className="text-[16px] text-[#212121]">커리어링크</span>
             <img src={iconChevronSelect} alt="" className="size-5" />
           </div>

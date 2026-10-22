@@ -18,15 +18,15 @@ import { Section } from '../ui/Section'
  */
 export function Hero2ApplicationCards() {
   return (
-    <Section className="bg-white px-6 pb-16 pt-6 md:px-16 md:pb-[120px] md:pt-[24px]">
-      <Container maxWidth={1208}>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <Section className="bg-white pb-12 pt-6 md:pb-24 md:pt-6">
+      <Container>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           <motion.div
             initial={{ opacity: 0, y: 32 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="flex flex-col items-center overflow-hidden rounded-2xl bg-gray-150"
+            className="flex flex-col items-center overflow-hidden rounded-card bg-card"
           >
             <div className="flex w-full flex-col gap-3 p-8">
               <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-black">공고별 OG설정</h3>
@@ -47,7 +47,7 @@ export function Hero2ApplicationCards() {
               </div>
 
               {/* OG share preview card */}
-              <div className="absolute right-[13px] top-[76px] h-[193px] w-[236px] overflow-hidden rounded-lg bg-white shadow-card">
+              <div className="absolute right-[13px] top-[76px] h-[193px] w-[236px] overflow-hidden rounded-ui bg-white shadow-card">
                 <img
                   src={ogPreviewImage}
                   alt="NHR 신규 채용 오픈그래프 미리보기 이미지"
@@ -72,7 +72,7 @@ export function Hero2ApplicationCards() {
                   </div>
                   <button
                     type="button"
-                    className="min-w-16 rounded bg-[#ffeb00] px-[15px] py-[6px] text-[14px] font-medium text-ink"
+                    className="min-w-16 rounded-chip bg-[#ffeb00] px-[15px] py-[6px] text-[14px] font-medium text-ink"
                   >
                     전송
                   </button>
@@ -86,7 +86,7 @@ export function Hero2ApplicationCards() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            className="flex flex-col items-center overflow-hidden rounded-2xl bg-gray-150"
+            className="flex flex-col items-center overflow-hidden rounded-card bg-card"
           >
             <div className="flex w-full flex-col gap-3 p-8">
               <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-black">채용 공고 홍보</h3>

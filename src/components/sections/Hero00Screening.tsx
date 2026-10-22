@@ -131,7 +131,7 @@ export function Hero00Screening() {
   }
 
   return (
-    <Section className="flex flex-col items-center gap-10 bg-[#f4f8ff] py-20">
+    <Section className="flex flex-col items-center gap-10 bg-[#f4f8ff] pb-12 pt-6 md:pb-24 md:pt-10">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -139,8 +139,8 @@ export function Hero00Screening() {
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className="w-full"
       >
-        <Container maxWidth={1208}>
-          <nav className="flex flex-wrap items-center justify-center gap-4 rounded-t-2xl border-b border-[#3379f3]/20 backdrop-blur-[35px]">
+        <Container>
+          <nav className="flex flex-wrap items-center justify-center gap-4 rounded-t-card border-b border-[#3379f3]/20 backdrop-blur-[35px]">
             {NAV_TABS.map((tab) => {
               const isActive = tab.id === activeTab
               return (
@@ -175,7 +175,7 @@ export function Hero00Screening() {
           maxWidth={1592}
           className="overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          <div className="flex items-stretch gap-6">
+          <div className="flex items-stretch gap-5">
             <div aria-hidden className="shrink-0" style={{ width: spacerWidth }} />
             {CARDS.map((card, index) => (
               <div
@@ -184,12 +184,12 @@ export function Hero00Screening() {
                   cardRefs.current[index] = el
                 }}
                 className={clsx(
-                  'flex h-[400px] shrink-0 flex-col gap-4 overflow-hidden rounded-2xl bg-white p-9 shadow-[0px_4px_10px_0px_rgba(0,66,183,0.04)] transition-opacity duration-300',
+                  'flex h-[400px] shrink-0 flex-col gap-4 overflow-hidden rounded-card bg-white p-7 shadow-[0px_4px_10px_0px_rgba(0,66,183,0.04)] transition-opacity duration-300',
                   card.group === activeTab ? 'opacity-100' : 'opacity-30',
                 )}
                 style={{ width: CARD_WIDTH }}
               >
-                <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-gray-150 bg-white">
+                <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-ui border border-gray-150 bg-white">
                   <img src={card.logo} alt={`${card.name} 로고`} className="h-full w-full object-contain" />
                 </div>
                 <div className="flex flex-col gap-4">

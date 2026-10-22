@@ -13,7 +13,7 @@ import { Section } from '../ui/Section'
  */
 export function CtaBanner() {
   return (
-    <Section className="flex flex-col items-center justify-center gap-9 overflow-hidden px-6 py-20 text-center">
+    <Section className="flex flex-col items-center justify-center gap-9 overflow-hidden px-5 py-12 text-center md:px-8 md:py-24">
       <div aria-hidden className="absolute inset-0 -z-10">
         <img src={background} alt="" className="size-full object-cover" />
         <div className="absolute inset-0 bg-black/10" />
@@ -38,7 +38,7 @@ export function CtaBanner() {
       >
         <button
           type="button"
-          className="rounded-[99px] bg-black px-4 py-3 text-lg font-semibold tracking-[-0.09px] text-white transition-colors hover:bg-black/80"
+          className="rounded-full bg-black px-4 py-3 text-lg font-semibold tracking-[-0.09px] text-white transition-colors hover:bg-black/80"
         >
           도입 문의하기
         </button>

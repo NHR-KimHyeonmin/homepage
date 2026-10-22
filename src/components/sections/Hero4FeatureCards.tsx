@@ -94,8 +94,8 @@ export function Hero4FeatureCards() {
   }
 
   return (
-    <Section className="bg-white pb-20 pt-10">
-      <Container maxWidth={1208} className="flex justify-end pb-6">
+    <Section className="bg-white pb-12 pt-6 md:pb-24 md:pt-10">
+      <Container className="flex justify-end pb-6">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -121,7 +121,7 @@ export function Hero4FeatureCards() {
       <Container
         ref={scrollRef}
         maxWidth={1592}
-        className="overflow-x-auto scroll-smooth px-6 pb-2 md:px-16 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         <div className="flex items-stretch gap-5">
           <div aria-hidden className="shrink-0" style={{ width: spacerWidth }} />
@@ -136,7 +136,7 @@ export function Hero4FeatureCards() {
               <img
                 src={card.image}
                 alt={card.title}
-                className="aspect-[952/580] w-full rounded-2xl object-cover"
+                className="aspect-[952/580] w-full rounded-media object-cover"
               />
               <div className="flex flex-col gap-2">
                 <h5 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-ink">{card.title}</h5>

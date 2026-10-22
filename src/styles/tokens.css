@@ -31,6 +31,22 @@
   --color-gray-300: #51565f;
   --color-gray-400: #d2d6db;
 
+  /* Page cards — matched to tana.inc's TrustSection card: a flat
+     #f6f6f6 fill with no shadow at all. `--shadow-card` stays for the
+     simulated product UI (dashboards, mockups), which still needs depth. */
+  --color-card: #f6f6f6;
+
+  /* Radius scale, matched to tana.inc's authored steps. Everything on the
+     page snaps to one of these four plus `rounded-full`:
+       chip  6px - tooltips, tags, tiny controls
+       ui    8px - buttons, badges, inputs, list rows
+       card 14px - cards, panels, nav items
+       media 20px - large imagery and framed screenshots */
+  --radius-chip: 6px;
+  --radius-ui: 8px;
+  --radius-card: 14px;
+  --radius-media: 20px;
+
   /* Shadows */
   --shadow-card: 0 2px 16px 0 rgba(0, 0, 0, 0.08);
   --shadow-card-subtle: 0 4px 8px 0 rgba(0, 0, 0, 0.02);
@@ -39,7 +55,11 @@
   --spacing-5xs: 2px;
   --spacing-100: 8px;
 
-  /* Layout */
+  /* Layout — page gutter and content column, matched to tana.inc:
+     a 1280px max-width box with a 20px (mobile) / 32px (>=md) inset
+     (px-5 md:px-8), so the content column lands at 1216px and every
+     section shares the same left/right margin. The gutter is owned by
+     <Container> alone - sections must not add their own px-*. */
   --container-page: 1920px;
   --breakpoint-3xl: 1920px;
 

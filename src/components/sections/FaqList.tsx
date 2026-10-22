@@ -37,8 +37,8 @@ export function FaqList() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <Section className="flex flex-col items-center pb-20 pt-10">
-      <Container maxWidth={1208}>
+    <Section className="flex flex-col items-center pb-12 pt-6 md:pb-24 md:pt-10">
+      <Container>
         <ul className="flex w-full flex-col gap-2">
           {FAQS.map((item, index) => {
             const isOpen = openIndex === index

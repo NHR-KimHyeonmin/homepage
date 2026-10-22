@@ -46,7 +46,7 @@ export function Hero3ScreeningToggle() {
   const [selected, setSelected] = useState<ScreeningId>('standard')
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl bg-white p-8 shadow-card">
+    <div className="w-full overflow-hidden rounded-card bg-white p-8 shadow-card">
       <div ref={ref} className="w-full overflow-hidden" style={{ height: DESIGN_HEIGHT * scale }}>
         <div
           className="relative overflow-hidden"
@@ -67,13 +67,13 @@ export function Hero3ScreeningToggle() {
                 animate={slot}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 style={{ position: 'absolute', width: screening.width }}
-                className="max-w-none rounded-xl shadow-[0px_4px_24px_0px_rgba(32,40,45,0.12)]"
+                className="max-w-none rounded-card shadow-[0px_4px_24px_0px_rgba(32,40,45,0.12)]"
               />
             )
           })}
 
           {/* Figma node 2320:25554 */}
-          <div className="absolute left-[23px] top-[20px] z-10 flex items-center gap-1.5 rounded-lg border border-[#f3f4f6] bg-white p-1.5">
+          <div className="absolute left-[23px] top-[20px] z-10 flex items-center gap-1.5 rounded-ui border border-[#f3f4f6] bg-white p-1.5">
             {SCREENINGS.map((screening) => {
               const isSelected = screening.id === selected
               return (
@@ -83,7 +83,7 @@ export function Hero3ScreeningToggle() {
                   onClick={() => setSelected(screening.id)}
                   aria-pressed={isSelected}
                   className={clsx(
-                    'w-[120px] cursor-pointer rounded px-2 py-1.5 text-[18px] font-semibold leading-[1.6] tracking-[-0.09px] transition-colors',
+                    'w-[120px] cursor-pointer rounded-chip px-2 py-1.5 text-[18px] font-semibold leading-[1.6] tracking-[-0.09px] transition-colors',
                     isSelected ? 'bg-[#f4f8ff] text-[#3379f3]' : 'text-black/30 hover:text-black/50',
                   )}
                 >

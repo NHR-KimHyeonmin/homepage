@@ -17,7 +17,7 @@ const SOCIAL_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="flex flex-col items-center justify-between gap-8 border-t border-black/10 px-6 py-12 md:flex-row md:px-16 md:py-16">
+    <footer className="flex flex-col items-center justify-between gap-8 border-t border-black/10 px-5 py-12 md:flex-row md:px-8">
       <div className="flex flex-col items-center gap-6 md:flex-row md:gap-8">
         <a href="#top" aria-label="커리어링크 홈">
           <img src={logoMark} alt="커리어링크" className="h-[20px] w-auto" />

@@ -33,9 +33,9 @@ const CARDS: CardData[] = [
  */
 export function Hero2SeoAnalyticsGrid() {
   return (
-    <Section className="bg-white px-6 pt-20 md:px-16">
-      <Container maxWidth={1208}>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <Section className="bg-white pt-12 md:pt-24">
+      <Container>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           {CARDS.map((card, i) => (
             <motion.div
               key={card.title}
@@ -43,7 +43,7 @@ export function Hero2SeoAnalyticsGrid() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, ease: 'easeOut', delay: i * 0.1 }}
-              className="flex h-[335px] flex-col items-center overflow-hidden rounded-2xl bg-gray-150"
+              className="flex h-[335px] flex-col items-center overflow-hidden rounded-card bg-card"
             >
               <div className="flex w-full flex-col gap-3 p-8">
                 <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-black">{card.title}</h3>

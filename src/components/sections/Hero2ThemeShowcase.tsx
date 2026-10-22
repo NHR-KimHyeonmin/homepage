@@ -29,8 +29,8 @@ export function Hero2ThemeShowcase() {
   const { ref: fitRef, scale } = useFitScale(1000)
 
   return (
-    <Section className="flex flex-col items-center gap-10 overflow-hidden bg-white px-6 pb-24 pt-16 md:px-16">
-      <Container maxWidth={1280} className="flex flex-col items-center gap-10">
+    <Section className="flex flex-col items-center gap-10 overflow-hidden bg-white pb-12 pt-6 md:pb-24 md:pt-10">
+      <Container className="flex flex-col items-center gap-10">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -67,9 +67,9 @@ export function Hero2ThemeShowcase() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
-          className="relative h-[760px] w-full max-w-[1280px] overflow-visible rounded-[20px] border-[12px] border-[#e8eaee] bg-white shadow-card"
+          className="relative h-[760px] w-full max-w-[1280px] overflow-visible rounded-media border-[12px] border-[#e8eaee] bg-white shadow-card"
         >
-          <div ref={fitRef} className="size-full overflow-hidden rounded-[8px]">
+          <div ref={fitRef} className="size-full overflow-hidden rounded-ui">
             <div
               style={
                 scale < 1

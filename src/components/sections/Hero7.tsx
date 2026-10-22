@@ -7,8 +7,8 @@ import { Section } from '../ui/Section'
 
 export function Hero7() {
   return (
-    <Section className="flex flex-col items-center bg-[#f8f9fa] py-[120px]">
-      <Container maxWidth={1208} className="flex flex-col items-start justify-between gap-8 md:flex-row md:gap-5">
+    <Section className="flex flex-col items-center bg-[#f8f9fa] py-12 md:py-24">
+      <Container className="flex flex-col items-start justify-between gap-8 md:flex-row md:gap-5">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -17,7 +17,7 @@ export function Hero7() {
           className="flex flex-1 flex-col gap-4"
         >
           <p className="text-xl font-semibold tracking-[-0.1px] text-black/55">후기</p>
-          <h2 className="text-[40px] font-bold leading-[1.4] tracking-[-1.12px] text-black md:text-[56px]">
+          <h2 className="text-[40px] font-bold leading-[1.4] tracking-[-1.12px] text-black md:text-[48px]">
             실제 고객들의
             <br />
             사용 후기
@@ -31,7 +31,7 @@ export function Hero7() {
           transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
           className="flex w-full flex-col items-end gap-4 pt-0 md:w-[563px] md:pt-[46px]"
         >
-          <div className="flex w-full flex-col gap-5 rounded-2xl drop-shadow-[0px_4px_4px_rgba(0,0,0,0.02)]">
+          <div className="flex w-full flex-col gap-5 rounded-card">
             <div className="flex flex-col gap-3">
               <h5 className="text-[28px] font-semibold leading-[1.4] tracking-[-0.56px] text-black">
                 &quot;전형 리드타임 단축 및 높은 사용자 편의성&quot;

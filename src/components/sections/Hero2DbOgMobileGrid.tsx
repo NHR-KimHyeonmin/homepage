@@ -15,7 +15,7 @@ interface FieldData {
 
 function FieldCard({ title, fields }: { title: string; fields: FieldData[] }) {
   return (
-    <div className="w-full max-w-[340px] shrink-0 overflow-hidden rounded-lg drop-shadow-[0_2px_5px_rgba(0,0,0,0.08)]">
+    <div className="w-full max-w-[340px] shrink-0 overflow-hidden rounded-ui drop-shadow-[0_2px_5px_rgba(0,0,0,0.08)]">
       <div className="bg-[#f9fafb] px-4 py-2.5">
         <p className="text-base text-[#212121]">{title}</p>
       </div>
@@ -26,7 +26,7 @@ function FieldCard({ title, fields }: { title: string; fields: FieldData[] }) {
               {field.label}
               <span className="text-primary"> *</span>
             </span>
-            <div className="flex h-9 items-center justify-between rounded border border-[#d2d6db] px-2.5">
+            <div className="flex h-9 items-center justify-between rounded-chip border border-[#d2d6db] px-2.5">
               <span className="flex items-center gap-1.5 text-sm text-[#212121]">
                 {field.value}
                 {field.chip && (
@@ -51,14 +51,14 @@ function FieldCard({ title, fields }: { title: string; fields: FieldData[] }) {
  */
 export function Hero2DbOgMobileGrid() {
   return (
-    <Section className="bg-white px-6 pb-28 pt-[60px] md:px-16">
-      <Container maxWidth={1208} className="flex flex-col gap-6">
+    <Section className="bg-white pb-12 pt-6 md:pb-24 md:pt-10">
+      <Container className="flex flex-col gap-6">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="flex w-full flex-col gap-8 overflow-hidden rounded-2xl bg-gray-150 p-8"
+          className="flex w-full flex-col gap-8 overflow-hidden rounded-card bg-card p-8"
         >
           <div className="flex flex-col gap-3">
             <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-black">검증된 DB 기반 지원서</h3>
@@ -91,7 +91,7 @@ export function Hero2DbOgMobileGrid() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.05 }}
-            className="relative flex flex-col items-center overflow-hidden rounded-2xl bg-gray-150"
+            className="relative flex flex-col items-center overflow-hidden rounded-card bg-card"
           >
             <div className="flex w-full flex-col gap-3 p-8 pb-0">
               <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-black">모바일 반응형 지원서</h3>
@@ -121,13 +121,13 @@ export function Hero2DbOgMobileGrid() {
             >
               <button
                 type="button"
-                className="min-w-16 rounded-lg bg-[#d1dae4] px-[22px] py-[8px] text-[15px] font-medium text-text shadow-card"
+                className="min-w-16 rounded-ui bg-[#d1dae4] px-[22px] py-[8px] text-[15px] font-medium text-text shadow-card"
               >
                 임시저장
               </button>
               <button
                 type="button"
-                className="min-w-16 rounded-lg bg-primary px-[22px] py-[8px] text-[15px] font-medium text-white shadow-card"
+                className="min-w-16 rounded-ui bg-primary px-[22px] py-[8px] text-[15px] font-medium text-white shadow-card"
               >
                 최종제출
               </button>
@@ -139,7 +139,7 @@ export function Hero2DbOgMobileGrid() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            className="flex flex-col items-center overflow-hidden rounded-2xl bg-gray-150"
+            className="flex flex-col items-center overflow-hidden rounded-card bg-card"
           >
             <div className="flex w-full flex-col gap-3 p-8">
               <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-black">회원 · 비회원 서류접수</h3>

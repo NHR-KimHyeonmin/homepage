@@ -82,7 +82,7 @@ export function Testimonials() {
       as={motion.section}
       ref={sectionRef}
       style={{ minHeight }}
-      className="flex flex-col items-center justify-center gap-[80px] overflow-hidden bg-black py-[120px]"
+      className="flex flex-col items-center justify-center gap-[80px] overflow-hidden bg-black py-12 md:py-24"
     >
       <div aria-hidden className="absolute inset-0 -z-10">
         <div
@@ -104,7 +104,7 @@ export function Testimonials() {
         </div>
       </div>
 
-      <Container maxWidth={1208} className="flex flex-col items-center gap-10">
+      <Container className="flex flex-col items-center gap-10">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -113,7 +113,7 @@ export function Testimonials() {
           className="flex flex-col items-center gap-4 text-center"
         >
           <SectionEyebrow tone="onDark">보안</SectionEyebrow>
-          <h2 className="text-[40px] font-bold leading-[1.4] tracking-[-1.12px] text-white md:text-[56px]">
+          <h2 className="text-[40px] font-bold leading-[1.4] tracking-[-1.12px] text-white md:text-[48px]">
             지원자와 기업 정보
             <br />
             보안은 강력하게
@@ -128,7 +128,7 @@ export function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, ease: 'easeOut', delay: (i % 3) * 0.08 }}
-              className="flex h-40 flex-col justify-center gap-3 rounded-2xl border border-white/15 bg-[#292e54]/50 px-8 py-5 shadow-card"
+              className="flex h-40 flex-col justify-center gap-3 rounded-card border border-white/15 bg-[#292e54]/50 px-8 py-5 shadow-card"
             >
               <img src={card.icon} alt="" style={{ width: card.iconSize, height: card.iconSize }} />
               <div className="flex flex-col gap-0.5">

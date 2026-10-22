@@ -45,7 +45,7 @@ export function Hero3CustomDashboard() {
   const toggle = (id: string) => setHidden((current) => ({ ...current, [id]: !current[id] }))
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl bg-white p-8 shadow-card">
+    <div className="w-full overflow-hidden rounded-card bg-white p-8 shadow-card">
       <div className="flex flex-col gap-5 md:flex-row">
         <div className="relative grid flex-1 grid-cols-2 content-start gap-5">
           {CHARTS.every((chart) => hidden[chart.id]) && (
@@ -81,7 +81,7 @@ export function Hero3CustomDashboard() {
                 aria-pressed={showing}
                 aria-label={`${chart.label} ${showing ? '제외' : '추가'}`}
                 className={clsx(
-                  'flex cursor-pointer items-center justify-between gap-2 rounded-lg border px-5 py-[13px] transition-colors',
+                  'flex cursor-pointer items-center justify-between gap-2 rounded-ui border px-5 py-[13px] transition-colors',
                   showing ? 'border-[#3379f3] bg-[#3379f3]/5 text-[#3379f3]' : 'border-gray-150 text-black',
                 )}
               >

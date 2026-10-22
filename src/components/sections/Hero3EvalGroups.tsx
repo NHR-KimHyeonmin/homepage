@@ -29,7 +29,7 @@ const SEED_GROUPS: EvalGroup[] = [
 /** Floating-label field frame shared by every input in the right-hand form. */
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="relative rounded border border-[#d2d6db] px-3.5 pb-2 pt-2.5">
+    <div className="relative rounded-chip border border-[#d2d6db] px-3.5 pb-2 pt-2.5">
       <span className="absolute -top-[7px] left-[10px] bg-white px-1 text-[11px] leading-none text-[#6c737f]">{label}</span>
       {children}
     </div>
@@ -108,7 +108,7 @@ function ChipPicker({
       </Field>
 
       {open && (
-        <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-20 overflow-hidden rounded-lg border border-[#e5e7eb] bg-white py-1 shadow-[0px_8px_16px_-4px_rgba(32,41,57,0.12)]">
+        <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-20 overflow-hidden rounded-ui border border-[#e5e7eb] bg-white py-1 shadow-[0px_8px_16px_-4px_rgba(32,41,57,0.12)]">
           {available.length === 0 ? (
             <p className="px-3.5 py-2 text-sm text-[#9ca3af]">모두 선택했습니다.</p>
           ) : (
@@ -141,7 +141,7 @@ function GroupCard({ group, onDelete }: { group: EvalGroup; onDelete: () => void
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.97 }}
       transition={{ duration: 0.25, ease: 'easeOut' }}
-      className="w-full shrink-0 rounded-lg border border-[#e5e7eb] bg-white"
+      className="w-full shrink-0 rounded-ui border border-[#e5e7eb] bg-white"
     >
       <div className="flex items-center justify-between border-b border-[#f3f4f6] px-5 py-4">
         <p className="text-base font-semibold text-[#212121]">{group.name}</p>
@@ -153,7 +153,7 @@ function GroupCard({ group, onDelete }: { group: EvalGroup; onDelete: () => void
             type="button"
             onClick={onDelete}
             aria-label={`${group.name} 그룹 삭제`}
-            className="cursor-pointer whitespace-nowrap rounded border border-[#d2d6db] px-2.5 py-1 text-[13px] text-[#4d5761] transition-colors hover:bg-[#f9fafb]"
+            className="cursor-pointer whitespace-nowrap rounded-chip border border-[#d2d6db] px-2.5 py-1 text-[13px] text-[#4d5761] transition-colors hover:bg-[#f9fafb]"
           >
             그룹 삭제
           </button>
@@ -216,7 +216,7 @@ export function Hero3EvalGroups() {
   }
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl bg-white shadow-card">
+    <div className="w-full overflow-hidden rounded-card bg-white shadow-card">
       <div ref={ref} className="w-full overflow-hidden" style={{ height: DESIGN_HEIGHT * scale }}>
       <div
         className="relative"
@@ -228,7 +228,7 @@ export function Hero3EvalGroups() {
         }}
       >
         {/* Created groups (node 2320:25780) */}
-        <div className="absolute left-8 top-9 h-[568px] w-[731px] rounded-xl bg-[#f9fafb] px-[67px] py-[66px]">
+        <div className="absolute left-8 top-9 h-[568px] w-[731px] rounded-card bg-[#f9fafb] px-[67px] py-[66px]">
           <div className="flex h-full flex-col gap-2 overflow-y-auto pr-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <AnimatePresence initial={false}>
               {groups.map((group) => (
@@ -260,7 +260,7 @@ export function Hero3EvalGroups() {
           <ChipPicker label="평가자" options={EVALUATORS} selected={evaluators} onChange={setEvaluators} />
           <ChipPicker label="면접 대상자" options={CANDIDATES} selected={candidates} onChange={setCandidates} />
 
-          <div className="relative rounded border border-[#d2d6db]">
+          <div className="relative rounded-chip border border-[#d2d6db]">
             <input
               type="date"
               value={date}
@@ -270,7 +270,7 @@ export function Hero3EvalGroups() {
             />
           </div>
 
-          <div className="rounded border border-[#d2d6db] px-3.5 py-2.5">
+          <div className="rounded-chip border border-[#d2d6db] px-3.5 py-2.5">
             <input
               value={place}
               onChange={(event) => setPlace(event.target.value)}
@@ -286,7 +286,7 @@ export function Hero3EvalGroups() {
               onClick={createGroup}
               disabled={!canCreate}
               className={clsx(
-                'w-[100px] rounded-lg py-2.5 text-sm font-medium transition-colors',
+                'w-[100px] rounded-ui py-2.5 text-sm font-medium transition-colors',
                 canCreate
                   ? 'cursor-pointer bg-[#0042b7] text-white hover:bg-[#00379b]'
                   : 'cursor-default bg-[#e5e7eb] text-[#9ca3af]',
@@ -305,7 +305,7 @@ export function Hero3EvalGroups() {
               exit={{ opacity: 0, y: 8 }}
               transition={{ duration: 0.2 }}
               role="status"
-              className="absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-black/80 px-5 py-3 text-sm font-medium text-white"
+              className="absolute bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-ui bg-black/80 px-5 py-3 text-sm font-medium text-white"
             >
               {toast}
             </motion.p>

@@ -53,7 +53,7 @@ export function Hero1TypedHeadline({ start, onDone }: Hero1TypedHeadlineProps) {
         {start && !done && (
           <span
             aria-hidden
-            className="ml-1 inline-block h-[1em] w-[3px] translate-y-[1px] bg-white align-middle"
+            className="ml-1 inline-block h-[1em] w-[3px] translate-y-[1px] bg-ink align-middle"
             style={{
               animation: !typingStarted ? `hero1-cursor-blink ${CURSOR_BLINK_MS}ms step-end infinite` : 'none',
               opacity: !typingStarted ? undefined : 1,

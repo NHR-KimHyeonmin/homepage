@@ -77,25 +77,23 @@ export function Hero8Gallery() {
   }
 
   return (
-    <Section className="flex flex-col items-center pb-[100px] pt-10">
+    <Section className="flex flex-col items-center pb-12 pt-6 md:pb-24 md:pt-10">
       {/* Zero-height mirror of the headline's column — measured, not
           hard-coded, so the track's left edge tracks it at every width. */}
       <div aria-hidden className="pointer-events-none absolute left-0 top-0 h-0 w-full">
-        {/* Same nesting as the SectionTitle above: section padding, then a
-            centered 1208px Container with its own padding. */}
-        <div className="h-0 w-full px-6 md:px-[100px] lg:px-[168px]">
-          <div className="mx-auto h-0 w-full max-w-[1208px] px-6 md:px-10 lg:px-16">
-            <div ref={probeRef} className="h-0" />
-          </div>
+        {/* Same box as the <Container> the headline sits in, so the probe
+            lands on exactly the page gutter. */}
+        <div className="mx-auto h-0 w-full max-w-[1280px] px-5 md:px-8">
+          <div ref={probeRef} className="h-0" />
         </div>
       </div>
 
       <div
         ref={scrollRef}
         {...dragHandlers}
-        className={`w-full overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
+        className={`w-full overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
       >
-        <div className="flex items-stretch gap-6" style={{ paddingLeft: inset, paddingRight: 24 }}>
+        <div className="flex items-stretch gap-5" style={{ paddingLeft: inset, paddingRight: 24 }}>
           {CARDS.map((card, index) => (
             <motion.div
               key={card.name}
@@ -108,7 +106,7 @@ export function Hero8Gallery() {
               transition={{ duration: 0.6, ease: 'easeOut', delay: index * 0.06 }}
               className="flex w-[380px] shrink-0 flex-col gap-5"
             >
-              <div className="relative h-[240px] w-full shrink-0 overflow-hidden rounded-2xl">
+              <div className="relative h-[240px] w-full shrink-0 overflow-hidden rounded-media">
                 <img src={card.image} alt="" className="absolute inset-0 size-full object-cover" />
                 <div
                   aria-hidden

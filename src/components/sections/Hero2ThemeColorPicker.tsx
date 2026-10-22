@@ -21,33 +21,33 @@ export function Hero2ThemeColorPicker({ color }: Hero2ThemeColorPickerProps) {
   const themeSwatchBorders = themeSwatches.map((swatch, i) => (i === 5 ? '#cccccc' : swatchBorder(swatch)))
 
   return (
-    <div className="rounded-lg bg-white p-2 shadow-[0px_2px_14px_0px_rgba(32,40,45,0.08)]">
+    <div className="rounded-ui bg-white p-2 shadow-[0px_2px_14px_0px_rgba(32,40,45,0.08)]">
       <div className="flex w-[280px] flex-col">
         {/* Saturation/lightness square + hue bar */}
-        <div className="rounded-lg border border-[#d2d6db] p-px">
+        <div className="rounded-ui border border-[#d2d6db] p-px">
           <div
-            className={`relative h-[200px] w-full rounded-t-[7px] ${TRANSITION}`}
+            className={`relative h-[200px] w-full rounded-t-chip ${TRANSITION}`}
             style={{
               backgroundImage: `linear-gradient(0deg, rgb(0,0,0) 0%, rgba(0,0,0,0) 100%), linear-gradient(90deg, rgb(255,255,255) 0%, rgba(255,255,255,0) 100%), linear-gradient(90deg, ${shades.pureHue} 0%, ${shades.pureHue} 100%)`,
             }}
           >
-            <div className="pointer-events-none absolute inset-0 rounded-t-[7px] shadow-[inset_0px_0px_0px_1px_rgba(0,0,0,0.05)]" />
-            <div className="absolute left-[220px] top-[12px] flex size-[28px] items-center justify-center rounded-[14px] border-4 border-white bg-white drop-shadow-[0px_2px_2px_rgba(0,0,0,0.2)]">
-              <div className={`size-full rounded-[10px] ${TRANSITION}`} style={{ backgroundColor: shades.base }} />
+            <div className="pointer-events-none absolute inset-0 rounded-t-chip shadow-[inset_0px_0px_0px_1px_rgba(0,0,0,0.05)]" />
+            <div className="absolute left-[220px] top-[12px] flex size-[28px] items-center justify-center rounded-card border-4 border-white bg-white drop-shadow-[0px_2px_2px_rgba(0,0,0,0.2)]">
+              <div className={`size-full rounded-card ${TRANSITION}`} style={{ backgroundColor: shades.base }} />
             </div>
           </div>
           <div
-            className="relative h-[24px] w-full rounded-b-[7px]"
+            className="relative h-[24px] w-full rounded-b-chip"
             style={{
               backgroundImage:
                 'linear-gradient(90deg, rgb(255,0,0) 0%, rgb(255,255,0) 17%, rgb(0,255,0) 33%, rgb(0,255,255) 50%, rgb(0,0,255) 67%, rgb(255,0,255) 83%, rgb(255,0,0) 100%)',
             }}
           >
             <div
-              className={`absolute top-1/2 flex size-[20px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[10px] border-4 border-white bg-white drop-shadow-[0px_2px_2px_rgba(0,0,0,0.2)] ${TRANSITION}`}
+              className={`absolute top-1/2 flex size-[20px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-card border-4 border-white bg-white drop-shadow-[0px_2px_2px_rgba(0,0,0,0.2)] ${TRANSITION}`}
               style={{ left: `${(shades.hue / 360) * 100}%` }}
             >
-              <div className={`size-full rounded-[6px] ${TRANSITION}`} style={{ backgroundColor: shades.pureHue }} />
+              <div className={`size-full rounded-chip ${TRANSITION}`} style={{ backgroundColor: shades.pureHue }} />
             </div>
           </div>
         </div>
@@ -59,9 +59,9 @@ export function Hero2ThemeColorPicker({ color }: Hero2ThemeColorPickerProps) {
             <div className="-ml-2 flex items-center">
               {themeSwatches.map((swatch, i) => (
                 <div key={i} className="flex flex-1 max-w-[45.33px] flex-col pl-2 pt-2">
-                  <div className="flex size-10 items-center justify-center rounded-lg">
+                  <div className="flex size-10 items-center justify-center rounded-ui">
                     <div
-                      className={`size-full rounded-lg border ${TRANSITION}`}
+                      className={`size-full rounded-ui border ${TRANSITION}`}
                       style={{
                         backgroundColor: swatch,
                         borderColor: themeSwatchBorders[i],

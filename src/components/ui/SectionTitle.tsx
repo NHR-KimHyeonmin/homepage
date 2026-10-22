@@ -11,8 +11,6 @@ interface SectionTitleProps {
   align?: 'center' | 'left'
   background?: string
   maxWidth?: number
-  /** 'lg' = 56px (default, most sections) · 'md' = 40px (compact service-list style) */
-  headingSize?: 'lg' | 'md'
   bodyTone?: 'muted' | 'gray'
   paddingClassName?: string
   className?: string
@@ -29,10 +27,9 @@ export function SectionTitle({
   body,
   align = 'center',
   background = 'bg-white',
-  maxWidth = 1208,
-  headingSize = 'lg',
+  maxWidth = 1280,
   bodyTone = 'muted',
-  paddingClassName = 'px-6 pt-24 md:px-16 md:pt-[180px]',
+  paddingClassName = 'pt-12 md:pt-24',
   className,
 }: SectionTitleProps) {
   const isCenter = align === 'center'
@@ -48,12 +45,7 @@ export function SectionTitle({
           className={clsx('flex w-full flex-col gap-5', isCenter ? 'items-center text-center' : 'items-start text-left')}
         >
           {eyebrow && <SectionEyebrow>{eyebrow}</SectionEyebrow>}
-          <h2
-            className={clsx(
-              'font-bold leading-[1.4] tracking-[-1.12px] text-black',
-              headingSize === 'lg' ? 'text-[40px] md:text-[56px]' : 'text-[32px] md:text-[40px] tracking-[-0.8px]',
-            )}
-          >
+          <h2 className="text-[40px] font-bold leading-[1.4] tracking-[-1.12px] text-black md:text-[48px]">
             {heading.map((line, i) => (
               <span key={i} className="block">
                 {line}
@@ -63,7 +55,7 @@ export function SectionTitle({
           {body && (
             <p
               className={clsx(
-                'max-w-[720px] text-lg leading-[1.45] tracking-[-0.1px] md:text-xl',
+                'max-w-[720px] text-[17px] font-medium leading-[1.45] tracking-[-0.1px]',
                 bodyTone === 'muted' ? 'text-black/55' : 'text-gray-200',
               )}
             >

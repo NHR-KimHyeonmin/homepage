@@ -40,7 +40,7 @@ export function Hero3MypagePreview() {
   const active = MENU.find((item) => item.id === selected) ?? MENU[0]
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl bg-white shadow-card">
+    <div className="w-full overflow-hidden rounded-card bg-white shadow-card">
       <div ref={ref} className="w-full overflow-hidden" style={{ height: DESIGN_HEIGHT * scale }}>
       <div
         className="relative"
@@ -52,7 +52,7 @@ export function Hero3MypagePreview() {
         }}
       >
         {/* Preview panel (node 2320:25670) */}
-        <div className="absolute left-[42px] top-[39px] flex h-[568px] w-[731px] items-center justify-center rounded-xl bg-[#f9fafb]">
+        <div className="absolute left-[42px] top-[39px] flex h-[568px] w-[731px] items-center justify-center rounded-card bg-[#f9fafb]">
           <AnimatePresence mode="wait" initial={false}>
             <motion.img
               key={active.id}
@@ -69,7 +69,7 @@ export function Hero3MypagePreview() {
 
         {/* Applicant card + menu (node 2320:25625) */}
         <div className="absolute left-[792px] top-[34px] flex w-[324px] flex-col gap-4">
-          <div className="flex flex-col rounded-lg border border-[#e5e7eb] bg-white p-[16.833px]">
+          <div className="flex flex-col rounded-ui border border-[#e5e7eb] bg-white p-[16.833px]">
             <div className="flex items-center justify-between">
               <p className="text-[20px] font-bold leading-8 text-[#212121]">
                 한민지 <span className="text-[14px] font-medium leading-[22.4px]">님</span>
@@ -88,7 +88,7 @@ export function Hero3MypagePreview() {
             </div>
           </div>
 
-          <div className="flex w-[293px] flex-col gap-1.5 rounded-lg border border-[#f3f4f6] bg-white p-1.5">
+          <div className="flex w-[293px] flex-col gap-1.5 rounded-ui border border-[#f3f4f6] bg-white p-1.5">
             {MENU.map((item) => {
               const isSelected = item.id === selected
               return (
@@ -98,7 +98,7 @@ export function Hero3MypagePreview() {
                   onClick={() => setSelected(item.id)}
                   aria-pressed={isSelected}
                   className={clsx(
-                    'w-full cursor-pointer rounded px-4 py-1.5 text-[14px] font-semibold leading-[1.6] tracking-[-0.07px] transition-colors',
+                    'w-full cursor-pointer rounded-chip px-4 py-1.5 text-[14px] font-semibold leading-[1.6] tracking-[-0.07px] transition-colors',
                     isSelected ? 'bg-[#f4f8ff] text-[#3379f3]' : 'text-black/30 hover:text-black/50',
                   )}
                 >

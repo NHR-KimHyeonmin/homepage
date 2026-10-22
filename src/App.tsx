@@ -81,10 +81,7 @@ function App() {
           heading={['채용을 더 완벽하게']}
           body="채용과 관련된 NHR의 더 많은 서비스를 함께 확인해보세요."
           align="left"
-          maxWidth={1208}
-          headingSize="md"
           bodyTone="gray"
-          paddingClassName="px-6 pt-16 md:px-[100px] md:pt-[120px] lg:px-[168px]"
         />
         <Hero8Gallery />
 

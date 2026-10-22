@@ -42,7 +42,7 @@ function GalleryCardItem({ card, index }: { card: GalleryCard; index: number }) 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6, ease: 'easeOut', delay }}
-      className="flex w-full flex-col overflow-hidden rounded-2xl bg-black/5"
+      className="flex w-full flex-col overflow-hidden rounded-card bg-card"
     >
       <div className="w-full overflow-hidden" style={{ height: card.imageHeight }}>
         <img src={card.image} alt="" className="size-full object-cover" />
@@ -57,8 +57,8 @@ function GalleryCardItem({ card, index }: { card: GalleryCard; index: number }) 
 
 export function Hero6FeatureGallery() {
   return (
-    <Section className="flex flex-col items-center px-6 pb-[120px] pt-20 md:px-16">
-      <Container maxWidth={1208} className="flex w-full flex-col gap-5 md:flex-row">
+    <Section className="flex flex-col items-center pb-12 pt-6 md:pb-24 md:pt-10">
+      <Container className="flex w-full flex-col gap-5 md:flex-row">
         <div className="flex w-full flex-col gap-5 md:w-[304px] md:shrink-0">
           {COLUMN_1.map((card, i) => (
             <GalleryCardItem key={card.title} card={card} index={i} />
