@@ -82,7 +82,7 @@ export function Testimonials() {
       as={motion.section}
       ref={sectionRef}
       style={{ minHeight }}
-      className="flex flex-col items-center justify-center gap-[80px] overflow-hidden bg-black py-12 md:py-24"
+      className="flex flex-col items-center justify-center gap-[80px] overflow-hidden bg-black py-12 md:pb-24 md:pt-[120px]"
     >
       <div aria-hidden className="absolute inset-0 -z-10">
         <div

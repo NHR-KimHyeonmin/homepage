@@ -50,6 +50,19 @@ const NAV_ITEMS_AFTER_JOBS: NavItem[] = [
   { label: '개인정보 로그', icon: iconNavPrivacyLog },
 ]
 
+/**
+ * 사이드바에 보이는 순서(위 → 아래)대로 나열한, 누를 수 있는 화면들.
+ * Hero1 의 자동 순회가 이 배열을 따른다 — 렌더에 쓰는 배열에서 그대로
+ * 뽑으므로, 여기서 메뉴 순서를 바꾸면 자동 순회도 같이 따라간다.
+ * (MAIN_IMAGES 의 키 순서를 쓰면 사이드바 배치와 어긋난다.)
+ */
+export const NAV_VIEW_ORDER: Hero1MainView[] = [
+  'home',
+  ...NAV_ITEMS_BEFORE_JOBS.flatMap((item) => (item.view ? [item.view] : [])),
+  'jobPostings',
+  ...NAV_ITEMS_AFTER_JOBS.flatMap((item) => (item.view ? [item.view] : [])),
+]
+
 // `<button>` gets `cursor: default` from the browser's own UA stylesheet,
 // which breaks inheritance of the custom dashboard-card cursor set on an
 // ancestor — `cursor-[inherit]` forces it back to whatever the ancestor set.

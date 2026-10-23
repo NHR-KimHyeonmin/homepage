@@ -94,7 +94,7 @@ export function Hero4FeatureCards() {
   }
 
   return (
-    <Section className="bg-white pb-12 pt-6 md:pb-24 md:pt-10">
+    <Section className="bg-surface-page pb-12 pt-6 md:pb-24 md:pt-16">
       <Container className="flex justify-end pb-6">
         <div className="flex items-center gap-3">
           <button
@@ -140,7 +140,7 @@ export function Hero4FeatureCards() {
               />
               <div className="flex flex-col gap-2">
                 <h5 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-ink">{card.title}</h5>
-                <p className="text-lg leading-[1.45] tracking-[-0.08px] text-black/55">{card.description}</p>
+                <p className="text-base leading-[1.45] tracking-[-0.08px] text-black/55">{card.description}</p>
               </div>
             </div>
           ))}

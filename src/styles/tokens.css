@@ -7,7 +7,12 @@
  * aligned with the Figma variable names where practical.
  */
 @theme {
-  --font-sans: 'PretendardVariable', 'Pretendard', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* index.html 이 불러오는 jsDelivr 서브셋 CSS 가 등록하는 @font-face 의
+     family 이름은 띄어쓰기가 들어간 'Pretendard Variable' 이다. 여기에
+     붙여 쓴 'PretendardVariable' 만 있으면 어디에도 걸리지 않아 페이지
+     전체가 조용히 system-ui 로 떨어진다 — 실제로 그래 왔다. 로컬에
+     Pretendard 를 설치해 둔 사람만 제대로 보였다. */
+  --font-sans: 'Pretendard Variable', 'PretendardVariable', 'Pretendard', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   /* Brand */
   --color-primary: #0042b7;
@@ -35,6 +40,10 @@
      #f6f6f6 fill with no shadow at all. `--shadow-card` stays for the
      simulated product UI (dashboards, mockups), which still needs depth. */
   --color-card: #f6f6f6;
+
+  /* 페이지 바탕. 순백 대신 아주 연한 흰색 — 그 위에 올라가는 흰 카드·목업과
+     한 끗 차이가 나야 면이 구분된다. */
+  --color-surface-page: #fafafa;
 
   /* Radius scale, matched to tana.inc's authored steps. Everything on the
      page snaps to one of these four plus `rounded-full`:
@@ -94,6 +103,6 @@
   body {
     font-family: var(--font-sans);
     color: var(--color-ink);
-    background: #ffffff;
+    background: var(--color-surface-page);
   }
 }

@@ -7,7 +7,7 @@ import { Section } from '../ui/Section'
 
 export function Hero7() {
   return (
-    <Section className="flex flex-col items-center bg-[#f8f9fa] py-12 md:py-24">
+    <Section className="flex flex-col items-center bg-[#f8f9fa] py-12 md:pb-24 md:pt-[120px]">
       <Container className="flex flex-col items-start justify-between gap-8 md:flex-row md:gap-5">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -36,7 +36,7 @@ export function Hero7() {
               <h5 className="text-[28px] font-semibold leading-[1.4] tracking-[-0.56px] text-black">
                 &quot;전형 리드타임 단축 및 높은 사용자 편의성&quot;
               </h5>
-              <p className="text-lg leading-[1.58] tracking-[-0.36px] text-black/55">
+              <p className="text-base leading-[1.58] tracking-[-0.36px] text-black/55">
                 도입 이후 지원자가 90% 상승했습니다. 실시간 대응과 일부 커스터마이징 가능한 항목이 있어 전형
                 리드타임이 단축되었고, 고졸 채용 시 자동 평점 계산이 큰 도움이 되었습니다. 사용해 본 ATS 중 최고의
                 디자인과 사용자 편의성, 계속되는 업데이트가 매우 만족스럽습니다.

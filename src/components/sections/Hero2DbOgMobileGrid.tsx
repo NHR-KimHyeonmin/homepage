@@ -51,7 +51,7 @@ function FieldCard({ title, fields }: { title: string; fields: FieldData[] }) {
  */
 export function Hero2DbOgMobileGrid() {
   return (
-    <Section className="bg-white pb-12 pt-6 md:pb-24 md:pt-10">
+    <Section className="bg-surface-page pb-12 pt-6 md:pb-24 md:pt-16">
       <Container className="flex flex-col gap-6">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
@@ -62,7 +62,7 @@ export function Hero2DbOgMobileGrid() {
         >
           <div className="flex flex-col gap-3">
             <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-black">검증된 DB 기반 지원서</h3>
-            <p className="text-lg leading-[1.45] tracking-[-0.08px] text-black/55">
+            <p className="text-base leading-[1.45] tracking-[-0.08px] text-black/55">
               인증된 학교·학과명, 어학성적 데이터를 제공하여, 표기 차이 없이 정확한 지원자 정보를 수집할 수 있습니다.
             </p>
           </div>
@@ -95,7 +95,7 @@ export function Hero2DbOgMobileGrid() {
           >
             <div className="flex w-full flex-col gap-3 p-8 pb-0">
               <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-black">모바일 반응형 지원서</h3>
-              <p className="text-lg leading-[1.45] tracking-[-0.08px] text-black/55">
+              <p className="text-base leading-[1.45] tracking-[-0.08px] text-black/55">
                 PC와 모바일 기기에 상관없이 어디에서나 지원서를 작성할 수 있습니다.
               </p>
               <p className="text-sm tracking-[-0.07px] text-black/30">*2025년 모바일 기기 접속률 15% 이상 (출처: 커리어링크)</p>
@@ -104,7 +104,7 @@ export function Hero2DbOgMobileGrid() {
             {/* Zero-height wrapper: the phone hangs out of the flow and is
                 clipped by the card, so this card takes its height from its
                 sibling (회원 · 비회원) instead of driving the grid row. */}
-            <div className="relative mt-6 h-0 w-[370px]">
+            <div className="relative mt-8 h-0 w-[370px]">
               <img loading="lazy" decoding="async"
                 src={phoneMobileForm}
                 alt="모바일 화면에서 작성하는 지원서 미리보기"
@@ -143,7 +143,7 @@ export function Hero2DbOgMobileGrid() {
           >
             <div className="flex w-full flex-col gap-3 p-8">
               <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-black">회원 · 비회원 서류접수</h3>
-              <p className="text-lg leading-[1.45] tracking-[-0.08px] text-black/55">
+              <p className="text-base leading-[1.45] tracking-[-0.08px] text-black/55">
                 회원전용 공고 또는 비회원전용 공고로 구분하여 공고를 생성할 수 있습니다.
               </p>
             </div>

@@ -131,7 +131,7 @@ export function Hero00Screening() {
   }
 
   return (
-    <Section className="flex flex-col items-center gap-10 bg-[#f4f8ff] pb-12 pt-6 md:pb-24 md:pt-10">
+    <Section id="integrations" className="flex flex-col items-center gap-10 bg-[#f4f8ff] pb-12 pt-6 md:pb-24 md:pt-16">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -197,7 +197,7 @@ export function Hero00Screening() {
                     <p className="text-sm font-semibold tracking-[-0.07px] text-gray-200">{card.org}</p>
                     <p className="text-[22px] font-bold tracking-[-0.11px] text-black">{card.name}</p>
                   </div>
-                  <p className="text-lg leading-[1.6] tracking-[-0.09px] text-gray-300">{card.description}</p>
+                  <p className="text-base leading-[1.6] tracking-[-0.09px] text-gray-300">{card.description}</p>
                 </div>
               </div>
             ))}

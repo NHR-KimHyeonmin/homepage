@@ -111,7 +111,7 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
         {/* Admin toolbar */}
         <div className="flex h-[57px] w-full shrink-0 items-center justify-between border-b border-gray-150 px-4">
           <div className="flex items-center gap-4">
-            <span className="whitespace-nowrap text-sm text-text">홈페이지 빌더 템플릿 (2026년 업데이트 버전)</span>
+            <span className="whitespace-nowrap text-sm text-text">홈페이지 빌더 템플릿 (업데이트 버전)</span>
           </div>
           <div className="flex items-center gap-3">
             <span className="hidden whitespace-nowrap text-xs text-gray-300 md:inline">23시간 전 저장됨</span>

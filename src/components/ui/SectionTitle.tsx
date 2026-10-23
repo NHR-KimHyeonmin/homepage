@@ -26,10 +26,10 @@ export function SectionTitle({
   heading,
   body,
   align = 'center',
-  background = 'bg-white',
+  background = 'bg-surface-page',
   maxWidth = 1280,
   bodyTone = 'muted',
-  paddingClassName = 'pt-12 md:pt-24',
+  paddingClassName = 'pt-12 md:pt-[120px]',
   className,
 }: SectionTitleProps) {
   const isCenter = align === 'center'

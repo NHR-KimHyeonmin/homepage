@@ -33,7 +33,7 @@ export function Hero3Dashboard() {
   const [activeTab, setActiveTab] = useState<TabId>('dashboard')
 
   return (
-    <Section id="dashboard" className="flex flex-col items-center bg-[#f4f8ff] pb-12 pt-6 md:pb-24 md:pt-10">
+    <Section id="dashboard" className="flex flex-col items-center bg-[#f4f8ff] pb-12 pt-6 md:pb-24 md:pt-16">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}

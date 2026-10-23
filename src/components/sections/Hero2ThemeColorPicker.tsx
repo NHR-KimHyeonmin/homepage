@@ -43,8 +43,11 @@ export function Hero2ThemeColorPicker({ color }: Hero2ThemeColorPickerProps) {
                 'linear-gradient(90deg, rgb(255,0,0) 0%, rgb(255,255,0) 17%, rgb(0,255,0) 33%, rgb(0,255,255) 50%, rgb(0,0,255) 67%, rgb(255,0,255) 83%, rgb(255,0,0) 100%)',
             }}
           >
+            {/* 색이 바뀌면 이 손잡이도 색상환 위를 옮겨 다닌다. 공용
+                TRANSITION 은 transition-colors 라 색만 넘어가고 left 는
+                즉시 점프했다 — 위치도 같이 전환시킨다. */}
             <div
-              className={`absolute top-1/2 flex size-[20px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-card border-4 border-white bg-white drop-shadow-[0px_2px_2px_rgba(0,0,0,0.2)] ${TRANSITION}`}
+              className="absolute top-1/2 flex size-[20px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-card border-4 border-white bg-white drop-shadow-[0px_2px_2px_rgba(0,0,0,0.2)] transition-[left,background-color] duration-[600ms] ease-out"
               style={{ left: `${(shades.hue / 360) * 100}%` }}
             >
               <div className={`size-full rounded-chip ${TRANSITION}`} style={{ backgroundColor: shades.pureHue }} />

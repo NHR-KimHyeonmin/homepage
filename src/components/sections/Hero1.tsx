@@ -9,7 +9,7 @@ import viewSending from '../../assets/sections/hero1/views/sending.webp'
 import viewSiteBuilder from '../../assets/sections/hero1/views/site-builder.webp'
 import { Button } from '../ui/Button'
 import { Section } from '../ui/Section'
-import { Hero1Sidebar, type Hero1MainView } from './Hero1Sidebar'
+import { Hero1Sidebar, NAV_VIEW_ORDER, type Hero1MainView } from './Hero1Sidebar'
 import { Hero1TopBar } from './Hero1TopBar'
 import { Hero1TypedHeadline } from './Hero1TypedHeadline'
 
@@ -21,6 +21,10 @@ const MAIN_IMAGES: Record<Hero1MainView, { src: string; alt: string }> = {
   sending: { src: viewSending, alt: '발송 관리' },
   siteBuilder: { src: viewSiteBuilder, alt: '채용 사이트 빌더' },
 }
+
+/** 자동 순회 간격. 순서는 사이드바가 그리는 순서(NAV_VIEW_ORDER)를 그대로
+ *  따른다 — 메뉴 배치와 따로 놀면 "위에서 아래로" 가 깨진다. */
+const NAV_AUTOPLAY_MS = 2500
 
 // Figma node 2323:26304 — custom branded cursor (arrow + "careerlink" pill),
 // shown across the whole dashboard mockup card (sidebar and screenshot
@@ -65,20 +69,31 @@ const CTA_DELAY_S = REVEAL_STAGGER_MS / 1000
 const IMAGE_DELAY_S = (REVEAL_STAGGER_MS * 2) / 1000
 
 /**
- * 메인 배너 배경 — tana.inc HeroStage_stage 의 3층 구성(대각선 베이스 위에
- * 반대쪽 두 모서리의 radial 글로우)을 명도까지 같은 수준으로 맞췄다.
- * 난색을 쓰지 않고 한색 안에서만 대비를 만든다 — 양 끝을 라벤더와 민트로
- * 벌려 두면 인접색만 쓸 때의 단조로움 없이 전체 온도는 차갑게 유지된다.
- * 배경이 밝으므로 이 위의 글자는 어두운 색이어야 한다.
+ * 메인 배너 배경 — 레퍼런스의 세로 램프를 그대로 옮겼다. 위에서 아래로
+ * 흰빛 라벤더 → 바이올렛 → 블루 → 하늘색으로 한 방향으로만 흐른다.
+ *
+ * 다만 색이 바뀌는 높이는 레퍼런스와 다르게 잡았다. 레퍼런스는 한가운데가
+ * 가장 진한 바이올렛(#675fe7)인데, 이 배너는 그 높이에 어두운 머리글이
+ * 올라간다 — 진한 구간을 CTA 아래로 내려, 글자가 앉는 띠는 연하게 두고
+ * 진한 색은 대시보드 목업 뒤에서만 나오게 했다.
+ *
+ * 레퍼런스가 왼쪽이 조금 밝아(#b5adea 대 오른쪽 #6460e8) 그 기울기도
+ * 한 겹 얹었다. 세로 램프만 두면 띠가 평평해 보인다.
  */
 const STAGE_GRADIENT = [
-  // 우상단: 맑은 하늘색이 번진다
-  'radial-gradient(60% 70% at 85% 10%, rgba(186, 212, 246, 0.9) 0px, rgba(186, 212, 246, 0) 70%)',
-  // 좌측 중단: 서늘한 민트. 배너 아래쪽 절반은 대시보드 목업이 덮으므로
-  // 레퍼런스처럼 바닥(100%)에 두면 보이지 않는다 — 눈에 걸리는 높이로 올렸다.
-  'radial-gradient(55% 65% at 6% 60%, rgba(183, 228, 226, 0.95) 0px, rgba(183, 228, 226, 0) 70%)',
-  // 베이스: 블루그레이 -> 라벤더 -> 민트로 넘어가는 대각선
-  'linear-gradient(135deg, #bfcde9, #d6d3ef 45%, #c6e3e6)',
+  // 왼쪽을 살짝 띄우는 가로 기울기
+  'linear-gradient(90deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0) 58%)',
+  // 본체: 위에서 아래로 흐르는 세로 램프
+  [
+    'linear-gradient(180deg',
+    '#f2f1f6 0%',
+    '#ded9ed 24%',
+    '#b6aeeb 40%',
+    '#8d80e7 55%',
+    '#5f69ea 70%',
+    '#5a9bf6 85%',
+    '#79cefb 100%)',
+  ].join(', '),
 ].join(', ')
 
 /**
@@ -87,9 +102,26 @@ const STAGE_GRADIENT = [
  * 내리는 아치가 된다. 둘째 장은 맨 아래를 투명으로 빼서 다음 섹션의 흰
  * 배경으로 이어준다. 두 장은 겹치는 부분만 남기도록 합성한다.
  */
-const STAGE_ARCH = 'radial-gradient(ellipse 67% 75% at 50% 100%, #000 72%, transparent 100%)'
+const STAGE_ARCH = 'radial-gradient(ellipse 88% 104% at 50% 100%, #000 68%, transparent 100%)'
 const STAGE_FOOT = 'linear-gradient(to bottom, #000 82%, transparent 100%)'
 const STAGE_MASK = `${STAGE_ARCH}, ${STAGE_FOOT}`
+
+/**
+ * 그라데이션 위에 얹는 아주 연한 흰 모눈. 선 자체를 읽히게 하려는 게
+ * 아니라 색면에 결을 주려는 것이라 1px / 알파 0.09 정도로 둔다.
+ *
+ * 색 레이어와 한 장에 합치지 않는다 — 색 레이어에는 숨쉬기 scaleY 가
+ * 걸려 있어서, 같이 두면 모눈이 늘었다 줄었다 하며 움직임이 드러난다.
+ */
+/** 머리글에 입히는 기울기. 레퍼런스에서 뽑은 두 끝값 그대로다. */
+const HEADLINE_GRADIENT = 'linear-gradient(100deg, #1b1b36 0%, #262845 45%, #3a3c58 100%)'
+
+const GRID_SIZE = 28
+const GRID_LINE = 'rgba(255, 255, 255, 0.09)'
+const STAGE_GRID = [
+  `repeating-linear-gradient(0deg, ${GRID_LINE} 0 1px, transparent 1px ${GRID_SIZE}px)`,
+  `repeating-linear-gradient(90deg, ${GRID_LINE} 0 1px, transparent 1px ${GRID_SIZE}px)`,
+].join(', ')
 
 /**
  * 대시보드 목업 그림자. 검정은 한색 그라데이션 위에서 탁하게 뜨므로,
@@ -106,11 +138,11 @@ const DASHBOARD_SHADOW = '0 24px 60px -12px rgba(47, 68, 116, 0.28), 0 2px 10px 
  * 끝난 뒤의 배경 위치가 달라지지 않는다. 기준 크기는 왕복의 가운데에 둬서
  * 움직임을 끈 환경에서도 평균과 어긋나지 않게 했다.
  */
-const BREATH_SCALE = [0.94, 1.11, 0.94]
+// 눈에 띄라고 진폭을 크게 벌렸다(11% -> 22% 왕복). 그만큼 주기도 늘린다 —
+// 큰 폭을 빠르게 돌리면 숨이 아니라 들썩임으로 보인다.
+const BREATH_SCALE = [0.93, 1.15, 0.93]
 const BREATH_TRANSITION = {
-  // 진폭을 키운 만큼 주기도 늘린다 — 크게 움직이는데 빠르면 숨이 아니라
-  // 들썩임으로 보인다.
-  duration: 5,
+  duration: 4.6,
   repeat: Infinity,
   ease: 'easeInOut' as const,
 }
@@ -118,6 +150,9 @@ const BREATH_TRANSITION = {
 export function Hero1() {
   const reduceMotion = useReducedMotion()
   const [activeNav, setActiveNav] = useState<Hero1MainView>('home')
+  // 한 번이라도 직접 누르면 자동 전환은 끝난다 — 보고 있는 화면을 타이머가
+  // 빼앗는 건 고장으로 읽힌다.
+  const [navTakenOver, setNavTakenOver] = useState(false)
   const [phase, setPhase] = useState<IntroPhase>(initialPhase)
   // Subtitle, 메인텍스트2, CTA and the dashboard image all mount together —
   // only their individual transition `delay` staggers when each visually
@@ -150,6 +185,23 @@ export function Hero1() {
     return () => clearTimeout(doneTimer)
   }, [phase])
 
+  // 인트로가 끝난 뒤부터 좌측 메뉴를 한 칸씩 눌러 보여준다.
+  useEffect(() => {
+    if (navTakenOver || reduceMotion || phase !== 'done') return
+    const timer = setInterval(() => {
+      setActiveNav((current) => {
+        const next = (NAV_VIEW_ORDER.indexOf(current) + 1) % NAV_VIEW_ORDER.length
+        return NAV_VIEW_ORDER[next]
+      })
+    }, NAV_AUTOPLAY_MS)
+    return () => clearInterval(timer)
+  }, [navTakenOver, reduceMotion, phase])
+
+  const selectNav = (view: Hero1MainView) => {
+    setNavTakenOver(true)
+    setActiveNav(view)
+  }
+
   return (
     <Section
       id="top"
@@ -157,7 +209,7 @@ export function Hero1() {
     >
       {/* 흰 바탕 위의 그라데이션 아치. 인트로가 도는 동안에도 끝난 뒤에도
           같은 자리에 있고, 아래를 축으로 줄었다 부푸는 움직임만 이어진다. */}
-      <div aria-hidden className="absolute inset-0 -z-10 bg-white">
+      <div aria-hidden className="absolute inset-0 -z-10 bg-surface-page">
         <motion.div
           className="size-full origin-bottom"
           style={{
@@ -169,6 +221,18 @@ export function Hero1() {
           }}
           animate={reduceMotion ? undefined : { scaleY: BREATH_SCALE }}
           transition={reduceMotion ? undefined : BREATH_TRANSITION}
+        />
+        {/* 모눈은 숨쉬기를 따라가지 않는다. 같은 마스크로 잘라 아치 밖으로
+            새어 나가지 않게만 맞춘다. */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: STAGE_GRID,
+            maskImage: STAGE_MASK,
+            maskComposite: 'intersect',
+            WebkitMaskImage: STAGE_MASK,
+            WebkitMaskComposite: 'source-in',
+          }}
         />
       </div>
 
@@ -209,7 +273,11 @@ export function Hero1() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 24 }}
             transition={REVEAL_TRANSITION}
-            className="text-[40px] font-bold leading-[1.28] md:text-[64px]"
+            // 레퍼런스처럼 글자 자체에 아주 옅은 기울기를 준다 — 왼쪽은
+            // 짙은 남색, 오른쪽으로 가며 살짝 밝아진다. 배경을 글자 모양으로
+            // 오려내는 방식이라 color 는 투명으로 둔다.
+            className="bg-clip-text text-[40px] font-bold leading-[1.28] text-transparent md:text-[64px]"
+            style={{ backgroundImage: HEADLINE_GRADIENT }}
           >
             <span className="block">채용의 모든 것을</span>
             <span className="block">커리어링크에서 해결하세요.</span>
@@ -221,7 +289,9 @@ export function Hero1() {
           animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 24 }}
           transition={{ ...REVEAL_TRANSITION, delay: revealed ? CTA_DELAY_S : 0 }}
         >
-          <Button variant="dark">도입 문의하기</Button>
+          <Button variant="glass" className="px-7 py-3.5 text-[19px]">
+            도입 문의하기
+          </Button>
         </motion.div>
       </div>
 
@@ -237,7 +307,7 @@ export function Hero1() {
             <div className="absolute inset-0 flex">
               <Hero1Sidebar
                 activeNav={activeNav}
-                onSelectView={setActiveNav}
+                onSelectView={selectNav}
                 className="w-[260px] shrink-0 border-r border-[#e8eaee]"
               />
 

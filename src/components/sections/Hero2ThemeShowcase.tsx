@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 import clsx from 'clsx'
 import { useFitScale } from '../../hooks/useFitScale'
 import { Container } from '../ui/Container'
@@ -8,16 +8,19 @@ import { Hero2ThemeColorPicker } from './Hero2ThemeColorPicker'
 import { Hero2ThemeFrame117 } from './Hero2ThemeFrame117'
 
 /**
- * 테마 스와치. 색상환을 균등히 도는 무지개(빨강·주황·초록·파랑·보라)
- * 대신, 블루에서 핑크까지 한 방향으로 흐르는 유사색 램프를 쓴다 —
- * 블루 / 브랜드 퍼플 / 퍼플 / 핑크 / 로즈. 한 계열로 묶이면서도 양 끝이
- * 충분히 벌어져 다섯 칸이 각각 구분된다. 노랑·초록 계열을 빼면
- * 판(블루그레이 → 라벤더 → 민트)과도 따로 놀지 않는다.
+ * 테마 스와치. 왼쪽 끝을 하늘색으로 열고 오른쪽으로 가며 보라 → 핑크 →
+ * 코랄로 따뜻해진다 — 스카이 / 브랜드 퍼플 / 바이올렛 / 핑크 / 코랄.
+ *
+ * 첫 칸은 틸(#0D9488, 175°)이 아니라 스카이(#0284C7, 200°)다. 틸은 초록에
+ * 가까워 옆칸 보라(265°)와 멀어지는데, 스카이는 그 사이를 이어 준다.
+ * 밝은 시안(#06B6D4)도 아니다 — 칩이 놓이는 유리 알약 바탕(#d3e4fa)에서
+ * 대비가 1.88 까지 떨어져 혼자 흐려 보인다. 이 색은 3.17 로 나머지
+ * (코랄 2.84 / 바이올렛 3.06 / 핑크 3.56) 사이에 들어간다.
  *
  * 밝고 선명한 쪽을 택했다. 판과의 대비를 끌어올리려 명도를 내려 본 적이
- * 있는데(#C65C10, #108E5A 등) 채도는 그대로인데도 탁해 보였다 — 스와치는
- * 장식 요소라 본문 텍스트 대비 기준을 맞출 필요가 없다. 묻힘은 색이
- * 아니라 바탕으로 해결했다(아래 유리 알약).
+ * 있는데 채도는 그대로인데도 탁해 보였다 — 스와치는 장식 요소라 본문
+ * 텍스트 대비 기준을 맞출 필요가 없다. 묻힘은 색이 아니라 바탕으로
+ * 해결했다(아래 유리 알약).
  *
  * 보라는 커리어링크 브랜드색이자 목업의 "메인 색상" 으로 노출되므로
  * 반드시 남는다.
@@ -25,18 +28,20 @@ import { Hero2ThemeFrame117 } from './Hero2ThemeFrame117'
  * 색은 이 판 위에서만 쓰이는 게 아니라 getThemeShades 를 통해 목업 전체
  * 테마(네비게이션 바탕, 버튼)를 만든다.
  */
-const PALETTE = ['#1D4ED8', '#6E23D7', '#9333EA', '#DB2777', '#F43F5E']
-const DEFAULT_COLOR = '#6E23D7'
+const PALETTE = ['#0284C7', '#6E23D7', '#A855F7', '#DB2777', '#F43F5E']
+/** 가운데 칸에서 시작해 양옆으로 도는 편이 줄 전체가 눈에 들어온다. */
+const DEFAULT_COLOR = PALETTE[2]
 
 /**
  * 색상 피커와 목업을 담는 패널 배경. tana.inc 의 FeatureVisuals_panel 처럼
- * 그라데이션 판 위에 흰 카드를 얹어 목업을 페이지 흰 배경에서 떼어 놓는다.
- * 색은 메인 배너의 베이스 그라데이션(블루그레이 → 라벤더 → 민트)과 같은
- * 세 지점을 쓰되 한 단계 낮춰 잡았다 — 배너는 화면 전체를 덮으니 옅어도
- * 되지만, 이 판은 흰 카드를 끼고 있어 그 명도로는 카드 가장자리가 묻힌다.
- * 카드에 테두리를 두르지 않고 이 명도 차만으로 윤곽을 만든다.
+ * 그라데이션 판 위에 흰 카드를 얹어 목업을 페이지 배경에서 떼어 놓는다.
+ *
+ * 위가 블루(#9ec4f5), 아래로 내려가며 민트(#aedcd5) 로 풀린다 — 메인 배너가
+ * 위에서 아래로 보라에서 파랑으로 흐르므로, 그 끝색인 파랑을 이 판의
+ * 시작색으로 받아 두 섹션이 이어지게 했다. 흰 카드를 끼고 있으니 배너보다
+ * 한 단계 밝은 구간을 쓴다.
  */
-const PANEL_GRADIENT = 'linear-gradient(135deg, #b4c6e8, #cdc7ee 45%, #b2dcda)'
+const PANEL_GRADIENT = 'linear-gradient(170deg, #9ec4f5, #bcd4ef 45%, #aedcd5)'
 
 /** 목업(Frame 117)이 설계된 폭. 카드가 이보다 좁으면 통째로 축소된다. */
 const MOCKUP_WIDTH = 1000
@@ -44,6 +49,9 @@ const MOCKUP_WIDTH = 1000
 /** 떠 있는 색상 피커 팝업만 목업보다 한 단계 작게 — 원래 Figma 크기대로
  *  두면 뒤의 테마 설정 패널을 거의 다 덮는다. */
 const PICKER_SCALE = 0.8
+
+/** 손대지 않아도 색이 바뀌는 간격. 목업 전체가 다시 칠해지는 걸 보여준다. */
+const AUTOPLAY_MS = 2500
 
 /**
  * Figma node 2230:178 — "Hero 2-Feature cards". A theme-customization
@@ -62,6 +70,27 @@ const PICKER_SCALE = 0.8
  */
 export function Hero2ThemeShowcase() {
   const [selectedColor, setSelectedColor] = useState(DEFAULT_COLOR)
+  const reduceMotion = useReducedMotion()
+  // 한 번이라도 직접 고르면 자동 전환은 끝난다 — 사람이 보고 있는 색을
+  // 타이머가 빼앗는 건 고장으로 읽힌다.
+  const [takenOver, setTakenOver] = useState(false)
+
+  useEffect(() => {
+    if (takenOver || reduceMotion) return
+    const timer = setInterval(() => {
+      setSelectedColor((current) => {
+        const next = (PALETTE.indexOf(current) + 1) % PALETTE.length
+        return PALETTE[next]
+      })
+    }, AUTOPLAY_MS)
+    return () => clearInterval(timer)
+  }, [takenOver, reduceMotion])
+
+  const pickColor = (hex: string) => {
+    setTakenOver(true)
+    setSelectedColor(hex)
+  }
+
   // The mockup is real DOM. It is always laid out at MOCKUP_WIDTH and then
   // scaled to whatever the card gives it, rather than being allowed to
   // stretch fluidly — stretching would keep every element at full size and
@@ -70,7 +99,7 @@ export function Hero2ThemeShowcase() {
   const { ref: fitRef, scale } = useFitScale(MOCKUP_WIDTH)
 
   return (
-    <Section className="flex flex-col items-center overflow-hidden bg-white pb-12 pt-6 md:pb-24 md:pt-10">
+    <Section className="flex flex-col items-center overflow-hidden bg-surface-page pb-12 pt-6 md:pb-24 md:pt-16">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 32 }}
@@ -94,7 +123,7 @@ export function Hero2ThemeShowcase() {
                   type="button"
                   aria-label={`테마 색상 ${hex} 선택`}
                   aria-pressed={isSelected}
-                  onClick={() => setSelectedColor(hex)}
+                  onClick={() => pickColor(hex)}
                   className="flex size-[50px] items-center justify-center rounded-full"
                 >
                   {/* 선택 표시는 테두리 대신 "집어 올린 칩" — 한 칸 커지고

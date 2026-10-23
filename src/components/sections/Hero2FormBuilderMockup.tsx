@@ -10,6 +10,34 @@ import { FORM_SECTIONS, type FormSection } from './Hero2FormBuilderData'
 
 // The Figma frame (node 2337:13686) is laid out at exactly this size; the
 // whole mockup is scaled as one block to fit narrower viewports.
+/**
+ * 카드 그림자. 회색이 아니라 색을 머금은 하늘빛·민트다 — #fafafa 바탕 위에
+ * 회색 그림자를 쓰면 때가 탄 것처럼 탁해 보이는데, 색이 있으면 떠 있는
+ * 느낌만 남는다. 넓게 퍼지는 겹 + 중간 겹 + 바짝 붙는 겹, 세 장을 겹쳤다.
+ *
+ * y 오프셋은 0 이다. 아래로 내리면 카드가 바닥에 놓인 것처럼 보이는데,
+ * 이 목업은 판 위에 떠 있는 쪽이 맞아 사방으로 고르게 번지게 했다
+ * (퍼짐은 음수 spread 로 조인다).
+ *
+ * Tailwind 의 shadow-[...] 로는 못 쓴다 — 쉼표로 여러 겹을 넣으면 임의값
+ * 파서가 삼켜서 그림자가 통째로 사라진다. 그래서 인라인 style 로 준다.
+ *
+ * 카드가 아니라 그 바깥 래퍼에 건다. 카드는 설계 폭(1280) 그대로 두고
+ * scale 로 줄이는 구조라, 넘치는 부분을 래퍼가 overflow-hidden 으로
+ * 잘라낸다 — 카드에 그림자를 걸면 그 잘림에 같이 걸려 사라진다.
+ * 요소 자신의 overflow-hidden 은 자기 그림자를 자르지 않으므로 래퍼에
+ * 걸면 온전히 보인다. 래퍼 박스는 축소된 카드와 정확히 같은 크기라
+ * (w-full x DESIGN_HEIGHT*scale) 모양도 어긋나지 않는다.
+ *
+ * Container(mx-auto w-full px-5) 에 걸지 않는 이유: 좌우 거터(20/32px)
+ * 까지 박스에 들어가 그림자가 카드보다 그만큼 넓게 퍼진다.
+ */
+const CARD_SHADOW = [
+  '0 0 80px -18px rgba(124, 180, 230, 0.5)',
+  '0 0 34px -8px rgba(134, 201, 192, 0.38)',
+  '0 0 12px 0 rgba(130, 185, 205, 0.16)',
+].join(', ')
+
 const DESIGN_WIDTH = 1280
 const DESIGN_HEIGHT = 710
 const TOOLBAR_HEIGHT = 57.5
@@ -95,9 +123,13 @@ export function Hero2FormBuilderMockup() {
   }
 
   return (
-    <div ref={ref} className="w-full overflow-hidden" style={{ height: DESIGN_HEIGHT * scale }}>
+    <div
+      ref={ref}
+      className="w-full overflow-hidden rounded-card"
+      style={{ height: DESIGN_HEIGHT * scale, boxShadow: CARD_SHADOW }}
+    >
       <div
-        className="overflow-hidden rounded-card border border-[#e5e7eb] bg-white shadow-[0px_2px_14px_0px_rgba(32,40,45,0.08)]"
+        className="overflow-hidden rounded-card bg-white"
         style={{
           width: DESIGN_WIDTH,
           height: DESIGN_HEIGHT,

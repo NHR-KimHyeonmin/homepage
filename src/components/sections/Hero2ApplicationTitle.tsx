@@ -11,7 +11,7 @@ import { Section } from '../ui/Section'
  */
 export function Hero2ApplicationTitle() {
   return (
-    <Section id="hero2-application-title" className="flex flex-col items-center bg-white pt-12 md:pt-24">
+    <Section id="hero2-application-title" className="flex flex-col items-center bg-surface-page pt-12 md:pt-[120px]">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 24 }}

@@ -17,7 +17,7 @@ const ROWS = [logoRow1, logoRow2, logoRow3]
  */
 export function Hero2LogoMarquee() {
   return (
-    <Section id="hero2-logo-marquee" className="overflow-hidden bg-white py-4">
+    <Section id="hero2-logo-marquee" className="overflow-hidden bg-surface-page py-4">
       <div className="flex w-max animate-marquee">
         {[0, 1].map((copy) => (
           <div key={copy} aria-hidden={copy === 1} className="flex shrink-0">

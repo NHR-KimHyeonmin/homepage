@@ -77,7 +77,7 @@ export function Hero8Gallery() {
   }
 
   return (
-    <Section className="flex flex-col items-center pb-12 pt-6 md:pb-24 md:pt-10">
+    <Section className="flex flex-col items-center pb-12 pt-6 md:pb-24 md:pt-16">
       {/* Zero-height mirror of the headline's column — measured, not
           hard-coded, so the track's left edge tracks it at every width. */}
       <div aria-hidden className="pointer-events-none absolute left-0 top-0 h-0 w-full">

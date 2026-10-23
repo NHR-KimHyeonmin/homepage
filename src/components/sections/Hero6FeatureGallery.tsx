@@ -49,7 +49,7 @@ function GalleryCardItem({ card, index }: { card: GalleryCard; index: number }) 
       </div>
       <div className="flex flex-col gap-2 p-8">
         <h3 className="text-2xl font-semibold tracking-[-0.48px] text-black">{card.title}</h3>
-        <p className="text-lg font-medium tracking-[-0.09px] text-black/55">{DESCRIPTION}</p>
+        <p className="text-base font-medium tracking-[-0.09px] text-black/55">{DESCRIPTION}</p>
       </div>
     </motion.div>
   )
@@ -57,7 +57,7 @@ function GalleryCardItem({ card, index }: { card: GalleryCard; index: number }) 
 
 export function Hero6FeatureGallery() {
   return (
-    <Section className="flex flex-col items-center pb-12 pt-6 md:pb-24 md:pt-10">
+    <Section className="flex flex-col items-center pb-12 pt-6 md:pb-24 md:pt-16">
       <Container className="flex w-full flex-col gap-5 md:flex-row">
         <div className="flex w-full flex-col gap-5 md:w-[304px] md:shrink-0">
           {COLUMN_1.map((card, i) => (
