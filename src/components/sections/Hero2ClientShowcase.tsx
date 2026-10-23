@@ -174,7 +174,7 @@ export function Hero2ClientShowcase() {
         {...dragHandlers}
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
-        className={`mt-8 w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
+        className={`mt-16 w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
       >
         {/* 카드를 두 벌 깐다. 한 벌 길이만큼 흘렀을 때 그만큼 되돌리면 같은
             그림이라 이음매가 보이지 않는다 — 끝에서 0 으로 튀는 것과 다르다.

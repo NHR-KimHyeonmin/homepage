@@ -23,7 +23,13 @@ const STALE_MS = 80
  * 드래그가 만들어내는 뒤따르는 click은 `onClickCapture`에서 삼켜, 끌기가
  * 카드의 클릭 핸들러나 링크까지 발동시키는 일은 없다.
  */
-export function useDragScroll<T extends HTMLElement>() {
+/**
+ * @param onDragEnd 끌기를 끝냈을 때 자리를 직접 정하고 싶은 쪽에 넘긴다.
+ *   주면 관성 대신 이 함수가 불리고, 끌린 거리(px, 양수면 오른쪽으로 민
+ *   것)를 받는다 — 탭 그룹처럼 정해진 자리로 붙어야 하는 트랙은 미끄러진
+ *   끝에서 멈추면 어중간한 위치에 선다.
+ */
+export function useDragScroll<T extends HTMLElement>(onDragEnd?: (scrolled: number) => void) {
   const scrollRef = useRef<T>(null)
   const isDraggingRef = useRef(false)
   const didDragRef = useRef(false)
@@ -75,14 +81,18 @@ export function useDragScroll<T extends HTMLElement>() {
     lastXRef.current = event.clientX
     lastTimeRef.current = performance.now()
     velocityRef.current = 0
-    el.setPointerCapture(event.pointerId)
+    // 포인터 캡처는 실제로 끌기 시작한 뒤에 잡는다. 누르자마자 잡으면 뒤따르는
+    // click 의 대상이 컨테이너로 바뀌어, 안에 있는 카드 버튼이 눌리지 않는다.
   }
 
   const onPointerMove = (event: PointerEvent<T>) => {
     const el = scrollRef.current
     if (!el || !isDraggingRef.current) return
     const delta = event.clientX - startXRef.current
-    if (Math.abs(delta) > 3) didDragRef.current = true
+    if (Math.abs(delta) > 3 && !didDragRef.current) {
+      didDragRef.current = true
+      el.setPointerCapture(event.pointerId)
+    }
     el.scrollLeft = startScrollLeftRef.current - delta
 
     // 프레임(≈16.7ms)당 몇 px로 움직이는지로 환산해 둬야 그대로 관성에 쓸 수 있다.
@@ -104,7 +114,9 @@ export function useDragScroll<T extends HTMLElement>() {
     setIsDragging(false)
     if (el?.hasPointerCapture(event.pointerId)) el.releasePointerCapture(event.pointerId)
     if (performance.now() - lastTimeRef.current > STALE_MS) velocityRef.current = 0
-    if (didDragRef.current) startGlide()
+    if (!didDragRef.current) return
+    if (onDragEnd) onDragEnd(el ? el.scrollLeft - startScrollLeftRef.current : 0)
+    else startGlide()
   }
 
   const onClickCapture = (event: MouseEvent) => {

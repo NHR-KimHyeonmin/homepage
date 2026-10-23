@@ -12,6 +12,7 @@ import logoMonster from '../../assets/sections/hero00/logo-monster.png'
 import logoPrism from '../../assets/sections/hero00/logo-prism.png'
 import logoSpector from '../../assets/sections/hero00/logo-spector.png'
 import logoViewinter from '../../assets/sections/hero00/logo-viewinter.png'
+import { useDragScroll } from '../../hooks/useDragScroll'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
 
@@ -77,10 +78,18 @@ const CARDS: PartnerCard[] = [
 
 const CARD_WIDTH = 300
 
+/** 이만큼만 끌어도 다음 그룹으로 넘어간다 — 카드 한 장을 다 끌어야
+ *  넘어가면 "안 움직인다"로 읽힌다. */
+const STEP_THRESHOLD = 24
+
 export function Hero00Screening() {
   const [activeTab, setActiveTab] = useState<ScreeningTab>('doc')
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  // 끌어서 옮길 수 있게 하되, 손을 떼면 관성으로 미끄러지는 대신 탭
+  // 그룹에 붙는다 — 움직임은 탭을 눌렀을 때와 같다.
+  const { scrollRef, isDragging, dragHandlers } = useDragScroll<HTMLDivElement>((scrolled) =>
+    settleAfterDrag(scrolled),
+  )
+  const cardRefs = useRef<(HTMLButtonElement | null)[]>([])
   // Empty leading/trailing space so even the first/last card group (프리즘,
   // 스펙터) has enough room to reach true center — without it, centering
   // clamps at the scroll edges and those two groups can only ever slide as
@@ -115,7 +124,7 @@ export function Hero00Screening() {
     const observer = new ResizeObserver(updateSpacer)
     observer.observe(container)
     return () => observer.disconnect()
-  }, [])
+  }, [scrollRef])
 
   useEffect(() => {
     // Snap the initial tab's group to center once the spacers have their
@@ -128,6 +137,49 @@ export function Hero00Screening() {
   const selectTab = (tab: ScreeningTab) => {
     setActiveTab(tab)
     centerGroup(tab, 'smooth')
+  }
+
+  /** 지금 화면 한가운데에 가장 가까운 그룹. */
+  const nearestGroup = () => {
+    const container = scrollRef.current
+    if (!container) return activeTab
+    const containerCenterX = container.getBoundingClientRect().left + container.clientWidth / 2
+
+    let nearest = activeTab
+    let shortest = Infinity
+    for (const tab of NAV_TABS) {
+      const indices = CARDS.reduce<number[]>((acc, card, i) => (card.group === tab.id ? [...acc, i] : acc), [])
+      const firstEl = cardRefs.current[indices[0]]
+      const lastEl = cardRefs.current[indices[indices.length - 1]]
+      if (!firstEl || !lastEl) continue
+      const firstRect = firstEl.getBoundingClientRect()
+      const lastRect = lastEl.getBoundingClientRect()
+      const groupCenterX = (firstRect.left + firstRect.width / 2 + lastRect.left + lastRect.width / 2) / 2
+      const distance = Math.abs(groupCenterX - containerCenterX)
+      if (distance < shortest) {
+        shortest = distance
+        nearest = tab.id
+      }
+    }
+    return nearest
+  }
+
+  /**
+   * 손을 뗀 자리에서 어느 그룹에 붙일지 정한다. 많이 끌었으면 가장 가까운
+   * 그룹이 이미 바뀌어 있고, 살짝만 끌었으면 가운데는 그대로라 가까운
+   * 그룹이 안 바뀐다 — 그때는 끈 방향으로 한 칸 넘긴다.
+   */
+  const settleAfterDrag = (scrolled: number) => {
+    const nearest = nearestGroup()
+    if (nearest !== activeTab) {
+      selectTab(nearest)
+      return
+    }
+
+    const order = NAV_TABS.map((tab) => tab.id)
+    const step = Math.abs(scrolled) >= STEP_THRESHOLD ? Math.sign(scrolled) : 0
+    const index = Math.min(order.length - 1, Math.max(0, order.indexOf(activeTab) + step))
+    selectTab(order[index])
   }
 
   return (
@@ -173,19 +225,28 @@ export function Hero00Screening() {
         <Container
           ref={scrollRef}
           maxWidth={1592}
-          className="overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          {...dragHandlers}
+          className={clsx(
+            // scroll-smooth 를 쓰면 드래그 중 scrollLeft 대입까지 애니메이션돼
+            // 손가락보다 늦게 따라온다. 자리 잡기는 scrollTo 가 behavior 를 준다.
+            'overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+            isDragging ? 'cursor-grabbing [&_*]:cursor-grabbing' : 'cursor-grab',
+          )}
         >
           <div className="flex items-stretch gap-5">
             <div aria-hidden className="shrink-0" style={{ width: spacerWidth }} />
             {CARDS.map((card, index) => (
-              <div
+              <button
                 key={card.name}
+                type="button"
                 ref={(el) => {
                   cardRefs.current[index] = el
                 }}
+                onClick={() => selectTab(card.group)}
+                aria-pressed={card.group === activeTab}
                 className={clsx(
-                  'flex h-[400px] shrink-0 flex-col gap-4 overflow-hidden rounded-card bg-white p-7 shadow-[0px_4px_10px_0px_rgba(0,66,183,0.04)] transition-opacity duration-300',
-                  card.group === activeTab ? 'opacity-100' : 'opacity-30',
+                  'flex h-[400px] shrink-0 cursor-pointer flex-col gap-4 overflow-hidden rounded-card bg-white p-7 text-left shadow-[0px_4px_10px_0px_rgba(0,66,183,0.04)] transition-opacity duration-300',
+                  card.group === activeTab ? 'opacity-100' : 'opacity-30 hover:opacity-60',
                 )}
                 style={{ width: CARD_WIDTH }}
               >
@@ -199,7 +260,7 @@ export function Hero00Screening() {
                   </div>
                   <p className="text-base leading-[1.6] tracking-[-0.09px] text-gray-300">{card.description}</p>
                 </div>
-              </div>
+              </button>
             ))}
             <div aria-hidden className="shrink-0" style={{ width: spacerWidth }} />
           </div>

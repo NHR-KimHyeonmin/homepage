@@ -56,7 +56,7 @@ export function Hero2ApplicationCards() {
   }, [doneTyping])
 
   return (
-    <Section className="bg-surface-page pb-12 pt-6 md:pb-24 md:pt-16">
+    <Section className="bg-surface-page pb-12 pt-6 md:pb-24 md:pt-6">
       <Container>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           <motion.div

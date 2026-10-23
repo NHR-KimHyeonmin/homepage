@@ -21,7 +21,22 @@ export interface Group {
 type CardBody =
   | { kind: 'fields'; fields: Field[] }
   | { kind: 'profile' }
-  | { kind: 'groups'; columns: 1 | 2; groups: Group[] }
+  /**
+   * titleColumn 이 있으면 Retro 뷰에서 라벨/값 짝이 아니라 머리행이 있는
+   * 열 표로 그린다 — 그룹마다 같은 항목을 되풀이하는 외국어시험·자격증은
+   * 세로로 쌓는 것보다 한 줄씩 쌓는 쪽이 읽힌다. titleColumnAt 은 그
+   * 제목 열이 몇 번째에 오는지다(기본 0).
+   */
+  | {
+      kind: 'groups'
+      columns: 1 | 2
+      groups: Group[]
+      titleColumn?: string
+      titleColumnAt?: number
+      /** 항목이 한 줄에 다 안 들어가는 대학원처럼, 제목을 세로로 합친 왼쪽
+       *  칸에 두고 나머지를 머리행/값행 띠로 쌓는다. */
+      titleRowSpan?: boolean
+    }
   | { kind: 'ratings'; languages: { name: string; levels: { label: string; stars: number }[] }[] }
 
 export interface FormSection {
@@ -56,20 +71,20 @@ export const FORM_SECTIONS: FormSection[] = [
     body: {
       kind: 'groups',
       columns: 2,
+      titleRowSpan: true,
       groups: [
         {
           title: '장애 여부',
+          badge: '대상',
           fields: [
             { label: '장애정도', value: '경증' },
-            { label: '장애내용', value: '-' },
+            { label: '장애내용', value: '지체장애' },
           ],
         },
         {
-          title: '보훈 대상',
-          fields: [
-            { label: '구분', value: '5%' },
-            { label: '관계', value: '아버지' },
-          ],
+          title: '보훈 대상 여부',
+          badge: '대상',
+          fields: [{ label: '관계', value: '아버지' }],
         },
       ],
     },
@@ -80,6 +95,8 @@ export const FORM_SECTIONS: FormSection[] = [
     body: {
       kind: 'groups',
       columns: 1,
+      titleColumn: '학교명',
+      titleRowSpan: true,
       groups: [
         {
           dateRange: '2021.03.02 ~ 2024.01.25',
@@ -106,6 +123,8 @@ export const FORM_SECTIONS: FormSection[] = [
     body: {
       kind: 'groups',
       columns: 2,
+      titleColumn: '시험명',
+      titleColumnAt: 1,
       groups: [
         {
           title: 'TOEIC',
@@ -130,14 +149,21 @@ export const FORM_SECTIONS: FormSection[] = [
     body: {
       kind: 'groups',
       columns: 2,
+      titleColumn: '자격증명',
       groups: [
         {
           title: '1급방화관리자수첩',
-          fields: [{ label: '취득시기', value: '2020.03.01' }],
+          fields: [
+            { label: '발행처', value: '한국소방안전원' },
+            { label: '취득시기', value: '2020.03.01' },
+          ],
         },
         {
           title: 'FIFA에이전트',
-          fields: [{ label: '취득시기', value: '2020.03.01' }],
+          fields: [
+            { label: '발행처', value: '대한축구협회' },
+            { label: '취득시기', value: '2020.03.01' },
+          ],
         },
       ],
     },

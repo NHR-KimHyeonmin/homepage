@@ -12,8 +12,8 @@ const HEADER_GRADIENT = 'linear-gradient(174.15deg, rgb(243, 244, 246) 0%, rgb(2
 function FieldCell({ field }: { field: Field }) {
   return (
     <div className="flex flex-col gap-2 p-2">
-      <p className="whitespace-nowrap text-[14px] leading-[14px] text-[#8e949e]">{field.label}</p>
-      <p className="text-[16px] leading-[16px] text-[#212121]">{field.value}</p>
+      <p className="whitespace-nowrap text-[12px] leading-[12px] text-[#8e949e]">{field.label}</p>
+      <p className="text-[14px] leading-[14px] text-[#212121]">{field.value}</p>
     </div>
   )
 }
@@ -23,16 +23,16 @@ function GroupBox({ group }: { group: Group }) {
     <div className="flex flex-1 flex-col rounded-ui border border-[#e5e7eb] bg-white p-2">
       {(group.dateRange || group.badge) && (
         <div className="flex items-center gap-2 px-2 pt-1">
-          {group.dateRange && <span className="text-[14px] leading-[21px] text-[#8e949e]">{group.dateRange}</span>}
+          {group.dateRange && <span className="text-[12px] leading-[18px] text-[#8e949e]">{group.dateRange}</span>}
           {group.badge && (
-            <span className="rounded-full bg-[#e6ecf8] px-2 py-0.5 text-[12px] leading-[18px] text-[#0042b7]">
+            <span className="rounded-full bg-[#e6ecf8] px-2 py-0.5 text-[11px] leading-[16px] text-[#0042b7]">
               {group.badge}
             </span>
           )}
         </div>
       )}
       {group.title && (
-        <p className="px-2 pb-1 pt-2 text-[16px] font-semibold leading-[24px] text-[#212121]">{group.title}</p>
+        <p className="px-2 pb-1 pt-2 text-[14px] font-semibold leading-[21px] text-[#212121]">{group.title}</p>
       )}
       <div className="grid grid-cols-2">
         {group.fields.map((field) => (
@@ -47,7 +47,7 @@ function StarRow({ stars }: { stars: number }) {
   return (
     <span className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((n) => (
-        <img loading="lazy" decoding="async" key={n} src={n <= stars ? starFilled : starEmpty} alt="" className="size-4" />
+        <img loading="lazy" decoding="async" key={n} src={n <= stars ? starFilled : starEmpty} alt="" className="size-[14px]" />
       ))}
     </span>
   )
@@ -65,16 +65,16 @@ function ProfileBody() {
     <>
       <div className="flex items-center gap-4 px-4 py-5" style={{ backgroundImage: HEADER_GRADIENT }}>
         <div className="flex w-[150px] shrink-0 flex-col gap-1">
-          <p className="text-[20px] font-semibold leading-[30px] text-[#212121]">
-            홍길동 <span className="text-[16px] font-normal">(남)</span>
+          <p className="text-[17px] font-semibold leading-[26px] text-[#212121]">
+            홍길동 <span className="text-[14px] font-normal">(남)</span>
           </p>
-          <p className="text-[14px] leading-[21px] text-[#8e949e]">HONG GILDONG</p>
+          <p className="text-[12px] leading-[18px] text-[#8e949e]">HONG GILDONG</p>
         </div>
         <div className="flex flex-1 flex-col gap-2">
           {contacts.map((contact) => (
             <div key={contact.text + contact.icon} className="flex items-center gap-2">
               <img loading="lazy" decoding="async" src={contact.icon} alt="" className="size-[18px] shrink-0" />
-              <span className="text-[15px] leading-[22px] text-[#212121]">{contact.text}</span>
+              <span className="text-[13px] leading-[19px] text-[#212121]">{contact.text}</span>
             </div>
           ))}
         </div>
@@ -121,7 +121,7 @@ export function FormPreviewCard({ section }: { section: FormSection }) {
       ) : (
         <>
           <div className="flex w-full items-center p-4" style={{ backgroundImage: HEADER_GRADIENT }}>
-            <p className="text-[16px] font-semibold leading-[24px] text-[#212121]">{section.label}</p>
+            <p className="text-[14px] font-semibold leading-[21px] text-[#212121]">{section.label}</p>
           </div>
           <div className="flex flex-col gap-6 px-6 pb-6 pt-6">
             {body.kind === 'fields' && (
@@ -144,10 +144,10 @@ export function FormPreviewCard({ section }: { section: FormSection }) {
               <div className="grid grid-cols-2 gap-4">
                 {body.languages.map((language) => (
                   <div key={language.name} className="rounded-ui border border-[#e5e7eb] bg-white p-2">
-                    <p className="px-2 py-2 text-[16px] font-semibold leading-[24px] text-[#212121]">{language.name}</p>
+                    <p className="px-2 py-2 text-[14px] font-semibold leading-[21px] text-[#212121]">{language.name}</p>
                     {language.levels.map((level) => (
                       <div key={level.label} className="flex items-center justify-between px-2 py-2">
-                        <span className="text-[14px] leading-[21px] text-[#8e949e]">{level.label}</span>
+                        <span className="text-[12px] leading-[18px] text-[#8e949e]">{level.label}</span>
                         <StarRow stars={level.stars} />
                       </div>
                     ))}
