@@ -117,7 +117,7 @@ export function Hero8Gallery() {
               <div className="flex flex-col gap-5">
                 <div className="flex flex-col gap-2">
                   <h5 className="text-xl font-bold leading-[1.2] tracking-[-0.4px] text-black">{card.name}</h5>
-                  <p className="text-base leading-[1.45] tracking-[-0.08px] text-gray-300">{card.description}</p>
+                  <p className="text-[18px] leading-[1.45] tracking-[-0.08px] text-gray-300">{card.description}</p>
                 </div>
                 <div className="flex items-center gap-1">
                   <h5 className="whitespace-nowrap text-sm font-bold leading-[1.2] tracking-[-0.28px] text-gray-200">

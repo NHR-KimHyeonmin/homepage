@@ -26,7 +26,7 @@ export function Hero2ApplicationBuilder() {
   const scale = useTransform(scrollYProgress, [0, 0.7], [0.82, 1])
 
   return (
-    <Section className="flex flex-col items-center gap-10 bg-surface-page pb-12 pt-6 md:pb-24 md:pt-16">
+    <Section className="flex flex-col items-center gap-10 bg-group-intake pb-12 pt-6 md:pb-24 md:pt-16">
       <Container>
         <motion.div
           ref={scaleWrapperRef}

@@ -149,7 +149,7 @@ export function Hero2ClientShowcase() {
   }, [scrollRef, cardWidth, isDragging, hovering, reduceMotion])
 
   return (
-    <Section id="hero2-client-showcase" className="flex flex-col bg-surface-page pb-12 pt-12 md:pb-24 md:pt-[120px]">
+    <Section id="hero2-client-showcase" className="flex flex-col bg-group-recruit pb-12 pt-12 md:pb-24 md:pt-[120px]">
       <Container>
         <div ref={probeRef} aria-hidden className="h-0" />
         <motion.div
@@ -163,7 +163,7 @@ export function Hero2ClientShowcase() {
             <p>세련된 채용사이트로 지원자에게</p>
             <p>강력한 첫 인상을 심어주세요.</p>
           </div>
-          <p className="text-[17px] font-medium leading-[1.45] tracking-[-0.1px] text-black/55">
+          <p className="text-[20px] font-medium leading-[1.45] tracking-[-0.1px] text-black/55">
             채용 사이트 방문자의 데이터를 수집하여 지원자의 유입 채널을 분석하여 다음 채용 전략에 활용할 수 있습니다.
           </p>
         </motion.div>

@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion'
+import clsx from 'clsx'
+import { CHIP_SECTION_PT } from '../../lib/sectionRhythm'
 import { Container } from '../ui/Container'
 import { SectionEyebrow } from '../ui/SectionEyebrow'
 import { Section } from '../ui/Section'
@@ -11,7 +13,7 @@ import { Section } from '../ui/Section'
  */
 export function Hero2ApplicationTitle() {
   return (
-    <Section id="hero2-application-title" className="flex flex-col items-center bg-surface-page pt-12 md:pt-[120px]">
+    <Section id="hero2-application-title" className={clsx('flex flex-col items-center bg-group-intake', CHIP_SECTION_PT)}>
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -22,7 +24,7 @@ export function Hero2ApplicationTitle() {
         >
           <SectionEyebrow>서류 접수</SectionEyebrow>
           <p className="text-[40px] font-bold leading-[1.4] tracking-[-1.12px] text-black md:text-[48px]">자유로운 지원서 설정</p>
-          <p className="max-w-[1208px] text-[17px] font-medium leading-[1.45] tracking-[-0.1px] text-black/55">
+          <p className="max-w-[1208px] text-[20px] font-medium leading-[1.45] tracking-[-0.1px] text-black/55">
             144개의 다양한 지원서 항목을 직접 추가해보변서 지원서 양식을 구성해보세요.
           </p>
         </motion.div>

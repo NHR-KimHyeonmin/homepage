@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
 import iconDocTabActive from '../../assets/sections/hero00/icon-doc-tab.svg'
@@ -86,7 +86,7 @@ export function Hero00Screening() {
   const [activeTab, setActiveTab] = useState<ScreeningTab>('doc')
   // 끌어서 옮길 수 있게 하되, 손을 떼면 관성으로 미끄러지는 대신 탭
   // 그룹에 붙는다 — 움직임은 탭을 눌렀을 때와 같다.
-  const { scrollRef, isDragging, dragHandlers } = useDragScroll<HTMLDivElement>((scrolled) =>
+  const { scrollRef, isDragging, overscrollX, dragHandlers } = useDragScroll<HTMLDivElement>((scrolled) =>
     settleAfterDrag(scrolled),
   )
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([])
@@ -169,6 +169,24 @@ export function Hero00Screening() {
    * 그룹이 이미 바뀌어 있고, 살짝만 끌었으면 가운데는 그대로라 가까운
    * 그룹이 안 바뀐다 — 그때는 끈 방향으로 한 칸 넘긴다.
    */
+  /** 켜진 칸의 자리와 폭. 글자 길이가 달라 고정값으로는 맞출 수 없다. */
+  const navRef = useRef<HTMLElement>(null)
+  const [thumb, setThumb] = useState<{ x: number; w: number } | null>(null)
+
+  useLayoutEffect(() => {
+    const nav = navRef.current
+    if (!nav) return
+    const measure = () => {
+      const el = nav.querySelector<HTMLElement>(`[data-tab="${activeTab}"]`)
+      if (el) setThumb({ x: el.offsetLeft - 4, w: el.offsetWidth })
+    }
+    measure()
+    // 글꼴이 늦게 바뀌면 칸 폭도 바뀐다 — 그때 다시 잰다.
+    const observer = new ResizeObserver(measure)
+    observer.observe(nav)
+    return () => observer.disconnect()
+  }, [activeTab])
+
   const settleAfterDrag = (scrolled: number) => {
     const nearest = nearestGroup()
     if (nearest !== activeTab) {
@@ -192,21 +210,35 @@ export function Hero00Screening() {
         className="w-full"
       >
         <Container>
-          <nav className="flex flex-wrap items-center justify-center gap-4 rounded-t-card border-b border-[#3379f3]/20 backdrop-blur-[35px]">
+          {/* 밑줄 탭에서 알약 스위치로. 선 하나로만 켜진 칸을 표시하면 글자
+              길이가 제각각인 세 칸에서 어디가 켜졌는지 훑다 놓치기 쉬웠다.
+              칸이 통째로 칠해지면 멀리서도 걸린다. 칸 폭이 저마다 달라
+              미끄러질 거리는 실측해 둔다. */}
+          <nav ref={navRef} className="relative mx-auto flex w-fit items-center gap-1 rounded-full bg-[#e2ebfd] p-1">
+            {thumb && (
+              <motion.span
+                aria-hidden
+                initial={false}
+                animate={{ x: thumb.x, width: thumb.w }}
+                transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                className="absolute left-1 top-1 h-[calc(100%-8px)] rounded-full bg-white shadow-[0_1px_3px_rgba(32,40,45,0.16)]"
+              />
+            )}
             {NAV_TABS.map((tab) => {
               const isActive = tab.id === activeTab
               return (
                 <button
                   key={tab.id}
                   type="button"
+                  data-tab={tab.id}
                   onClick={() => selectTab(tab.id)}
                   aria-pressed={isActive}
                   className={clsx(
-                    'flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border-b-[3px] px-4 py-2 text-[22px] font-bold tracking-[-0.11px] transition-colors',
-                    isActive ? 'border-[#3379f3] text-[#3379f3]' : 'border-transparent text-black/30 hover:text-black/50',
+                    'relative z-10 flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 py-2.5 text-[18px] font-bold tracking-[-0.09px] transition-colors duration-200',
+                    isActive ? 'text-[#3379f3]' : 'text-black/35 hover:bg-[#d2e0fb] hover:text-black/55',
                   )}
                 >
-                  <img loading="lazy" decoding="async" src={isActive ? tab.iconActive : tab.iconInactive} alt="" className="size-7 shrink-0" />
+                  <img loading="lazy" decoding="async" src={isActive ? tab.iconActive : tab.iconInactive} alt="" className="size-6 shrink-0" />
                   {tab.label}
                 </button>
               )
@@ -215,11 +247,24 @@ export function Hero00Screening() {
         </Container>
       </motion.div>
 
+      {/* 양 끝에서 더 끌면 트랙이 그만큼 딸려 나왔다가 튕겨 돌아온다. scrollLeft
+          는 0/max 에서 잘려 아무 반응이 없는데, 그러면 끝에 닿았는지 화면이
+          멈춘 건지 구분이 안 된다.
+
+          미는 건 트랙이 아니라 스크롤 상자를 감싼 **바깥** 상자다. 트랙(스크롤
+          되는 내용물)에 transform 을 걸면 그만큼 오른쪽 넘침이 줄어 컨테이너의
+          scrollWidth 가 같이 작아지고, 브라우저가 scrollLeft 를 새 최대값으로
+          끌어내린다. 그러면 끌지도 않은 거리가 "오른쪽으로 끌었다" 로 기록되어
+          (settleAfterDrag 의 scrolled 가 음수) 마지막 그룹에서 왼쪽으로 당겼는데
+          이전 그룹으로 넘어가 버렸다. 바깥에서 밀면 스크롤 기하는 그대로다.
+          nearestGroup 이 재는 카드·컨테이너 위치도 함께 밀리므로 거리 비교도
+          어긋나지 않는다. */}
       <motion.div
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
+        style={{ x: overscrollX }}
         className="w-full"
       >
         <Container
@@ -275,7 +320,7 @@ export function Hero00Screening() {
       >
         <button
           type="button"
-          className="flex cursor-pointer items-center justify-center rounded-full bg-[#3379f3] px-[30px] py-3 text-xl font-semibold text-white transition-colors hover:bg-[#2a65d1]"
+          className="flex cursor-pointer items-center justify-center rounded-full bg-ink px-[30px] py-3 text-xl font-semibold text-white transition-colors hover:bg-black"
         >
           연동 문의하기
         </button>

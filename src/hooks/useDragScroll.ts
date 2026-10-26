@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type MouseEvent, type PointerEvent } from 'react'
+import { animate, useMotionValue, type AnimationPlaybackControls } from 'framer-motion'
 
 /** 관성 감속 계수 — 매 프레임 속도에 곱한다. 1에 가까울수록 멀리 미끄러진다. */
 const FRICTION = 0.94
@@ -10,6 +11,18 @@ const VELOCITY_SMOOTHING = 0.8
 /** 포인터가 이만큼 멈춰 있다 떨어지면 관성을 주지 않는다 (ms). 카드를 붙잡아
  *  세워둔 뒤 떼는 동작까지 미끄러지면 의도와 어긋난다. */
 const STALE_MS = 80
+
+/** 끝에 닿은 뒤 더 끌었을 때 트랙이 늘어나는 한계(px). */
+const OVERSCROLL_LIMIT = 90
+
+/**
+ * 끝을 넘어 끈 거리를 고무줄처럼 눌러 준다. 처음엔 손을 거의 그대로 따라오다
+ * 점점 뻑뻑해지고 LIMIT 에 닿을 듯 말 듯 멈춘다 — 아무리 세게 당겨도 트랙이
+ * 화면 밖으로 날아가지 않으면서 "끝이다" 라는 저항이 손에 잡힌다.
+ */
+function rubber(distance: number) {
+  return (distance * OVERSCROLL_LIMIT) / (distance + OVERSCROLL_LIMIT)
+}
 
 /**
  * 가로 스크롤 컨테이너의 마우스 드래그 패닝. 네이티브 `overflow-x-auto`는
@@ -31,6 +44,11 @@ const STALE_MS = 80
  */
 export function useDragScroll<T extends HTMLElement>(onDragEnd?: (scrolled: number) => void) {
   const scrollRef = useRef<T>(null)
+  /** 끝에서 더 끈 만큼 트랙을 밀어내는 값. 쓰는 쪽에서 style={{ x }} 로 받는다.
+   *  state 가 아니라 MotionValue 인 이유는, 끄는 내내 프레임마다 값이 바뀌는데
+   *  그때마다 다시 렌더하면 카드 다섯 장이 통째로 돌아가기 때문이다. */
+  const overscrollX = useMotionValue(0)
+  const springRef = useRef<AnimationPlaybackControls | null>(null)
   const isDraggingRef = useRef(false)
   const didDragRef = useRef(false)
   const startXRef = useRef(0)
@@ -66,13 +84,28 @@ export function useDragScroll<T extends HTMLElement>(onDragEnd?: (scrolled: numb
     frameRef.current = requestAnimationFrame(step)
   }, [])
 
+  /** 손을 떼면 제자리로 튕겨 돌아간다. damping 을 낮게 둬 한 번 지나쳤다
+   *  돌아오는 반동을 남긴다 — 이게 없으면 그냥 미끄러져 멈추는 것과 같다. */
+  const releaseOverscroll = useCallback(() => {
+    springRef.current?.stop()
+    if (overscrollX.get() === 0) return
+    springRef.current = animate(overscrollX, 0, {
+      type: 'spring',
+      stiffness: 320,
+      damping: 20,
+      mass: 0.9,
+    })
+  }, [overscrollX])
+
   // 관성이 도는 중에 언마운트되면 rAF가 사라진 노드를 건드린다.
   useEffect(() => stopGlide, [stopGlide])
+  useEffect(() => () => springRef.current?.stop(), [])
 
   const onPointerDown = (event: PointerEvent<T>) => {
     const el = scrollRef.current
     if (!el) return
     stopGlide()
+    springRef.current?.stop()
     isDraggingRef.current = true
     didDragRef.current = false
     setIsDragging(true)
@@ -93,7 +126,20 @@ export function useDragScroll<T extends HTMLElement>(onDragEnd?: (scrolled: numb
       didDragRef.current = true
       el.setPointerCapture(event.pointerId)
     }
-    el.scrollLeft = startScrollLeftRef.current - delta
+    // 끝을 넘어선 만큼은 scrollLeft 가 받아 주지 않는다(0/max 에서 잘린다).
+    // 그 초과분을 고무줄로 눌러 트랙 자체를 밀어낸다.
+    const target = startScrollLeftRef.current - delta
+    const max = el.scrollWidth - el.clientWidth
+    if (target < 0) {
+      el.scrollLeft = 0
+      overscrollX.set(rubber(-target))
+    } else if (target > max) {
+      el.scrollLeft = max
+      overscrollX.set(-rubber(target - max))
+    } else {
+      el.scrollLeft = target
+      if (overscrollX.get() !== 0) overscrollX.set(0)
+    }
 
     // 프레임(≈16.7ms)당 몇 px로 움직이는지로 환산해 둬야 그대로 관성에 쓸 수 있다.
     const now = performance.now()
@@ -113,6 +159,7 @@ export function useDragScroll<T extends HTMLElement>(onDragEnd?: (scrolled: numb
     isDraggingRef.current = false
     setIsDragging(false)
     if (el?.hasPointerCapture(event.pointerId)) el.releasePointerCapture(event.pointerId)
+    releaseOverscroll()
     if (performance.now() - lastTimeRef.current > STALE_MS) velocityRef.current = 0
     if (!didDragRef.current) return
     if (onDragEnd) onDragEnd(el ? el.scrollLeft - startScrollLeftRef.current : 0)
@@ -129,6 +176,7 @@ export function useDragScroll<T extends HTMLElement>(onDragEnd?: (scrolled: numb
   return {
     scrollRef,
     isDragging,
+    overscrollX,
     dragHandlers: {
       onPointerDown,
       onPointerMove,

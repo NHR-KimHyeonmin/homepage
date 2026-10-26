@@ -140,7 +140,7 @@ export function Hero4FeatureCards() {
               />
               <div className="flex flex-col gap-2">
                 <h5 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-ink">{card.title}</h5>
-                <p className="text-base leading-[1.45] tracking-[-0.08px] text-black/55">{card.description}</p>
+                <p className="text-[18px] leading-[1.45] tracking-[-0.08px] text-black/55">{card.description}</p>
               </div>
             </div>
           ))}

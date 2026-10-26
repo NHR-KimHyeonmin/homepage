@@ -243,7 +243,11 @@ export function Hero2JobPromoMockup() {
         animate={on ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.96, y: 6 }}
         transition={{ duration: 0.4, ease: EASE, delay: at(T.tray) }}
         aria-hidden={!on}
-        className="absolute left-[40px] top-[252px] flex origin-top gap-[15px] rounded-[12px] bg-[#ebedee] p-[16px]"
+        /* 받침은 "테마 색상" 스와치가 앉은 유리 알약과 같은 처리다 — 흰색
+           55% 에 안쪽 흰 테두리 한 줄과 번지는 그림자. 회색 판으로 두면
+           카드 틴트 위에서 혼자 때가 탄 것처럼 보이는데, 유리로 두면 뒤
+           배경색이 비쳐 카드와 한 면으로 붙는다. */
+        className="absolute left-[40px] top-[252px] flex origin-top gap-[15px] rounded-[12px] bg-white/55 p-[16px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65),0_8px_24px_rgba(15,26,61,0.12)] backdrop-blur-md"
       >
         {CHANNELS.map((ch, i) => (
           <motion.div

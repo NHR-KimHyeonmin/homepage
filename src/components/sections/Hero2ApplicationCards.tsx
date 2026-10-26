@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
+import clsx from 'clsx'
 import iconBattery from '../../assets/sections/hero2-application-cards/icon-battery.svg'
 import iconPlus from '../../assets/sections/hero2-application-cards/icon-plus.svg'
 import iconSignal from '../../assets/sections/hero2-application-cards/icon-signal.svg'
 import iconSmiley from '../../assets/sections/hero2-application-cards/icon-smiley.svg'
 import iconWifi from '../../assets/sections/hero2-application-cards/icon-wifi.svg'
 import ogPreviewImage from '../../assets/sections/hero2-application-cards/og-preview-image.webp'
+import { cardSkin } from '../../lib/cardTheme'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
 import { Hero2JobPromoMockup } from './Hero2JobPromoMockup'
@@ -25,6 +27,8 @@ const SEND_DELAY_MS = 300
 const PRESS_MS = 170
 
 export function Hero2ApplicationCards() {
+  const ogSkin = cardSkin('og')
+  const promoSkin = cardSkin('promo')
   const reduceMotion = useReducedMotion()
   const [started, setStarted] = useState(false)
   const [count, setCount] = useState(0)
@@ -56,7 +60,7 @@ export function Hero2ApplicationCards() {
   }, [doneTyping])
 
   return (
-    <Section className="bg-surface-page pb-12 pt-6 md:pb-24 md:pt-6">
+    <Section className="bg-group-recruit pb-12 pt-6 md:pb-24 md:pt-6">
       <Container>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           <motion.div
@@ -73,11 +77,14 @@ export function Hero2ApplicationCards() {
               setShowOg(false)
             }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="flex flex-col items-center overflow-hidden rounded-card bg-card"
+            className="flex flex-col items-center overflow-hidden rounded-card"
+            style={ogSkin.style}
           >
             <div className="flex w-full flex-col gap-3 p-8">
-              <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-black">공고별 OG설정</h3>
-              <p className="text-base leading-[1.45] tracking-[-0.09px] text-black/55">
+              <h3 className={clsx('text-[32px] font-bold leading-[1.2] tracking-[-0.64px]', ogSkin.title)}>
+                공고별 OG설정
+              </h3>
+              <p className={clsx('text-[18px] leading-[1.45] tracking-[-0.09px]', ogSkin.body)}>
                 공고별 오픈그래프 이미지를 설정해 SNS·메신저에 채용 공고가 공유될 때 자사의 채용 이미지를 보여줄 수 있습니다.
               </p>
             </div>
@@ -167,11 +174,14 @@ export function Hero2ApplicationCards() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ amount: 0.3 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            className="flex flex-col items-center overflow-hidden rounded-card bg-card"
+            className="flex flex-col items-center overflow-hidden rounded-card"
+            style={promoSkin.style}
           >
             <div className="flex w-full flex-col gap-3 p-8">
-              <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-black">채용 공고 홍보</h3>
-              <p className="text-base leading-[1.45] tracking-[-0.09px] text-black/55">
+              <h3 className={clsx('text-[32px] font-bold leading-[1.2] tracking-[-0.64px]', promoSkin.title)}>
+                채용 공고 홍보
+              </h3>
+              <p className={clsx('text-[18px] leading-[1.45] tracking-[-0.09px]', promoSkin.body)}>
                 인디스워크, 캐치, 디맨드 등의 홍보 채널에 공고 정보가 연동되어 손쉽게 채용공고를 게재할 수 있습니다.
               </p>
             </div>

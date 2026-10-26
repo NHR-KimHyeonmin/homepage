@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import clsx from 'clsx'
 import iconChevron from '../../assets/sections/hero2-db-og-mobile/icon-chevron.svg'
 import logoUnivcert from '../../assets/sections/hero2-db-og-mobile/logo-univcert.png'
 import logoYbm from '../../assets/sections/hero2-db-og-mobile/logo-ybm.png'
+import { useSequence, useTyped } from '../../hooks/useStepSequence'
+import { cardSkin } from '../../lib/cardTheme'
 
 /**
  * "검증된 DB 기반 지원서" 카드.
@@ -63,64 +65,33 @@ const SOURCES: DbSource[] = [
 ]
 
 /**
- * 한 칸씩 넘어가는 연출의 단계.
- *   1 출처 칩 → 2 점선 연결 → 3 첫 칸 목록 → 4 첫 칸 선택
- *   → 5 둘째 칸 입력 시작 → 6 둘째 칸 완료
+ * 한 칸씩 넘어가는 연출의 단계. 두 열이 각자 처음부터 끝까지 도는 게 아니라,
+ * **먼저 두 출처를 다 세우고 나서** 입력이 차례로 들어간다.
+ *
+ *   1 YBM 칩 → 2 YBM 점선 → 3 대학알리미 칩 → 4 대학알리미 점선
+ *   → 5 시험명 목록 → 6 시험명 선택 → 7 점수 입력 → 8 점수 완료
+ *   → 9 학교명 목록 → 10 학교명 선택 → 11 주전공 입력 → 12 주전공 완료
+ *
+ * 출처 둘을 먼저 깔아 두는 편이 "어느 DB 가 무엇을 채우는가" 라는 구도를
+ * 먼저 보여 준다. 한 열씩 끝내고 넘어가면 오른쪽 열은 한참 비어 있어서,
+ * 왼쪽이 다 끝날 때까지 그 자리가 무엇인지 알 수 없다.
  */
-const STEPS = 6
-const STEP_DELAYS = [260, 420, 520, 1100, 520, 1100]
-/** 한 열이 처음부터 끝까지 도는 데 걸리는 시간. 두 열이 겹치지 않게
- *  뒷열의 시작을 이만큼(+쉬는 틈) 미룬다 — 동시에 돌면 눈이 둘로 갈린다. */
-const COLUMN_MS = STEP_DELAYS.reduce((sum, delay) => sum + delay, 0) + 600
+const STEP_DELAYS = [260, 420, 300, 420, 520, 1100, 520, 1100, 520, 1100, 520, 1100]
 
-function useSequence(active: boolean, startDelay: number, instant: boolean) {
-  const [step, setStep] = useState(0)
-
-  useEffect(() => {
-    if (instant || !active) return
-
-    const timers: number[] = []
-    let current = 0
-    const tick = (wait: number) => {
-      timers.push(
-        window.setTimeout(() => {
-          current += 1
-          setStep(current)
-          if (current < STEPS) tick(STEP_DELAYS[current])
-        }, wait),
-      )
-    }
-    tick(startDelay + STEP_DELAYS[0])
-
-    // 섹션을 벗어나면 되감는다 — 다시 들어왔을 때 처음부터 보여야 한다.
-    return () => {
-      timers.forEach((timer) => window.clearTimeout(timer))
-      setStep(0)
-    }
-  }, [active, startDelay, instant])
-
-  // 움직임을 줄이기로 한 사람에게는 다 채워진 결과만 보인다.
-  return instant ? STEPS : step
+/** 각 열이 쓰는 단계 번호. 위 주석의 순서를 그대로 옮긴 것이다. */
+interface ColumnSteps {
+  chip: number
+  line: number
+  /** [목록 열림, 고르기 완료] */
+  first: [number, number]
+  /** [입력 시작, 입력 완료] */
+  second: [number, number]
 }
 
-/** 한 글자씩 늘어나는 글자 수. 멈춰 있을 때는 0, 끝나면 전체. */
-function useTyped(text: string, busy: boolean, done: boolean) {
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    if (!busy) return
-    const timers = text.split('').map((_, index) =>
-      window.setTimeout(() => setCount(index + 1), (index + 1) * 90),
-    )
-    return () => {
-      timers.forEach((timer) => window.clearTimeout(timer))
-      setCount(0)
-    }
-  }, [text, busy])
-
-  if (done) return text.length
-  return busy ? count : 0
-}
+const COLUMN_STEPS: ColumnSteps[] = [
+  { chip: 1, line: 2, first: [5, 6], second: [7, 8] },
+  { chip: 3, line: 4, first: [9, 10], second: [11, 12] },
+]
 
 function Field({ field, busy, done }: { field: DbField; busy: boolean; done: boolean }) {
   const value = field.options[0]
@@ -202,26 +173,16 @@ function Field({ field, busy, done }: { field: DbField; busy: boolean; done: boo
   )
 }
 
-function SourceColumn({
-  source,
-  startDelay,
-  active,
-  instant,
-}: {
-  source: DbSource
-  startDelay: number
-  active: boolean
-  instant: boolean
-}) {
-  const step = useSequence(active, startDelay, instant)
-
+/** 단계 진행은 카드 하나가 통째로 쥔다 — 두 열이 번갈아 움직여야 해서
+ *  열이 각자 타이머를 굴리면 순서를 맞출 수 없다. */
+function SourceColumn({ source, steps, step }: { source: DbSource; steps: ColumnSteps; step: number }) {
   return (
     <div className="flex w-full flex-col items-center md:max-w-[440px]">
       {/* 출처 칩 — 어느 DB 가 이 칸을 채우는지 바로 위에 둔다. */}
       <div
         className={clsx(
           'flex items-center gap-4 rounded-full border border-[#e5e7eb] bg-white py-2 pl-3.5 pr-4 shadow-[0_2px_8px_rgba(15,26,61,0.07)] transition-all duration-500',
-          step >= 1 ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0',
+          step >= steps.chip ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0',
         )}
       >
         <img loading="lazy" decoding="async" src={source.logo} alt={source.alt} className="h-5 w-auto shrink-0" />
@@ -235,7 +196,7 @@ function SourceColumn({
       <span
         className={clsx(
           'h-6 w-px origin-top transition-transform duration-500',
-          step >= 2 ? 'scale-y-100' : 'scale-y-0',
+          step >= steps.line ? 'scale-y-100' : 'scale-y-0',
         )}
         style={{ backgroundImage: 'linear-gradient(to bottom, #3379f3 50%, transparent 50%)', backgroundSize: '1px 6px' }}
       />
@@ -245,8 +206,8 @@ function SourceColumn({
           <p className="text-base text-[#212121]">{source.title}</p>
         </div>
         <div className="flex flex-col gap-3.5 px-4 pb-4 pt-3.5">
-          <Field field={source.fields[0]} busy={step === 3} done={step >= 4} />
-          <Field field={source.fields[1]} busy={step === 5} done={step >= 6} />
+          <Field field={source.fields[0]} busy={step === steps.first[0]} done={step >= steps.first[1]} />
+          <Field field={source.fields[1]} busy={step === steps.second[0]} done={step >= steps.second[1]} />
         </div>
       </div>
     </div>
@@ -254,9 +215,11 @@ function SourceColumn({
 }
 
 export function Hero2VerifiedDbCard() {
+  const skin = cardSkin('db')
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { amount: 0.35 })
   const reduceMotion = useReducedMotion()
+  const step = useSequence(STEP_DELAYS, inView, 0, !!reduceMotion)
 
   return (
     <motion.div
@@ -265,26 +228,25 @@ export function Hero2VerifiedDbCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="flex w-full flex-col gap-8 rounded-card bg-card p-8"
+      className="flex w-full flex-col gap-8 rounded-card p-8"
+      style={skin.style}
     >
       <div className="flex flex-col gap-3">
-        <h3 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-black">검증된 DB 기반 지원서</h3>
-        <p className="text-base leading-[1.45] tracking-[-0.08px] text-black/55">
+        <h3 className={clsx('text-[32px] font-bold leading-[1.2] tracking-[-0.64px]', skin.title)}>
+          검증된 DB 기반 지원서
+        </h3>
+        <p className={clsx('text-[18px] leading-[1.45] tracking-[-0.08px]', skin.body)}>
           인증된 학교·학과명, 어학성적 데이터를 제공하여, 표기 차이 없이 정확한 지원자 정보를 수집할 수 있습니다.
         </p>
       </div>
 
       {/* 두 열을 폭에 맞춰 늘리지 않고 가운데로 모은다 — 늘리면 카드는
           제자리인데 사이만 벌어져 한 덩어리로 안 읽힌다. */}
-      <div className="flex flex-col items-center gap-10 md:flex-row md:items-start md:justify-center md:gap-14">
+      <div
+        className="flex flex-col items-center gap-10 md:flex-row md:items-start md:justify-center md:gap-14"
+      >
         {SOURCES.map((source, index) => (
-          <SourceColumn
-            key={source.source}
-            source={source}
-            startDelay={index * COLUMN_MS}
-            active={inView}
-            instant={!!reduceMotion}
-          />
+          <SourceColumn key={source.source} source={source} steps={COLUMN_STEPS[index]} step={step} />
         ))}
       </div>
     </motion.div>

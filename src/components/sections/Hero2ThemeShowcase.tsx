@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import clsx from 'clsx'
 import { useFitScale } from '../../hooks/useFitScale'
+import { hexToHsl, hslToHex } from '../../lib/colorShades'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
 import { Hero2ThemeColorPicker } from './Hero2ThemeColorPicker'
@@ -36,12 +37,26 @@ const DEFAULT_COLOR = PALETTE[2]
  * 색상 피커와 목업을 담는 패널 배경. tana.inc 의 FeatureVisuals_panel 처럼
  * 그라데이션 판 위에 흰 카드를 얹어 목업을 페이지 배경에서 떼어 놓는다.
  *
- * 위가 블루(#9ec4f5), 아래로 내려가며 민트(#aedcd5) 로 풀린다 — 메인 배너가
- * 위에서 아래로 보라에서 파랑으로 흐르므로, 그 끝색인 파랑을 이 판의
- * 시작색으로 받아 두 섹션이 이어지게 했다. 흰 카드를 끼고 있으니 배너보다
- * 한 단계 밝은 구간을 쓴다.
+ * 고른 테마 색의 색상각을 그대로 쓰되 채도·명도는 고정한 단색이다. 스와치를
+ * 누르면 목업 안만 바뀌는 게 아니라 판까지 같이 물드니, 저 색 하나로 사이트
+ * 전체가 갈아입는다는 게 한눈에 보인다. 명도를 고정하는 이유는 스와치마다
+ * 원래 밝기가 제각각이라(#0284C7 은 어둡고 #F43F5E 는 밝다) 그대로 옅히면
+ * 판 밝기가 널뛰어, 위에 얹힌 흰 목업과 유리 알약의 대비가 매번 달라지기
+ * 때문이다. 채도·명도는 색이 "물든" 정도로만 보이게 낮게 잡았다 — 판이
+ * 진하면 위에 얹힌 흰 목업이 눌리고, 바뀌는 색이 주인공처럼 튄다.
+ *
+ * 전에는 그라데이션이었고, 그것도 메인 배너의 끝색인 파랑(#79cefb)을 시작색
+ * 으로 받아 두 섹션을 잇는 설계였다. 그런데 큰 그라데이션 면이 배너 바로
+ * 뒤에 또 나오니 배너가 한 번 더 되풀이되는 것처럼 보였다. 흐름을 걷어 단색
+ * 으로 세웠다 — 그라데이션은 배너 한 곳에서만 쓴다.
  */
-const PANEL_GRADIENT = 'linear-gradient(170deg, #9ec4f5, #bcd4ef 45%, #aedcd5)'
+const PANEL_SATURATION = 34
+const PANEL_LIGHTNESS = 86
+
+function panelBg(themeColor: string) {
+  const [h] = hexToHsl(themeColor)
+  return hslToHex(h, PANEL_SATURATION, PANEL_LIGHTNESS)
+}
 
 /** 목업(Frame 117)이 설계된 폭. 카드가 이보다 좁으면 통째로 축소된다. */
 const MOCKUP_WIDTH = 1000
@@ -99,7 +114,7 @@ export function Hero2ThemeShowcase() {
   const { ref: fitRef, scale } = useFitScale(MOCKUP_WIDTH)
 
   return (
-    <Section className="flex flex-col items-center overflow-hidden bg-surface-page pb-12 pt-6 md:pb-24 md:pt-16">
+    <Section className="flex flex-col items-center overflow-hidden bg-group-recruit pb-12 pt-6 md:pb-24 md:pt-16">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 32 }}
@@ -107,7 +122,7 @@ export function Hero2ThemeShowcase() {
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
           className="relative flex w-full flex-col items-center gap-10 overflow-hidden rounded-media px-6 pt-10 md:aspect-[5/3] md:px-[120px] md:pt-14"
-          style={{ backgroundImage: PANEL_GRADIENT }}
+          style={{ backgroundColor: panelBg(selectedColor), transition: 'background-color 400ms ease' }}
         >
           {/* 스와치를 반투명 유리 알약 위에 올린다. 고채도 칩은 밝은 한색
               그라데이션 위에서 대비가 1.6~2.7 까지 떨어지는데, 색을 어둡게

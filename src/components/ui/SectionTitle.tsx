@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
 import { Container } from './Container'
+import { CHIP_SECTION_PT, SECTION_PT } from '../../lib/sectionRhythm'
 import { SectionEyebrow } from './SectionEyebrow'
 import { Section } from './Section'
 
 interface SectionTitleProps {
+  /** 오른쪽 챕터 네비게이터(ScrollNav)가 잡는 앵커. */
+  id?: string
   eyebrow?: string
   heading: string[]
   body?: string
@@ -22,6 +25,7 @@ interface SectionTitleProps {
  * reusable "Hero 2-Title" component instance in the Figma file.
  */
 export function SectionTitle({
+  id,
   eyebrow,
   heading,
   body,
@@ -29,13 +33,15 @@ export function SectionTitle({
   background = 'bg-surface-page',
   maxWidth = 1280,
   bodyTone = 'muted',
-  paddingClassName = 'pt-12 md:pt-[120px]',
+  // 칩이 달린 제목은 새 묶음의 시작이라 위를 한 단계 더 띄운다
+  // (sectionRhythm.ts). 구조분해 순서상 eyebrow 가 먼저 풀려 있어야 한다.
+  paddingClassName = eyebrow ? CHIP_SECTION_PT : SECTION_PT,
   className,
 }: SectionTitleProps) {
   const isCenter = align === 'center'
 
   return (
-    <Section className={clsx('flex flex-col', paddingClassName, isCenter ? 'items-center' : 'items-start', background, className)}>
+    <Section id={id} className={clsx('flex flex-col', paddingClassName, isCenter ? 'items-center' : 'items-start', background, className)}>
       <Container maxWidth={maxWidth}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -55,7 +61,7 @@ export function SectionTitle({
           {body && (
             <p
               className={clsx(
-                'max-w-[720px] text-[17px] font-medium leading-[1.45] tracking-[-0.1px]',
+                'max-w-[720px] text-[20px] font-medium leading-[1.45] tracking-[-0.1px]',
                 bodyTone === 'muted' ? 'text-black/55' : 'text-gray-200',
               )}
             >

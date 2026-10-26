@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Footer } from './components/layout/Footer'
 import { Header } from './components/layout/Header'
+import { ScrollNav } from './components/layout/ScrollNav'
 import { CtaBanner } from './components/sections/CtaBanner'
 import { FaqList } from './components/sections/FaqList'
 import { Hero00Screening } from './components/sections/Hero00Screening'
@@ -41,6 +42,7 @@ function App() {
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-surface-page">
       <Header />
+      <ScrollNav />
       <main>
         <Hero1 />
         <Hero2LogoMarquee />
@@ -54,14 +56,21 @@ function App() {
         <Hero2ApplicationBuilder />
         <Hero2DbOgMobileGrid />
 
+        {/* "전형 운영"은 "지원자 모집"과 같은 하늘색 톤으로 돌아온다 —
+            청보라를 쓰는 "서류 접수" 구간을 사이에 두고 색이 번갈아
+            나오면서, 스크롤을 내리는 동안 이야기가 바뀌는 자리가 보인다.
+
+            이 제목은 바로 아래 오는 "일반 / 간편 전형" 블록을 가리킨다.
+            그 아래 탭 묶음에는 Hero3Dashboard 가 자기 제목을 따로 들고 있다 —
+            두 덩어리가 다른 이야기라 제목도 따로 선다. */}
         <SectionTitle
           eyebrow="전형 운영"
-          heading={['반복되는 채용업무를', '보다 간결하게']}
-          background="bg-surface-blue"
+          heading={['채용 규모에 따라 선택하는', '전형관리 방식']}
+          background="bg-group-recruit"
         />
         <Hero3Dashboard />
 
-        <SectionTitle eyebrow="평가" heading={['번거로운 채용 루틴', '평가를 손쉽게']} />
+        <SectionTitle id="evaluation" eyebrow="평가" heading={['번거로운 채용 루틴', '평가를 손쉽게']} />
         <Hero4FeatureCards />
 
         <SectionTitle
@@ -74,7 +83,7 @@ function App() {
         {/* Testimonials still carries its own embedded title in Figma — no standalone SectionTitle here. */}
         <Testimonials />
 
-        <SectionTitle eyebrow="운영 지원" heading={['안정적인 채용을', '도와드립니다']} />
+        <SectionTitle id="support" eyebrow="운영 지원" heading={['안정적인 채용을', '도와드립니다']} />
         <Hero6FeatureGallery />
 
         <SectionTitle
@@ -88,7 +97,7 @@ function App() {
         {/* Hero7 still carries its own embedded title in Figma — no standalone SectionTitle here. */}
         <Hero7 />
 
-        <SectionTitle eyebrow="FAQ" heading={['커리어링크에 대해', '무엇이든지 물어보세요']} />
+        <SectionTitle id="faq" eyebrow="FAQ" heading={['커리어링크에 대해', '무엇이든지 물어보세요']} />
         <FaqList />
 
         <CtaBanner />

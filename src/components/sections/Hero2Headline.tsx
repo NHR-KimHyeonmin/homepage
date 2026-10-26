@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion'
+import clsx from 'clsx'
+import { CHIP_SECTION_PT } from '../../lib/sectionRhythm'
 import { Container } from '../ui/Container'
 import { SectionEyebrow } from '../ui/SectionEyebrow'
 import { Section } from '../ui/Section'
 
 export function Hero2Headline() {
   return (
-    <Section id="hero2-headline" className="flex flex-col items-center bg-surface-page pt-12 md:pt-[120px]">
+    <Section id="hero2-headline" className={clsx('flex flex-col items-center bg-group-recruit', CHIP_SECTION_PT)}>
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -19,7 +21,7 @@ export function Hero2Headline() {
             <p>지원하고 싶은 사이트,</p>
             <p>들어오고 싶은 회사</p>
           </div>
-          <p className="text-[17px] font-medium leading-[1.45] tracking-[-0.1px] text-black/55">
+          <p className="text-[20px] font-medium leading-[1.45] tracking-[-0.1px] text-black/55">
             커리어링크 사이트빌더로 최신 UI의 채용사이트를 만들어 보세요.
           </p>
         </motion.div>

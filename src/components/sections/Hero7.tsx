@@ -7,7 +7,7 @@ import { Section } from '../ui/Section'
 
 export function Hero7() {
   return (
-    <Section className="flex flex-col items-center bg-[#f8f9fa] py-12 md:pb-24 md:pt-[120px]">
+    <Section id="testimonials" className="flex flex-col items-center bg-[#f8f9fa] py-12 md:pb-24 md:pt-[120px]">
       <Container className="flex flex-col items-start justify-between gap-8 md:flex-row md:gap-5">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
