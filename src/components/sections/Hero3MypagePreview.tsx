@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { IconCornerDownRight, IconFileSearch } from '@tabler/icons-react'
 import { useSequence } from '../../hooks/useStepSequence'
 import { POINTER_SKIN } from '../../lib/demoCursor'
 import popupTicket from '../../assets/sections/hero3-mypage/popup-admission-ticket.png'
@@ -112,24 +113,13 @@ function Separated({ items, className }: { items: string[]; className: string })
 
 function Reply() {
   return (
-    <svg aria-hidden viewBox="0 0 24 24" fill="none" className="size-[18px] shrink-0 text-[#9aa3af]">
-      <path d="M6 5v8h11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="m14 10 3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
+    <IconCornerDownRight size={18} stroke={1.6} className="shrink-0 text-[#9aa3af]" />
   )
 }
 
 function DocumentIcon() {
   return (
-    <svg aria-hidden viewBox="0 0 24 24" fill="none" className="size-[18px]">
-      <path
-        d="M6 3h8l4 4v9H6zM9 9h6M9 13h4M18 18.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM20.5 20.5 19 19"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <IconFileSearch size={18} stroke={1.6} />
   )
 }
 

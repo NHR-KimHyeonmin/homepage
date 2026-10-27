@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import clsx from 'clsx'
+import { IconCalendar, IconChevronDown } from '@tabler/icons-react'
 import { useFitScale } from '../../hooks/useFitScale'
 import { POINTER_SKIN } from '../../lib/demoCursor'
 import { useSequence } from '../../hooks/useStepSequence'
@@ -174,9 +175,11 @@ function ChipPicker({
               </span>
             ))}
           </span>
-          <svg viewBox="0 0 20 20" fill="none" aria-hidden className="absolute right-3 top-1/2 size-5 -translate-y-1/2">
-            <path d="M6 8L10 12L14 8" stroke="#6c737f" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <IconChevronDown
+            size={20}
+            stroke={1.6}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6c737f]"
+          />
         </button>
       </Field>
 
@@ -251,9 +254,7 @@ function DatePicker({ value, onChange }: { value: string; onChange: (next: strin
         className="flex w-full cursor-pointer items-center justify-between rounded-chip border border-[#d2d6db] px-3.5 py-2.5 text-left text-sm"
       >
         <span className={value ? 'text-[#212121]' : 'text-[#9ca3af]'}>{value || '날짜 선택(선택)'}</span>
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden className="size-[18px] text-[#6c737f]">
-          <path d="M7 3v3M17 3v3M3.5 9h17M4 6.5h16v14H4z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
+        <IconCalendar size={18} stroke={1.6} className="text-[#6c737f]" />
       </button>
 
       {open && (
@@ -416,9 +417,7 @@ function ApplicantSheet({
                   <span className={clsx('flex-1 truncate', group ? 'text-[#212121]' : 'text-[#b8baba]')}>
                     {group ? group.name : '그룹 선택'}
                   </span>
-                  <svg viewBox="0 0 20 20" fill="none" aria-hidden className="size-3.5 shrink-0">
-                    <path d="M6 8L10 12L14 8" stroke="#6c737f" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  <IconChevronDown size={14} stroke={1.6} className="shrink-0 text-[#6c737f]" />
                 </button>
 
                 {open && (

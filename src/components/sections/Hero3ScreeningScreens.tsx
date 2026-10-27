@@ -1,4 +1,29 @@
-import { useEffect, useRef, useState, type ReactNode, type Ref } from 'react'
+import { useEffect, useRef, useState, type ElementType, type ReactNode, type Ref } from 'react'
+import {
+  IconAdjustmentsHorizontal,
+  IconArrowRight,
+  IconCalendar,
+  IconChevronDown,
+  IconCircleCheck,
+  IconClipboardText,
+  IconClock,
+  IconCornerDownRight,
+  IconDotsVertical,
+  IconEye,
+  IconFilter,
+  IconGripVertical,
+  IconHistory,
+  IconId,
+  IconLayoutKanban,
+  IconLayoutList,
+  IconListDetails,
+  IconMail,
+  IconMessage,
+  IconPlus,
+  IconSearch,
+  IconSend,
+  IconUser,
+} from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 
 /**
@@ -20,40 +45,40 @@ const CARD = 'rounded-[14px] border border-[#eceef2] bg-white'
 const PANEL = 'rounded-[12px] border border-[#eceef2] bg-[#fbfbfc] p-5'
 const GHOST = 'flex h-[44px] items-center gap-2 rounded-[10px] border border-[#e1e4e8] bg-white px-4 text-[18px] text-[#3f4652]'
 
-/** 얇은 선 아이콘 한 벌. 최종 배율에서 20px 안팎이라 뜻만 통하면 된다. */
-function Icon({ path, className = 'size-[22px]' }: { path: string; className?: string }) {
-  return (
-    <svg aria-hidden viewBox="0 0 24 24" fill="none" className={className}>
-      <path d={path} stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
+/**
+ * 아이콘은 Tabler 한 벌로만 쓴다 — 직접 그린 path 는 굵기도 꼭짓점 처리도
+ * 제각각이라, 한 화면에 여러 손글씨가 섞인 꼴이 된다.
+ *
+ * 굵기 1.8 은 Tabler 기본(2)보다 한 단계 얇다. 이 목업은 설계 폭 1640 을
+ * 1040 으로 줄여 그리므로 선이 그만큼 두꺼워 보인다.
+ */
+const STROKE = 1.8
 
 const P = {
-  list: 'M4 7h2M4 12h2M4 17h2M9 7h11M9 12h11M9 17h11',
-  send: 'M21 3 10.5 13.5M21 3l-6.5 18-4-8-8-4L21 3Z',
-  log: 'M4 6h5v5H4zM4 14h5v5H4zM12 7h8M12 11h5M12 16h8M12 20h5',
-  dots: 'M12 5h.01M12 12h.01M12 19h.01',
-  chevron: 'm6 9 6 6 6-6',
-  eye: 'M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z',
-  user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 21a8 8 0 0 1 16 0',
-  calendar: 'M7 3v3M17 3v3M3.5 9h17M4 6.5h16v14H4z',
-  filter: 'M3 5h18l-7 8v6l-4 2v-8L3 5Z',
-  clip: 'M8 3h8v3H8zM6 6h12v15H6zM9 11h6M9 15h4',
-  check: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM8.5 12l2.5 2.5L16 9.5',
-  grip: 'M9 5h.01M15 5h.01M9 12h.01M15 12h.01M9 19h.01M15 19h.01',
-  search: 'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM21 21l-4.3-4.3',
-  mail: 'M3 6h18v12H3zM3 7l9 6 9-6',
-  comment: 'M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5Z',
-  eyeSmall: 'M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12Z',
-  plus: 'M12 5v14M5 12h14',
-  arrow: 'M4 12h14M13 7l5 5-5 5',
-  corner: 'M5 5v8h9',
-  sliders: 'M4 7h10M18 7h2M4 17h4M12 17h8M15 4v6M8 14v6',
-  idCard: 'M3 6h18v12H3zM8 11a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM6 15c.6-1.3 1.6-2 3-2s2.4.7 3 2M14 10h4M14 13h3',
-  clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3 2',
-  board: 'M4 4h6v16H4zM14 4h6v9h-6z',
-  cards: 'M4 5h6v5H4zM4 14h6v5H4zM13 6h7M13 10h5M13 15h7M13 19h5',
+  list: IconListDetails,
+  send: IconSend,
+  log: IconHistory,
+  dots: IconDotsVertical,
+  chevron: IconChevronDown,
+  eye: IconEye,
+  user: IconUser,
+  calendar: IconCalendar,
+  filter: IconFilter,
+  clip: IconClipboardText,
+  check: IconCircleCheck,
+  grip: IconGripVertical,
+  search: IconSearch,
+  mail: IconMail,
+  comment: IconMessage,
+  eyeSmall: IconEye,
+  plus: IconPlus,
+  arrow: IconArrowRight,
+  corner: IconCornerDownRight,
+  sliders: IconAdjustmentsHorizontal,
+  idCard: IconId,
+  clock: IconClock,
+  board: IconLayoutKanban,
+  cards: IconLayoutList,
 }
 
 function Dot({ color }: { color: string }) {
@@ -71,28 +96,28 @@ function TopBar({ title, action }: { title: string; action: string }) {
       <div className="flex h-[44px] flex-1 items-center justify-between rounded-[10px] border border-[#e1e4e8] bg-white px-4">
         <span className="text-[19px] text-ink">{title}</span>
         <span className="text-[#9aa3af]">
-          <Icon path={P.chevron} />
+          <P.chevron size={22} stroke={STROKE} />
         </span>
       </div>
       <span className={GHOST}>
-        <Icon path={P.eye} className="size-[20px]" />
+        <P.eye size={20} stroke={STROKE} />
         MY
       </span>
       <span className={GHOST}>채용종료</span>
       <span className="flex h-[44px] items-center gap-2 rounded-[10px] bg-[#1d4ed8] px-4 text-[18px] font-semibold text-white">
-        <Icon path={P.plus} className="size-[20px]" />
+        <P.plus size={20} stroke={STROKE} />
         {action}
       </span>
     </div>
   )
 }
 
-function SectionHead({ icon, title, right }: { icon: string; title: string; right: ReactNode }) {
+function SectionHead({ icon: Glyph, title, right }: { icon: ElementType; title: string; right: ReactNode }) {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">
         <span className="text-[#4d5761]">
-          <Icon path={icon} className="size-[24px]" />
+          <Glyph size={24} stroke={STROKE} />
         </span>
         <p className="text-[24px] font-bold tracking-[-0.12px] text-ink">{title}</p>
       </div>
@@ -108,18 +133,18 @@ function HeadActions({ autoEval }: { autoEval?: boolean }) {
         <span className="flex h-[44px] items-center gap-2 rounded-full bg-[#f1f3f5] px-4 text-[18px] font-semibold text-ink">
           <Dot color="#1d4ed8" />
           자동평가 ON
-          <Icon path={P.chevron} className="size-[18px]" />
+          <P.chevron size={18} stroke={STROKE} />
         </span>
       )}
       <span className="flex size-[44px] items-center justify-center rounded-[10px] border border-[#e1e4e8] bg-white">
-        <Icon path={P.send} className="size-[20px]" />
+        <P.send size={20} stroke={STROKE} />
       </span>
       <span className={GHOST}>
-        <Icon path={P.log} className="size-[20px]" />
+        <P.log size={20} stroke={STROKE} />
         발송 내역
       </span>
-      <Icon path={P.dots} />
-      <Icon path={P.chevron} className="size-[22px] rotate-180" />
+      <P.dots size={22} stroke={STROKE} />
+      <P.chevron size={22} stroke={STROKE} className="rotate-180" />
     </>
   )
 }
@@ -159,11 +184,11 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
         <span className="rounded-[7px] bg-[#e8f5ec] px-2.5 py-1 text-[17px] font-semibold text-[#1f9254]">접수마감</span>
         <span>2026.04.16 (목) 00:00:00 ~ 2026.07.02 (목) 15:00:59</span>
         <span className="flex items-center gap-2">
-          <Icon path={P.user} className="size-[20px]" />
+          <P.user size={20} stroke={STROKE} />
           <u>최종제출 13명</u>
         </span>
         <span className="flex items-center gap-2">
-          <Icon path={P.user} className="size-[20px]" />
+          <P.user size={20} stroke={STROKE} />
           <u>임시저장 0명</u>
         </span>
       </div>
@@ -176,7 +201,7 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
             <div className="mb-3 flex items-center justify-between">
               <p className="text-[20px] font-semibold text-ink">평가 대상</p>
               <span className="text-[#9aa3af]">
-                <Icon path={P.dots} className="size-[20px]" />
+                <P.dots size={20} stroke={STROKE} />
               </span>
             </div>
             <div className="rounded-[10px] border border-[#eceef2] bg-white px-4 py-2">
@@ -191,19 +216,19 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
             <div className="mb-3 flex items-center justify-between">
               <p className="text-[20px] font-semibold text-ink">자동 평가</p>
               <span className="text-[#9aa3af]">
-                <Icon path={P.dots} className="size-[20px]" />
+                <P.dots size={20} stroke={STROKE} />
               </span>
             </div>
             {[
-              { icon: P.filter, label: '필터형' },
-              { icon: P.clip, label: '가산점형' },
+              { Icon: P.filter, label: '필터형' },
+              { Icon: P.clip, label: '가산점형' },
             ].map((row) => (
               <div
                 key={row.label}
                 className="mb-2.5 flex items-center justify-between rounded-[10px] border border-[#eceef2] bg-white px-3.5 py-3"
               >
                 <span className="flex items-center gap-2.5 text-[19px] text-ink">
-                  <Icon path={row.icon} className="size-[20px] text-[#6c737f]" />
+                  <row.Icon size={20} stroke={STROKE} className="text-[#6c737f]" />
                   {row.label}
                 </span>
                 <span className="rounded-[7px] bg-[#e8f5ec] px-2.5 py-1 text-[16px] font-semibold text-[#1f9254]">
@@ -218,7 +243,7 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
             <p className="mb-3 text-[20px] font-semibold text-ink">평가 세팅</p>
             <div className="mb-2.5 rounded-[10px] border border-[#eceef2] bg-white px-3.5 py-3">
               <span className="flex items-center gap-2.5 text-[19px] text-ink">
-                <Icon path={P.calendar} className="size-[20px] text-[#6c737f]" />
+                <P.calendar size={20} stroke={STROKE} className="text-[#6c737f]" />
                 평가 기간
               </span>
               {/* 칸 폭이 좁아 18px 로는 두 줄로 접힌다 — 한 줄에 들어가는
@@ -228,7 +253,7 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
             <div className="rounded-[10px] border border-[#eceef2] bg-white px-3.5 py-3">
               <div className="flex items-center justify-between text-[19px] text-ink">
                 <span className="flex items-center gap-2.5">
-                  <Icon path={P.idCard} className="size-[20px] text-[#6c737f]" />
+                  <P.idCard size={20} stroke={STROKE} className="text-[#6c737f]" />
                   평가 그룹
                 </span>
                 <span className="text-[#6c737f]">
@@ -237,7 +262,7 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
               </div>
               <div className="flex items-center justify-between pt-2 text-[18px] text-[#4d5761]">
                 <span className="flex items-center gap-2">
-                  <Icon path={P.corner} className="size-[18px] text-[#9aa3af]" />
+                  <P.corner size={18} stroke={STROKE} className="text-[#9aa3af]" />
                   미할당 대상자
                 </span>
                 <span>2 명</span>
@@ -250,7 +275,7 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
             <div className="rounded-[10px] border border-[#eceef2] bg-white px-4 py-3">
               <div className="flex items-center justify-between text-[19px]">
                 <span className="flex items-center gap-2.5 text-ink">
-                  <Icon path={P.check} className="size-[20px] text-[#6c737f]" />
+                  <P.check size={20} stroke={STROKE} className="text-[#6c737f]" />
                   완료율
                 </span>
                 <span className="text-[#6c737f]">
@@ -265,7 +290,7 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
               </div>
               <div className="flex items-center justify-between text-[19px]">
                 <span className="flex items-center gap-2.5 text-ink">
-                  <Icon path={P.user} className="size-[20px] text-[#6c737f]" />
+                  <P.user size={20} stroke={STROKE} className="text-[#6c737f]" />
                   평가자
                 </span>
                 <span className="text-[#6c737f]">
@@ -302,11 +327,11 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
         </div>
         <div className="flex items-center gap-2.5 text-[#6c737f]">
           <span className="flex items-center gap-2 text-[19px]">
-            <Icon path={P.calendar} className="size-[20px]" />
+            <P.calendar size={20} stroke={STROKE} />
             2026.07.02(목) ~ 2026.07.10(금)
           </span>
-          <Icon path={P.dots} />
-          <Icon path={P.chevron} />
+          <P.dots size={22} stroke={STROKE} />
+          <P.chevron size={22} stroke={STROKE} />
         </div>
       </motion.div>
 
@@ -318,7 +343,7 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Icon path={P.user} className="size-[24px] text-[#4d5761]" />
+            <P.user size={24} stroke={STROKE} className="text-[#4d5761]" />
             <p className="text-[24px] font-bold tracking-[-0.12px] text-ink">일반 전형 (평가형)</p>
           </div>
           <div className="flex items-center gap-2.5 text-[#6c737f]">
@@ -357,7 +382,7 @@ function EmptyAction({ note, label, primary }: { note?: string; label: string; p
         }
       >
         {label}
-        {primary && <Icon path={P.chevron} className="size-[18px]" />}
+        {primary && <P.chevron size={18} stroke={STROKE} />}
       </span>
     </>
   )
@@ -514,7 +539,7 @@ function ApplicantCard({ card, ref }: { card: Applicant; ref?: Ref<HTMLDivElemen
           className="mt-3 flex items-center justify-between rounded-[9px] bg-[#f3f4f6] px-3 py-2.5 text-[17px] text-[#4d5761]"
         >
           <span className="flex items-center gap-2">
-            <Icon path={P.user} className="size-[18px] text-[#6c737f]" />
+            <P.user size={18} stroke={STROKE} className="text-[#6c737f]" />
             {row.label}
           </span>
           <span>{row.range}</span>
@@ -523,9 +548,9 @@ function ApplicantCard({ card, ref }: { card: Applicant; ref?: Ref<HTMLDivElemen
 
       <div className="flex items-center justify-between pt-4">
         <div className="flex items-center gap-4 text-[17px] text-[#9aa3af]">
-          {[P.mail, P.comment, P.user, P.eyeSmall].map((icon, i) => (
-            <span key={icon} className="flex items-center gap-1.5">
-              <Icon path={icon} className="size-[18px]" />
+          {[P.mail, P.comment, P.user, P.eyeSmall].map((Glyph, i) => (
+            <span key={i} className="flex items-center gap-1.5">
+              <Glyph size={18} stroke={STROKE} />
               {card.counts[i]}
             </span>
           ))}
@@ -605,33 +630,33 @@ export function SimpleScreen({ active = true }: { active?: boolean }) {
         <div className="flex items-center gap-3">
           <span className="flex h-[48px] items-center gap-1 rounded-[10px] border border-[#e1e4e8] bg-white p-[3px] text-[#6c737f]">
             <span className="rounded-[8px] bg-[#eef1f4] px-3 py-2 text-ink">
-              <Icon path={P.board} className="size-[22px]" />
+              <P.board size={22} stroke={STROKE} />
             </span>
             <span className="px-3 py-2">
-              <Icon path={P.cards} className="size-[22px]" />
+              <P.cards size={22} stroke={STROKE} />
             </span>
           </span>
           <span className="flex h-[48px] items-center gap-2 rounded-[10px] bg-[#1d4ed8] px-5 text-[19px] font-semibold text-white">
-            <Icon path={P.plus} className="size-[20px]" />
+            <P.plus size={20} stroke={STROKE} />
             전형 등록
           </span>
           <span className="flex h-[48px] items-center gap-2 rounded-[10px] border border-[#bcd3fa] bg-white px-5 text-[19px] font-semibold text-[#1d4ed8]">
             지원자 추가
-            <Icon path={P.chevron} className="size-[18px]" />
+            <P.chevron size={18} stroke={STROKE} />
           </span>
         </div>
 
         <div className="flex items-center gap-3 text-[#9aa3af]">
           <span className="flex h-[48px] w-[500px] items-center gap-3 rounded-[10px] border border-[#e1e4e8] bg-white px-4 text-[19px]">
-            <Icon path={P.search} className="size-[20px]" />
+            <P.search size={20} stroke={STROKE} />
             이름
           </span>
-          {[P.clock, P.sliders, P.idCard].map((icon, i) => (
+          {[P.clock, P.sliders, P.idCard].map((Glyph, i) => (
             <span
-              key={icon}
+              key={i}
               className="relative flex size-[48px] items-center justify-center rounded-[10px] border border-[#e1e4e8] bg-white text-[#4d5761]"
             >
-              <Icon path={icon} className="size-[22px]" />
+              <Glyph size={22} stroke={STROKE} />
               {i === 2 && (
                 <span className="absolute -right-2 -top-2 flex size-[26px] items-center justify-center rounded-full bg-[#1d4ed8] text-[15px] font-bold text-white">
                   9

@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
+import { IconMinus, IconPlus } from '@tabler/icons-react'
 import clsx from 'clsx'
 import { CumulativeChart, FlowChart, MajorBars, RegionDonut } from './Hero3DashboardCharts'
 
@@ -23,12 +24,8 @@ const CHARTS: ChartCard[] = [
  * row's `currentColor` — neither of which an `<img loading="lazy" decoding="async">` can do.
  */
 function PlusMinusIcon({ showing }: { showing: boolean }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden className="size-6 shrink-0">
-      <path d="M6 12L18 12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-      {!showing && <path d="M12 6L12 18" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />}
-    </svg>
-  )
+  const Glyph = showing ? IconMinus : IconPlus
+  return <Glyph size={24} stroke={1.6} className="shrink-0" />
 }
 
 /**
