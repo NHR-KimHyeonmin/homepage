@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
+import clsx from 'clsx'
 import cardAutoEval from '../../assets/sections/hero4-cards/card1-auto-eval.webp'
-import cardBasicRetro from '../../assets/sections/hero4-cards/card4-basic-retro.webp'
 import cardBlind from '../../assets/sections/hero4-cards/card3-blind.webp'
 import cardMemoHighlight from '../../assets/sections/hero4-cards/card2-memo-highlight.webp'
 import cardAiQuestion from '../../assets/sections/hero4-cards/card5-ai-question.webp'
-import iconChevronLeft from '../../assets/sections/hero4-cards/icon-chevron-left.svg'
-import iconChevronRight from '../../assets/sections/hero4-cards/icon-chevron-right.svg'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
 
@@ -15,12 +13,6 @@ const CARDS = [
     title: '자동평가',
     description:
       '경력, 보유 스킬, 자격증, 학력, 근무 가능 조건 등 채용에 필요한 항목을 기준과 배점으로 설정해 지원자를 정량적으로 평가합니다. 사전에 설정한 조건을 기반으로 모든 지원서를 빠짐없이 확인해, 검토 누락 가능성을 낮춥니다.',
-  },
-  {
-    image: cardBasicRetro,
-    title: 'Basic·Retro 뷰',
-    description:
-      '지원서는 확인 목적과 업무 환경에 맞춰 BASIC과 RETRO 두 가지 뷰로 제공됩니다. 화면에서 편리하게 검토하거나, 익숙한 표 형식으로 출력하는 등 원하는 방식으로 지원자 정보를 확인해 보세요.',
   },
   {
     image: cardMemoHighlight,
@@ -42,109 +34,77 @@ const CARDS = [
   },
 ]
 
-/** Card width as a share of the scroll container so ~1.7 cards sit in view
- *  at once, encouraging horizontal discovery: c = (100% - gap) / 1.7. */
+/**
+ * 왼쪽 그림 한 장, 오른쪽 제목 목록. 제목을 누르면 그 기능의 그림으로
+ * 바뀌고 설명이 그 자리에서 펼쳐진다.
+ *
+ * 다섯 줄을 모두 펼쳐 두면 설명 글이 다섯 덩이라 어느 것도 안 읽힌다.
+ * 제목만 세워 두면 다섯 가지가 있다는 건 한눈에 들어오고, 읽을 하나만
+ * 열린다. 그림이 같이 바뀌니 "지금 보는 게 이것" 이라는 게 글 없이 맞는다.
+ *
+ * 그림은 다섯 장을 겹쳐 두고 투명도만 바꾼다 — 고른 순간 바로 떠야 하는데,
+ * 그때 받아 오기 시작하면 빈 칸이 한 번 보인다.
+ */
 export function Hero4FeatureCards() {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
-  const [activeIndex, setActiveIndex] = useState(0)
-  // Empty leading/trailing space so even the first/last card can reach true
-  // center — without it, centering clamps at the scroll edges and those two
-  // cards can only ever slide as far as the edge, not all the way to center.
-  const [spacerWidth, setSpacerWidth] = useState(0)
-
-  const centerCard = (index: number, behavior: ScrollBehavior) => {
-    const container = scrollRef.current
-    const cardEl = cardRefs.current[index]
-    if (!container || !cardEl) return
-
-    const containerRect = container.getBoundingClientRect()
-    const cardRect = cardEl.getBoundingClientRect()
-    const cardCenterX = cardRect.left + cardRect.width / 2
-    const containerCenterX = containerRect.left + containerRect.width / 2
-    const maxScrollLeft = container.scrollWidth - container.clientWidth
-    const target = container.scrollLeft + (cardCenterX - containerCenterX)
-
-    container.scrollTo({ left: Math.max(0, Math.min(target, maxScrollLeft)), behavior })
-  }
-
-  useEffect(() => {
-    const container = scrollRef.current
-    const firstCard = cardRefs.current[0]
-    if (!container || !firstCard) return
-    const updateSpacer = () => setSpacerWidth(Math.max(0, (container.clientWidth - firstCard.clientWidth) / 2))
-    updateSpacer()
-    const observer = new ResizeObserver(updateSpacer)
-    observer.observe(container)
-    return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    // Snap the first card to center once the spacers have their real size —
-    // no animated scroll on first paint, just settle in place.
-    centerCard(0, 'auto')
-    // Only re-run when the spacer size (re)settles, not on every card change.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [spacerWidth])
-
-  const goTo = (index: number) => {
-    const clamped = Math.max(0, Math.min(CARDS.length - 1, index))
-    setActiveIndex(clamped)
-    centerCard(clamped, 'smooth')
-  }
+  const [active, setActive] = useState(0)
 
   return (
     <Section className="bg-surface-page pb-12 pt-6 md:pb-24 md:pt-16">
-      <Container className="flex justify-end pb-6">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => goTo(activeIndex - 1)}
-            disabled={activeIndex === 0}
-            aria-label="이전 카드 보기"
-            className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#eeeeee]/[0.93] transition-opacity disabled:cursor-default disabled:opacity-40"
-          >
-            <img loading="lazy" decoding="async" src={iconChevronLeft} alt="" className="size-7" />
-          </button>
-          <button
-            type="button"
-            onClick={() => goTo(activeIndex + 1)}
-            disabled={activeIndex === CARDS.length - 1}
-            aria-label="다음 카드 보기"
-            className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#eeeeee]/[0.93] transition-opacity disabled:cursor-default disabled:opacity-40"
-          >
-            <img loading="lazy" decoding="async" src={iconChevronRight} alt="" className="size-7" />
-          </button>
-        </div>
-      </Container>
-
-      <Container
-        ref={scrollRef}
-        maxWidth={1592}
-        className="overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        <div className="flex items-stretch gap-5">
-          <div aria-hidden className="shrink-0" style={{ width: spacerWidth }} />
+      <Container className="flex flex-col gap-10 md:flex-row md:items-center md:gap-16">
+        <div className="relative aspect-[952/580] w-full overflow-hidden rounded-media md:w-[56%] md:shrink-0">
           {CARDS.map((card, index) => (
-            <div
+            <img
               key={card.title}
-              ref={(el) => {
-                cardRefs.current[index] = el
-              }}
-              className="flex w-[58%] shrink-0 flex-col items-start gap-5"
-            >
-              <img loading="lazy" decoding="async"
-                src={card.image}
-                alt={card.title}
-                className="aspect-[952/580] w-full rounded-media object-cover"
-              />
-              <div className="flex flex-col gap-2">
-                <h5 className="text-[32px] font-bold leading-[1.2] tracking-[-0.64px] text-ink">{card.title}</h5>
-                <p className="text-[18px] leading-[1.45] tracking-[-0.08px] text-black/55">{card.description}</p>
-              </div>
-            </div>
+              loading={index === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+              src={card.image}
+              alt={index === active ? card.title : ''}
+              aria-hidden={index !== active}
+              className={clsx(
+                'absolute inset-0 size-full object-cover transition-opacity duration-500',
+                index === active ? 'opacity-100' : 'opacity-0',
+              )}
+            />
           ))}
-          <div aria-hidden className="shrink-0" style={{ width: spacerWidth }} />
+        </div>
+
+        <div className="flex min-w-0 flex-1 flex-col">
+          {CARDS.map((card, index) => {
+            const isOpen = index === active
+            return (
+              <div key={card.title} className="border-t border-black/10 last:border-b">
+                <h5>
+                  <button
+                    type="button"
+                    onClick={() => setActive(index)}
+                    aria-expanded={isOpen}
+                    aria-controls={`eval-feature-${index}`}
+                    className={clsx(
+                      'w-full cursor-pointer py-5 text-left text-[24px] font-bold leading-[1.3] tracking-[-0.48px] transition-colors',
+                      isOpen ? 'text-ink' : 'text-black/35 hover:text-black/60',
+                    )}
+                  >
+                    {card.title}
+                  </button>
+                </h5>
+                {/* 0fr → 1fr. 글 높이를 재서 px 로 넣지 않아도 브라우저가
+                    펴 준다 — 줄 수가 달라져도 손댈 데가 없다. */}
+                <div
+                  id={`eval-feature-${index}`}
+                  className={clsx(
+                    'grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none',
+                    isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+                  )}
+                >
+                  <div className="overflow-hidden">
+                    <p className="pb-6 text-[18px] leading-[1.45] tracking-[-0.08px] text-black/55">
+                      {card.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </Container>
     </Section>

@@ -289,7 +289,7 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
       <motion.div
         initial={false}
         animate={active ? ROW_IN : ROW_OUT}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: active ? 0.75 : 0 }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: active ? 0.45 : 0 }}
         className={`${CARD} flex items-center justify-between px-7 py-5`}
       >
         {/* 끌어 옮기는 손잡이는 뺐다 — 위 "서류전형" 줄에는 없어서, 이 줄만
@@ -313,7 +313,7 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
       <motion.div
         initial={false}
         animate={active ? ROW_IN : ROW_OUT}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: active ? 1.5 : 0 }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: active ? 0.9 : 0 }}
         className={`${CARD} flex flex-col gap-5 p-7`}
       >
         <div className="flex items-center justify-between">
@@ -425,10 +425,7 @@ const BASE_COLUMNS: { title: string; cards: Applicant[] }[] = [
         when: '1년 전',
         role: 'UI/UX디자인',
         meta: '여 | 만 36세 | 서울대학교(졸업)',
-        rows: [
-          { label: '1차 면접', range: '09.26 ~ 09.26' },
-          { label: '○ ○ ○', range: '07.19 ~ 07.30' },
-        ],
+        rows: [{ label: '1차 면접', range: '09.26 ~ 09.26' }],
         counts: [1, 0, 0, 1],
       },
     ],
@@ -579,7 +576,7 @@ export function SimpleScreen({ active = true }: { active?: boolean }) {
         dx: (to.left - from.left) / scale,
         dy: (to.top - from.top) / scale,
       })
-    }, 1400)
+    }, 1100)
 
     // 되감기는 정리 함수에서 한다 — 효과 본문에서 바로 state 를 바꾸면
     // 렌더가 한 번 더 도는 데다, 이 효과가 할 일은 "앞에 있는 동안"뿐이다.

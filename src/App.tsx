@@ -17,6 +17,7 @@ import { Hero2LogoMarquee } from './components/sections/Hero2LogoMarquee'
 import { Hero2SeoAnalyticsGrid } from './components/sections/Hero2SeoAnalyticsGrid'
 import { Hero2ThemeShowcase } from './components/sections/Hero2ThemeShowcase'
 import { Hero3Dashboard } from './components/sections/Hero3Dashboard'
+import { Hero4EvalScreen } from './components/sections/Hero4EvalScreen'
 import { Hero4FeatureCards } from './components/sections/Hero4FeatureCards'
 import { Hero6FeatureGallery } from './components/sections/Hero6FeatureGallery'
 import { Hero7 } from './components/sections/Hero7'
@@ -70,7 +71,13 @@ function App() {
         />
         <Hero3Dashboard />
 
-        <SectionTitle id="evaluation" eyebrow="평가" heading={['번거로운 채용 루틴', '평가를 손쉽게']} />
+        <SectionTitle
+          id="evaluation"
+          eyebrow="평가"
+          heading={['번거로운 채용 루틴', '평가를 손쉽게']}
+          body="지원서를 보면서 바로 점수와 총평을 남기고, 평가자별 결과는 한곳에 모아 확인해보세요."
+        />
+        <Hero4EvalScreen />
         <Hero4FeatureCards />
 
         <SectionTitle

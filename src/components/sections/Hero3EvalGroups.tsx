@@ -68,18 +68,20 @@ const CELL = 'flex h-7 shrink-0 items-center border-r border-[#d6dade] px-2 text
  *   2  "그룹 생성" 으로 날아가 3 에서 누르고, 손을 뗀 4 에서 카드가 붙는다
  *      — 누르는 중에 카드가 먼저 나오면 버튼과 무관하게 생긴 것처럼 보인다
  *   5  박서윤의 그룹명 칸으로 내려가 6 에서 눌러 목록을 연다
- *   7~10 11월 20일 → 24일 → 26일 → 방금 만든 12월 1일 까지 훑고
- *   11  12월 1일 을 눌러 박서윤을 그 그룹에 넣는다 — 왼쪽 카드의 대상자가
+ *   7  목록을 한 번에 쓱 훑어 내려 맨 아래 12월 1일 에 멈춘다 — 줄마다
+ *      멈춰 세우면 네 번을 따로 고르는 것처럼 보인다
+ *   8  12월 1일 을 눌러 박서윤을 그 그룹에 넣는다 — 왼쪽 카드의 대상자가
  *       그 자리에서 한 명 늘어난다
  *
  * 폼으로 그룹을 만들고 그 그룹을 시트에서 지원자에게 붙인다 — 두 칸이 한
  * 가지 일의 앞뒤라는 걸 글로 적는 대신 한 번 해 보인다.
  */
-const DEMO_STEPS = [480, 540, 1150, 150, 480, 900, 360, 300, 300, 340, 440, 760]
+const DEMO_STEPS = [480, 540, 1150, 150, 480, 900, 360, 620, 760]
 
 /** 단계별 이동 시간(초). 첫 걸음은 길게 — 커서가 어디서 나와 어디로 가는지
- *  눈이 따라붙을 틈이 있어야 한다. 목록을 훑는 7~9 는 거리가 짧아 짧게. */
-const TRAVEL: Record<number, number> = { 2: 1.05, 7: 0.16, 8: 0.16, 9: 0.16, 10: 0.22 }
+ *  눈이 따라붙을 틈이 있어야 한다. 7 은 목록 위에서 맨 아래까지 한 번에
+ *  내려가는 구간이다. */
+const TRAVEL: Record<number, number> = { 2: 1.05, 7: 0.55 }
 
 /** 시트에서 연출이 건드리는 줄(박서윤). */
 const DEMO_APPLICANT = 2
@@ -590,7 +592,7 @@ export function Hero3EvalGroups() {
           ? at(stage.querySelector('[data-demo-create]'))
           : step < 7
             ? at(stage.querySelector('[data-demo-cell]'))
-            : at(menu[Math.min(step - 7, menu.length - 1)])
+            : at(menu[menu.length - 1])
     if (next) setSpot(next)
   }, [step, reduceMotion, demoOff])
   const nextId = useRef(SEED_GROUPS.length + 1)
@@ -619,7 +621,7 @@ export function Hero3EvalGroups() {
   /** 훑기의 끝은 구경이 아니라 배정이다 — 방금 만든 그룹에 지원자를 넣어야
    *  "그룹을 만들어 지원자를 담는다" 는 한 바퀴가 닫힌다. */
   useEffect(() => {
-    if (step !== 11 || reduceMotion || demoOff) return
+    if (step !== 8 || reduceMotion || demoOff) return
     const made = groups[groups.length - 1]
     if (made) assign(DEMO_APPLICANT, made.id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -791,13 +793,13 @@ export function Hero3EvalGroups() {
             groups={groups}
             assigned={assigned}
             onAssign={assign} forceOpen={demoOpen ? DEMO_APPLICANT : null}
-            demoHover={demoOpen && step >= 7 ? Math.min(step - 7, groups.length - 1) : null}
+            demoHover={demoOpen && step >= 8 ? groups.length - 1 : null}
           />
         </div>
 
         {/* 손가락 시늉. 자리는 실측해 두었다가 x/y 로만 옮기므로 밑에 깔린
-            칸들은 밀리지 않는다. 목록을 훑는 구간은 거리가 짧아 이동도 짧게
-            — 같은 0.7초로 옮기면 세 줄 사이에서 미적거리는 것처럼 보인다. */}
+            칸들은 밀리지 않는다. 목록은 한 번에 쓱 내려간다 — 줄마다 세워
+            두면 네 개를 하나씩 고르는 장면이 되어 버린다. */}
         {spot && (
           <motion.span
             aria-hidden
@@ -806,7 +808,7 @@ export function Hero3EvalGroups() {
               x: spot.x,
               y: spot.y,
               opacity: demoLive ? 1 : 0,
-              scale: step === 3 || step === 6 || step === 11 ? 0.72 : 1,
+              scale: step === 3 || step === 6 || step === 8 ? 0.72 : 1,
             }}
             transition={{
               x: { duration: TRAVEL[step] ?? 0.7, ease: [0.16, 1, 0.3, 1] },
