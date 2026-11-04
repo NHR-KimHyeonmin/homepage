@@ -178,7 +178,7 @@ export function Hero00Screening() {
     if (!nav) return
     const measure = () => {
       const el = nav.querySelector<HTMLElement>(`[data-tab="${activeTab}"]`)
-      if (el) setThumb({ x: el.offsetLeft - 4, w: el.offsetWidth })
+      if (el) setThumb({ x: el.offsetLeft - 6, w: el.offsetWidth })
     }
     measure()
     // 글꼴이 늦게 바뀌면 칸 폭도 바뀐다 — 그때 다시 잰다.
@@ -214,14 +214,14 @@ export function Hero00Screening() {
               길이가 제각각인 세 칸에서 어디가 켜졌는지 훑다 놓치기 쉬웠다.
               칸이 통째로 칠해지면 멀리서도 걸린다. 칸 폭이 저마다 달라
               미끄러질 거리는 실측해 둔다. */}
-          <nav ref={navRef} className="relative mx-auto flex w-fit items-center gap-1 rounded-full bg-[#e2ebfd] p-1">
+          <nav ref={navRef} className="relative mx-auto flex w-fit items-center gap-1 rounded-full bg-[#e2ebfd] p-1.5">
             {thumb && (
               <motion.span
                 aria-hidden
                 initial={false}
                 animate={{ x: thumb.x, width: thumb.w }}
                 transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                className="absolute left-1 top-1 h-[calc(100%-8px)] rounded-full bg-white shadow-[0_1px_3px_rgba(32,40,45,0.16)]"
+                className="absolute left-1.5 top-1.5 h-[calc(100%-12px)] rounded-full bg-white shadow-[0_1px_3px_rgba(32,40,45,0.16)]"
               />
             )}
             {NAV_TABS.map((tab) => {
@@ -234,11 +234,11 @@ export function Hero00Screening() {
                   onClick={() => selectTab(tab.id)}
                   aria-pressed={isActive}
                   className={clsx(
-                    'relative z-10 flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 py-2.5 text-[18px] font-bold tracking-[-0.09px] transition-colors duration-200',
+                    'relative z-10 flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-[16px] font-semibold tracking-[-0.09px] transition-colors duration-200',
                     isActive ? 'text-[#3379f3]' : 'text-black/35 hover:bg-[#d2e0fb] hover:text-black/55',
                   )}
                 >
-                  <img loading="lazy" decoding="async" src={isActive ? tab.iconActive : tab.iconInactive} alt="" className="size-6 shrink-0" />
+                  <img loading="lazy" decoding="async" src={isActive ? tab.iconActive : tab.iconInactive} alt="" className="size-[18px] shrink-0" />
                   {tab.label}
                 </button>
               )

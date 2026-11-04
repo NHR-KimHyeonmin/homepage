@@ -715,7 +715,7 @@ export function Hero4EvalScreen() {
   }, [frame])
 
   return (
-    <Section className="bg-surface-page pb-12 pt-6 md:pb-24 md:pt-16">
+    <Section className="bg-white pb-12 pt-6 md:pb-24 md:pt-16">
       <Container>
         <div
           ref={ref}

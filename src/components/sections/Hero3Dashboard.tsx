@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import clsx from 'clsx'
+import { PillSwitch } from '../ui/PillSwitch'
 import { Section } from '../ui/Section'
 import { Hero3CustomDashboard } from './Hero3CustomDashboard'
 import { Hero3EvalGroups } from './Hero3EvalGroups'
@@ -78,24 +78,6 @@ export function Hero3Dashboard() {
   const panelRef = useRef<HTMLDivElement>(null)
   const [panelHeight, setPanelHeight] = useState<number>()
 
-  /** 켜진 칸의 자리와 폭. 글자 길이가 달라 고정값으로는 맞출 수 없다. */
-  const navRef = useRef<HTMLElement>(null)
-  const [thumb, setThumb] = useState<{ x: number; w: number } | null>(null)
-
-  useLayoutEffect(() => {
-    const nav = navRef.current
-    if (!nav) return
-    const measure = () => {
-      const el = nav.querySelector<HTMLElement>(`[data-tab="${activeTab}"]`)
-      if (el) setThumb({ x: el.offsetLeft - 4, w: el.offsetWidth })
-    }
-    measure()
-    // 글꼴이 늦게 바뀌면 칸 폭도 바뀐다 — 그때 다시 잰다.
-    const observer = new ResizeObserver(measure)
-    observer.observe(nav)
-    return () => observer.disconnect()
-  }, [activeTab])
-
   useLayoutEffect(() => {
     const el = panelRef.current
     if (activeTab !== 'dashboard' || !el) return
@@ -107,7 +89,7 @@ export function Hero3Dashboard() {
   }, [activeTab])
 
   return (
-    <Section id="dashboard" className="flex flex-col items-center bg-group-recruit pb-12 pt-6 md:pb-24 md:pt-16">
+    <Section id="dashboard" className="flex flex-col items-center bg-group-recruit pb-20 pt-1 md:pb-40 md:pt-2">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -119,7 +101,7 @@ export function Hero3Dashboard() {
             전형을 어떤 꼴로 운영할지 고르는 일은 나머지 셋(대시보드·발송·평가
             그룹)처럼 "운영 중에 쓰는 기능" 이 아니라 그 앞에 오는 결정이라,
             같은 줄에서 고르는 것으로 보이면 위계가 뒤섞인다. */}
-        <div className="flex w-full flex-col items-center pb-[72px] md:pb-[100px]">
+        <div className="flex w-full flex-col items-center pb-[104px] md:pb-[168px]">
           <Hero3ScreeningToggle />
         </div>
 
@@ -134,51 +116,14 @@ export function Hero3Dashboard() {
         {/* 알약 꼴 탭. 밑줄 탭은 선 하나로만 현재를 표시해서, 이 블록처럼
             위아래로 내용이 긴 화면에서는 어느 탭이 켜져 있는지 훑어보다
             놓치기 쉬웠다. 켜진 칸이 통째로 칠해지면 멀리서도 걸린다. */}
-        <nav ref={navRef} className="relative mx-auto flex w-fit items-center gap-1 rounded-full bg-[#e2ebfd] p-1">
-          {/* 켜진 칸은 칠해지는 게 아니라 한 장이 좌우로 미끄러진다. 칸마다
-              색을 켜고 끄면 두 칸이 동시에 흐려졌다 진해져 "사라지고 나타난다"
-              로 보인다. 칸 폭은 글자에 맡기고 미끄러질 거리를 실측한다 —
-              외부 검사 연동 쪽 스위치와 같은 방식이다. */}
-          {thumb && (
-            <motion.span
-              aria-hidden
-              initial={false}
-              animate={{ x: thumb.x, width: thumb.w }}
-              transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-              className="absolute left-1 top-1 h-[calc(100%-8px)] rounded-full bg-white shadow-[0_1px_3px_rgba(32,40,45,0.16)]"
-            />
-          )}
-          {TABS.map((tab) => {
-            const isActive = tab.id === activeTab
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id)}
-                aria-pressed={isActive}
-                data-tab={tab.id}
-                className={clsx(
-                  'relative z-10 flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 py-2.5 text-[18px] font-bold tracking-[-0.09px] transition-colors duration-200',
-                  isActive ? 'text-[#3379f3]' : 'text-black/35 hover:bg-[#d2e0fb] hover:text-black/55',
-                )}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-6 shrink-0"
-                >
-                  {tab.icon}
-                </svg>
-                {tab.label}
-              </button>
-            )
-          })}
-        </nav>
+        <PillSwitch
+          items={TABS}
+          value={activeTab}
+          onChange={setActiveTab}
+          tone="blue"
+          label="전형 운영 기능 선택"
+          className="mb-5 md:mb-9"
+        />
 
         {/* 세로로 늘어나는 사슬: 래퍼(min-height) → 전환 상자 → 패널.
             마지막 [&>*]:flex-1 이 어느 탭의 패널이든 남는 높이를 채우게 한다 —

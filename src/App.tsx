@@ -76,6 +76,7 @@ function App() {
           eyebrow="평가"
           heading={['번거로운 채용 루틴', '평가를 손쉽게']}
           body="지원서를 보면서 바로 점수와 총평을 남기고, 평가자별 결과는 한곳에 모아 확인해보세요."
+          background="bg-white"
         />
         <Hero4EvalScreen />
         <Hero4FeatureCards />
@@ -90,7 +91,12 @@ function App() {
         {/* Testimonials still carries its own embedded title in Figma — no standalone SectionTitle here. */}
         <Testimonials />
 
-        <SectionTitle id="support" eyebrow="운영 지원" heading={['안정적인 채용을', '도와드립니다']} />
+        <SectionTitle
+          id="support"
+          eyebrow="운영 지원"
+          heading={['안정적인 채용을', '도와드립니다']}
+          align="left"
+        />
         <Hero6FeatureGallery />
 
         <SectionTitle
