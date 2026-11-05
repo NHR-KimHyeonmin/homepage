@@ -201,7 +201,7 @@ export function Hero00Screening() {
   }
 
   return (
-    <Section id="integrations" className="flex flex-col items-center gap-10 bg-[#f4f8ff] pb-12 pt-6 md:pb-24 md:pt-16">
+    <Section id="integrations" className="flex flex-col items-center gap-10 bg-[#f4f8ff] pb-20 pt-6 md:pb-40 md:pt-16">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}

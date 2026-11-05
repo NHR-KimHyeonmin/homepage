@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from 'react'
 import clsx from 'clsx'
 
-type ButtonVariant = 'sky' | 'primary' | 'outline' | 'glass'
+type ButtonVariant = 'sky' | 'primary' | 'outline' | 'glass' | 'dark'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
@@ -11,6 +11,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   sky: 'bg-[#60cdff] text-black hover:bg-[#4bc2fb]',
   primary: 'bg-primary text-white hover:bg-[#00379b]',
   outline: 'border border-gray-400 text-ink hover:bg-gray-150',
+  dark: 'bg-[#0c0805] text-white hover:bg-[#2a211c]',
   // 메인 배너처럼 색이 있는 배경 위에 올라가는 버튼. 배경이 비치도록
   // 반투명 + blur 로 두고, 테두리는 네 겹의 그림자로 만든다 —
   //   ① 윗변만 밝게: 위에서 빛이 드는 유리의 하이라이트

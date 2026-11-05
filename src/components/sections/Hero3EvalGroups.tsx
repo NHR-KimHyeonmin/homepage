@@ -100,10 +100,13 @@ const DRAFT = {
   place: '수원 연구소',
 }
 
-/** Floating-label field frame shared by every input in the right-hand form. */
+/** Floating-label field frame shared by every input in the right-hand form.
+ *
+ *  올려 두면 테두리가 켜진 상태(#0042b7)로 바뀐다 — 회색 테두리만으로는 이게
+ *  눌러서 입력하는 칸인지 그냥 네모 박스인지 구분되지 않는다. */
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="relative rounded-chip border border-[#d2d6db] px-3.5 pb-2 pt-2.5">
+    <div className="relative cursor-pointer rounded-chip border border-[#d2d6db] px-3.5 pb-2 pt-2.5 transition-colors hover:border-[#0042b7]">
       <span className="absolute -top-[7px] left-[10px] bg-white px-1 text-[11px] leading-none text-[#6c737f]">{label}</span>
       {children}
     </div>
@@ -184,7 +187,7 @@ function ChipPicker({
       </Field>
 
       {open && (
-        <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-20 overflow-hidden rounded-ui border border-[#e5e7eb] bg-white py-1 shadow-[0px_8px_16px_-4px_rgba(32,41,57,0.12)]">
+        <div className="absolute left-0 right-0 top-full z-20 overflow-hidden rounded-ui border border-[#e5e7eb] bg-white py-1 shadow-[0px_8px_16px_-4px_rgba(32,41,57,0.12)]">
           {available.length === 0 ? (
             <p className="px-3.5 py-2 text-sm text-[#9ca3af]">모두 선택했습니다.</p>
           ) : (
@@ -251,7 +254,7 @@ function DatePicker({ value, onChange }: { value: string; onChange: (next: strin
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label="면접 일자 (선택)"
-        className="flex w-full cursor-pointer items-center justify-between rounded-chip border border-[#d2d6db] px-3.5 py-2.5 text-left text-sm"
+        className="flex w-full cursor-pointer items-center justify-between rounded-chip border border-[#d2d6db] px-3.5 py-2.5 text-left text-sm transition-colors hover:border-[#0042b7]"
       >
         <span className={value ? 'text-[#212121]' : 'text-[#9ca3af]'}>{value || '날짜 선택(선택)'}</span>
         <IconCalendar size={18} stroke={1.6} className="text-[#6c737f]" />
@@ -751,7 +754,7 @@ export function Hero3EvalGroups() {
 
           <DatePicker value={date} onChange={setDate} />
 
-          <div className="rounded-chip border border-[#d2d6db] px-3.5 py-2.5">
+          <div className="rounded-chip border border-[#d2d6db] px-3.5 py-2.5 transition-colors hover:border-[#0042b7]">
             <input
               value={place}
               onChange={(event) => setPlace(event.target.value)}

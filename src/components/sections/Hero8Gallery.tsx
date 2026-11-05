@@ -1,16 +1,12 @@
-import { useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import { IconChevronRight } from '@tabler/icons-react'
 import card1 from '../../assets/sections/hero8-gallery/card-1.webp'
 import card2 from '../../assets/sections/hero8-gallery/card-2.webp'
 import card3 from '../../assets/sections/hero8-gallery/card-3.webp'
 import card4 from '../../assets/sections/hero8-gallery/card-4.webp'
 import card5 from '../../assets/sections/hero8-gallery/card-5.webp'
 import card6 from '../../assets/sections/hero8-gallery/card-6.webp'
-import chevronRight from '../../assets/sections/hero8-gallery/chevron-right.svg'
-import iconChevronLeft from '../../assets/sections/hero4-cards/icon-chevron-left.svg'
-import iconChevronNext from '../../assets/sections/hero4-cards/icon-chevron-right.svg'
-import { useContentInsetLeft } from '../../hooks/useContentInsetLeft'
-import { useDragScroll } from '../../hooks/useDragScroll'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
 
@@ -22,14 +18,19 @@ interface ServiceCard {
 
 const CARDS: ServiceCard[] = [
   {
+    name: '커리어톡',
+    image: card2,
+    description: '채용 관련 행사를 올인원으로 준비할 수 있는 운영 솔루션, 국내/외 탑티어 유저가 꾸준히 확보되는 플랫폼입니다.',
+  },
+  {
     name: '커리어앤',
     image: card1,
     description: '개인과 조직에 대한 다차원적 진단을 바탕으로 적합한 인재를 확보할 수 있도록 돕는 진단 솔루션입니다.',
   },
   {
-    name: '커리어톡',
-    image: card2,
-    description: '채용 관련 행사를 올인원으로 준비할 수 있는 운영 솔루션, 국내/외 탑티어 유저가 꾸준히 확보되는 플랫폼입니다.',
+    name: '채용 마케팅',
+    image: card5,
+    description: '개인과 조직에 대한 다차원적 진단을 바탕으로 적합한 인재를 확보할 수 있도록 돕는 진단 솔루션입니다.',
   },
   {
     name: '채용 컨설팅',
@@ -42,115 +43,137 @@ const CARDS: ServiceCard[] = [
     description: '개인과 조직에 대한 다차원적 진단을 바탕으로 적합한 인재를 확보할 수 있도록 돕는 진단 솔루션입니다.',
   },
   {
-    name: '채용 마케팅',
-    image: card5,
-    description: '개인과 조직에 대한 다차원적 진단을 바탕으로 적합한 인재를 확보할 수 있도록 돕는 진단 솔루션입니다.',
-  },
-  {
     name: '20대 연구소',
     image: card6,
     description: '개인과 조직에 대한 다차원적 진단을 바탕으로 적합한 인재를 확보할 수 있도록 돕는 진단 솔루션입니다.',
   },
 ]
 
-export function Hero8Gallery() {
-  const { scrollRef, isDragging, dragHandlers } = useDragScroll<HTMLDivElement>()
-  // First card starts exactly under the "채용을 더 완벽하게" headline, which
-  // sits in a 1208px column with this section's own outer padding.
-  const { probeRef, inset } = useContentInsetLeft<HTMLDivElement, HTMLDivElement>(scrollRef)
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
-  const [activeIndex, setActiveIndex] = useState(0)
+/** 접힌 띠 한 장의 폭. 그림이 어떤 그림인지 알아볼 만큼은 남기고, 펼친
+ *  장의 자리를 뺏지 않을 만큼만 좁힌다. */
+const COLLAPSED = 68
+/** 장 사이. */
+const GAP = 14
+/** 무대 높이 = 무대 폭 × 이 값. 펼친 장이 가로로 긴 판이 된다. */
+const RATIO = 0.44
 
-  // No center-focus needed here (unlike the 평가 section) — page so the
-  // target card's leading edge lands on the track's own left inset.
-  // (`scrollIntoView` would align it to the container edge instead, undoing
-  // the headline alignment.)
-  const goTo = (index: number) => {
-    const container = scrollRef.current
-    const cardEl = cardRefs.current[Math.max(0, Math.min(CARDS.length - 1, index))]
-    if (!container || !cardEl) return
-    const clamped = Math.max(0, Math.min(CARDS.length - 1, index))
-    setActiveIndex(clamped)
-    const target = container.scrollLeft + cardEl.getBoundingClientRect().left - container.getBoundingClientRect().left - inset
-    const maxScrollLeft = container.scrollWidth - container.clientWidth
-    container.scrollTo({ left: Math.max(0, Math.min(target, maxScrollLeft)), behavior: 'smooth' })
-  }
+/**
+ * 가로로 접었다 펴는 띠.
+ *
+ * 한 장만 펼쳐 두고 나머지는 띠로 접어 오른쪽에 세워 둔다. 띠를 누르면 그
+ * 장이 펴지고, 펴져 있던 장은 그 자리에서 띠로 접힌다 — 접힌 장이 왼쪽에
+ * 쌓이고 아직 안 본 장이 오른쪽에 남아, 여섯 장 중 지금 어디쯤인지가 자리로
+ * 드러난다.
+ *
+ * 펼친 폭과 접힌 폭은 늘 같다. 장마다 크기가 달라지면 "고른 것" 이 아니라
+ * "큰 것" 으로 읽혀, 무엇을 누른 건지가 흐려진다.
+ *
+ * 전에는 가운데 한 장을 두고 3D 로 펼치는 덱이었다. 겹쳐 놓으면 뒤 장이
+ * 무엇인지 알아볼 수가 없어, 누를 대상을 고를 수가 없었다.
+ *
+ * 글은 그림 위에 얹는다 — 그림과 글이 아래위로 떨어져 있으면 어느 글이 어느
+ * 그림의 것인지 한 번 더 짚어 봐야 한다. 대신 그림이 밝으면 흰 글씨가 묻히니
+ * 아래쪽에 검정 그라데이션을 깔아 글이 설 바닥을 만든다.
+ */
+export function Hero8Gallery() {
+  const stageRef = useRef<HTMLDivElement>(null)
+  const [width, setWidth] = useState(0)
+  const [active, setActive] = useState(0)
+
+  useLayoutEffect(() => {
+    const el = stageRef.current
+    if (!el) return
+    const measure = () => setWidth(el.clientWidth)
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  /** 펼친 장은 남는 폭을 전부 가져간다 — 띠 다섯과 사이 간격을 뺀 나머지. */
+  const expanded = Math.max(0, width - (CARDS.length - 1) * (COLLAPSED + GAP))
 
   return (
-    <Section className="flex flex-col items-center pb-12 pt-6 md:pb-24 md:pt-16">
-      {/* Zero-height mirror of the headline's column — measured, not
-          hard-coded, so the track's left edge tracks it at every width. */}
-      <div aria-hidden className="pointer-events-none absolute left-0 top-0 h-0 w-full">
-        {/* Same box as the <Container> the headline sits in, so the probe
-            lands on exactly the page gutter. */}
-        <div className="mx-auto h-0 w-full max-w-[1280px] px-5 md:px-8">
-          <div ref={probeRef} className="h-0" />
-        </div>
-      </div>
+    <Section className="flex flex-col items-center overflow-x-clip pb-20 pt-6 md:pb-40 md:pt-16">
+      <Container>
+        <div ref={stageRef} className="w-full" style={{ height: width * RATIO }}>
+            <div className="flex h-full" style={{ gap: GAP }}>
+              {CARDS.map((card, index) => {
+                const isActive = index === active
+                return (
+                  <motion.button
+                    key={card.name}
+                    type="button"
+                    onClick={() => setActive(index)}
+                    aria-expanded={isActive}
+                    aria-label={card.name}
+                    initial={false}
+                    animate={{ width: isActive ? expanded : COLLAPSED }}
+                    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ height: '100%' }}
+                    className="relative shrink-0 cursor-pointer overflow-hidden rounded-media bg-[#111] text-left"
+                  >
+                    <img
+                      loading={index < 2 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      src={card.image}
+                      alt=""
+                      className="absolute inset-0 size-full object-cover"
+                    />
+                    {/* 글이 설 바닥. 위쪽은 건드리지 않아 그림이 그대로 보인다. */}
+                    <div
+                      aria-hidden
+                      className="absolute inset-0"
+                      style={{
+                        backgroundImage:
+                          'linear-gradient(180deg, rgba(0,0,0,0) 34%, rgba(0,0,0,0.55) 68%, rgba(0,0,0,0.88) 100%)',
+                      }}
+                    />
+                    {/* 접힌 띠는 한 겹 더 어둡게 덮는다 — 그림이 밝으면
+                        세워 둔 제목이 묻히고, 펼친 장과도 구분이 안 된다. */}
+                    <motion.div
+                      aria-hidden
+                      initial={false}
+                      animate={{ opacity: isActive ? 0 : 1 }}
+                      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                      className="absolute inset-0 bg-black/30"
+                    />
+                    {/* 접힌 띠에는 제목만 세워 둔다. 가로로 두면 좁은 띠에 다 안 들어간다.
+                        세로쓰기(글자 눕힘)를 180도 돌려 아래에서 위로 읽히게 하면,
+                        글 길이와 상관없이 시작점이 띠 아래쪽에 일정하게 놓이고
+                        좌우 가운데도 flex 로 맞는다. */}
+                    <motion.div
+                      aria-hidden
+                      initial={false}
+                      animate={{ opacity: isActive ? 0 : 1 }}
+                      transition={{ duration: isActive ? 0.15 : 0.4, delay: isActive ? 0 : 0.2 }}
+                      className="absolute inset-x-0 bottom-5 flex justify-center"
+                    >
+                      <span className="rotate-180 whitespace-nowrap text-[18px] font-bold leading-none tracking-[-0.36px] text-white [text-orientation:sideways] [writing-mode:vertical-rl]">
+                        {card.name}
+                      </span>
+                    </motion.div>
 
-      <div
-        ref={scrollRef}
-        {...dragHandlers}
-        className={`w-full overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
-      >
-        <div className="flex items-stretch gap-5" style={{ paddingLeft: inset, paddingRight: 24 }}>
-          {CARDS.map((card, index) => (
-            <motion.div
-              key={card.name}
-              ref={(el) => {
-                cardRefs.current[index] = el
-              }}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: 'easeOut', delay: index * 0.06 }}
-              className="flex w-[380px] shrink-0 flex-col gap-5"
-            >
-              <div className="relative h-[240px] w-full shrink-0 overflow-hidden rounded-media">
-                <img loading="lazy" decoding="async" src={card.image} alt="" className="absolute inset-0 size-full object-cover" />
-                <div
-                  aria-hidden
-                  className="absolute inset-0"
-                  style={{ backgroundImage: 'linear-gradient(180deg, rgba(102,102,102,0.1) 4%, rgba(0,0,0,0.8) 80%)' }}
-                />
-              </div>
-              <div className="flex flex-col gap-5">
-                <div className="flex flex-col gap-2">
-                  <h5 className="text-xl font-bold leading-[1.2] tracking-[-0.4px] text-black">{card.name}</h5>
-                  <p className="text-[18px] leading-[1.45] tracking-[-0.08px] text-gray-300">{card.description}</p>
-                </div>
-                <div className="flex items-center gap-1">
-                  <h5 className="whitespace-nowrap text-sm font-bold leading-[1.2] tracking-[-0.28px] text-gray-200">
-                    자세히 보기
-                  </h5>
-                  <img loading="lazy" decoding="async" src={chevronRight} alt="" className="size-5" />
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      <Container maxWidth={1592} className="flex justify-end pt-6">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => goTo(activeIndex - 1)}
-            disabled={activeIndex === 0}
-            aria-label="이전 카드 보기"
-            className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#eeeeee]/[0.93] transition-opacity disabled:cursor-default disabled:opacity-40"
-          >
-            <img loading="lazy" decoding="async" src={iconChevronLeft} alt="" className="size-7" />
-          </button>
-          <button
-            type="button"
-            onClick={() => goTo(activeIndex + 1)}
-            disabled={activeIndex === CARDS.length - 1}
-            aria-label="다음 카드 보기"
-            className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#eeeeee]/[0.93] transition-opacity disabled:cursor-default disabled:opacity-40"
-          >
-            <img loading="lazy" decoding="async" src={iconChevronNext} alt="" className="size-7" />
-          </button>
+                    <motion.div
+                      initial={false}
+                      animate={{ opacity: isActive ? 1 : 0 }}
+                      transition={{ duration: isActive ? 0.4 : 0.15, delay: isActive ? 0.2 : 0 }}
+                      style={{ width: expanded }}
+                      className="absolute bottom-0 left-0 flex flex-col gap-2 p-7"
+                    >
+                      <h5 className="text-[22px] font-bold leading-[1.25] tracking-[-0.44px] text-white">
+                        {card.name}
+                      </h5>
+                      <p className="text-[16px] leading-[1.5] tracking-[-0.08px] text-white/75">{card.description}</p>
+                      <span className="flex items-center gap-1 pt-1 text-[14px] font-bold tracking-[-0.28px] text-white">
+                        자세히 보기
+                        <IconChevronRight size={16} stroke={2} />
+                      </span>
+                    </motion.div>
+                  </motion.button>
+                )
+              })}
+          </div>
         </div>
       </Container>
     </Section>

@@ -210,7 +210,7 @@ const GRADES = [
 
 const CONTACT = [
   { Icon: P.phone, text: '010-1234-5678' },
-  { Icon: P.mail, text: 'careerlink006@careerlink.kr' },
+  { Icon: P.mail, text: 'kimminjae@careerlink.kr' },
   { Icon: P.cake, text: '1997.05.30 (만 29세)' },
 ]
 

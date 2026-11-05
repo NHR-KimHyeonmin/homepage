@@ -5,10 +5,9 @@ import logoMark from '../../assets/sections/header/logo-mark.png'
  * 나가는 링크가 아니므로 전부 같은 페이지의 앵커다.
  */
 const NAV_LINKS = [
-  { label: '서비스소개', href: '#hero2-headline' },
-  { label: '고객사례', href: '#hero2-client-showcase' },
-  { label: '기능소개', href: '#dashboard' },
-  { label: '연동관리', href: '#integrations' },
+  { label: '상품 소개', href: '#top' },
+  { label: '운영 지원', href: '#support' },
+  { label: 'FAQ', href: '#faq' },
 ]
 
 /**
@@ -30,13 +29,13 @@ export function Header() {
           </a>
         ))}
         {/* 도입문의만 성격이 다르다 — 둘러보는 링크가 아니라 전환 지점이라
-            나머지와 같은 무게로 두지 않고 버튼으로 뺀다. */}
-        <a
-          href="#contact"
+            나머지와 같은 무게로 두지 않고 버튼으로 뺀다. 연결할 곳이 정해지면 링크로 바꾼다. */}
+        <button
+          type="button"
           className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-card bg-[#0c0805] px-4 py-2 text-[15px] font-semibold tracking-[-0.08px] text-white transition-colors hover:bg-[#2a211c]"
         >
           도입문의
-        </a>
+        </button>
       </nav>
     </header>
   )

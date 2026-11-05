@@ -66,6 +66,10 @@ const SCREENINGS = [
 const SHOT_SCALE = SHOT_WIDTH / SCREEN_WIDTH
 const SHOT_HEIGHT = Math.round(SCREEN_HEIGHT * SHOT_SCALE)
 
+/** 작은 스위치 한 칸의 폭. 무대에 scale 이 걸려 있어 실측이 어긋나므로
+ *  (PillSwitch 를 못 쓰는 이유) 폭을 못박고 미끄러질 거리를 직접 센다. */
+const PILL_CELL_WIDTH = 72
+
 type ScreeningId = (typeof SCREENINGS)[number]['id']
 
 /**
@@ -77,7 +81,6 @@ export function Hero3ScreeningToggle() {
   const { ref, scale } = useFitScale(DESIGN_WIDTH)
   const [selected, setSelected] = useState<ScreeningId>('standard')
   const current = SCREENINGS.find((item) => item.id === selected) ?? SCREENINGS[0]
-  const other = SCREENINGS.find((item) => item.id !== selected) ?? SCREENINGS[1]
 
   return (
     /* 받치던 흰 카드를 뺐다 — 두 장이 서로 앞뒤로 교차하는 게 이 블록이
@@ -140,31 +143,79 @@ export function Hero3ScreeningToggle() {
 
               높이를 34 로 못박아 두는 이유는, 문구가 바뀔 때 줄 수가 달라지면
               아래 그림이 들썩이기 때문이다. */}
-          <div className="absolute left-0 top-[12px] z-10 flex h-[34px] w-full items-center justify-center px-10">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.p
-                key={selected}
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.22, ease: 'easeOut' }}
-                className="text-center text-[20px] font-medium tracking-[-0.1px] text-black/55"
-              >
-                {/* 구역 바탕(#f6fafc)보다 한 단계 진한 면으로 채운다 —
-                    테두리를 두르면 선이 하나 더 생겨 문장 사이에서 튀는데,
-                    면은 글줄 위에 조용히 얹힌다. 조사는 버튼 밖이고 음수
-                    마진도 두지 않는다 — 되돌리면 면이 "은" 밑에 깔린다. */}
-                <button
-                  type="button"
-                  onClick={() => setSelected(other.id)}
-                  aria-label={`${other.label}으로 바꾸기`}
-                  className="mr-[3px] cursor-pointer rounded-lg bg-[#e3edf3] px-2 py-1 font-bold text-ink transition-colors hover:bg-[#d2e2ec]"
+          <div className="absolute left-0 top-[12px] z-10 flex h-[34px] w-full items-center justify-center gap-2 px-10">
+            {/* 문장 왼쪽에 서는 작은 스위치. 홈은 구역 바탕(#f6fafc)에서 한
+                톤만 내려, 조작기가 글줄 옆에서 튀지 않게 한다. 고른 칸은
+                아래 전형 운영 탭과 같은 회색(#f1f0ee)이다 — 한 구역 안에서
+                "고른 것" 의 색이 둘이면 신호가 흐려진다. */}
+            <div
+              className="relative flex shrink-0 items-center rounded-full bg-white p-[3px]"
+              role="group"
+              aria-label="전형 방식 선택"
+            >
+              <motion.span
+                aria-hidden
+                initial={false}
+                animate={{ x: SCREENINGS.findIndex((item) => item.id === selected) * PILL_CELL_WIDTH }}
+                transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                className="absolute left-[3px] top-[3px] h-[calc(100%-6px)] rounded-full bg-[#f1f0ee]"
+                style={{ width: PILL_CELL_WIDTH }}
+              />
+              {SCREENINGS.map((screening) => {
+                const isSelected = screening.id === selected
+                return (
+                  <button
+                    key={screening.id}
+                    type="button"
+                    onClick={() => setSelected(screening.id)}
+                    aria-pressed={isSelected}
+                    style={{ width: PILL_CELL_WIDTH }}
+                    className={`relative z-10 cursor-pointer whitespace-nowrap rounded-full py-[3px] text-[14px] font-semibold tracking-[-0.07px] transition-colors duration-200 ${
+                      isSelected ? 'text-ink' : 'text-black/45 hover:text-black/65'
+                    }`}
+                  >
+                    {screening.label}
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* 칸 하나에 "자" 와 "창" 을 포갠다.
+
+                자: 두 문장을 모두 그려 두되 보이지 않게 둔다. 칸이 둘 중
+                넓은 쪽에 맞춰지므로 묶음 전체 폭이 고정되고, 가운데 정렬이어도
+                스위치가 제자리에 선다 — 전에는 문장이 17px 짧아지면 스위치가
+                그 절반만큼(8.5px) 오른쪽으로 밀렸다.
+
+                창: overflow-hidden 한 칸 안에서 옛 문장이 위로 빠져나가고 새
+                문장이 아래에서 올라온다. 두 장이 같은 시각에 움직여야 한 줄이
+                감겨 올라가는 것으로 보이므로 mode 를 주지 않는다(동시 진행).
+                110% 는 글자 아랫단(디센더)까지 창 밖으로 내보내는 거리다. */}
+            <div className="grid shrink-0">
+              {SCREENINGS.map((screening) => (
+                <p
+                  key={screening.id}
+                  aria-hidden
+                  className="invisible col-start-1 row-start-1 text-left text-[20px] font-medium leading-[1.5] tracking-[-0.1px]"
                 >
-                  {current.label}
-                </button>
-                은 {current.note}
-              </motion.p>
-            </AnimatePresence>
+                  {screening.note}
+                </p>
+              ))}
+              <div className="relative col-start-1 row-start-1 overflow-hidden">
+                <AnimatePresence initial={false}>
+                  <motion.p
+                    key={selected}
+                    initial={{ y: '110%' }}
+                    animate={{ y: '0%' }}
+                    exit={{ y: '-110%' }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute inset-x-0 top-0 text-left text-[20px] font-medium leading-[1.5] tracking-[-0.1px] text-black/55"
+                  >
+                    {current.note}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
+            </div>
           </div>
 
         </div>

@@ -120,7 +120,6 @@ export function Hero3Dashboard() {
           items={TABS}
           value={activeTab}
           onChange={setActiveTab}
-          tone="blue"
           label="전형 운영 기능 선택"
           className="mb-5 md:mb-9"
         />

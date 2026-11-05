@@ -93,8 +93,8 @@ function App() {
 
         <SectionTitle
           id="support"
-          eyebrow="운영 지원"
-          heading={['안정적인 채용을', '도와드립니다']}
+          eyebrow="서비스"
+          heading={['안정적인 채용을 도와드립니다']}
           align="left"
         />
         <Hero6FeatureGallery />
