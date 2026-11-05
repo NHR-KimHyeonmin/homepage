@@ -9,17 +9,10 @@ export interface PillSwitchItem<T extends string> {
   icon?: ReactNode
 }
 
-/** 바탕은 흰색으로 같고, 켜진 칸의 알약 색과 글자색만 구역 톤을 따른다. */
-const TONES = {
-  neutral: { pill: 'bg-[#f1f0ee]', on: 'text-ink' },
-  blue: { pill: 'bg-[#e8f0fe]', on: 'text-[#3379f3]' },
-} as const
-
 interface PillSwitchProps<T extends string> {
   items: readonly PillSwitchItem<T>[]
   value: T
   onChange: (id: T) => void
-  tone?: keyof typeof TONES
   /** 스크린리더에게 이 스위치가 무엇을 고르는 것인지 알려 준다. */
   label?: string
   className?: string
@@ -42,7 +35,6 @@ export function PillSwitch<T extends string>({
   items,
   value,
   onChange,
-  tone = 'neutral',
   label,
   className,
 }: PillSwitchProps<T>) {
@@ -68,7 +60,7 @@ export function PillSwitch<T extends string>({
       ref={navRef}
       aria-label={label}
       className={clsx(
-        'relative mx-auto flex w-fit max-w-full items-center gap-1 overflow-x-auto rounded-full bg-white p-1.5 shadow-[0_2px_10px_rgba(32,40,45,0.08)]',
+        'relative mx-auto flex w-fit max-w-full items-center gap-1 overflow-x-auto rounded-full bg-white p-1.5 shadow-soft',
         className,
       )}
     >
@@ -78,7 +70,7 @@ export function PillSwitch<T extends string>({
           initial={false}
           animate={{ x: thumb.x, width: thumb.w }}
           transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-          className={clsx('absolute left-1.5 top-1.5 h-[calc(100%-12px)] rounded-full', TONES[tone].pill)}
+          className="absolute left-1.5 top-1.5 h-[calc(100%-12px)] rounded-full bg-brand-100"
         />
       )}
       {items.map((item) => {
@@ -92,7 +84,7 @@ export function PillSwitch<T extends string>({
             data-pill={item.id}
             className={clsx(
               'relative z-10 flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-[16px] font-semibold tracking-[-0.09px] transition-colors duration-200',
-              isActive ? TONES[tone].on : 'text-black/35 hover:text-black/55',
+              isActive ? 'text-brand-700' : 'text-sub hover:text-body',
             )}
           >
             {item.icon && (

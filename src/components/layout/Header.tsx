@@ -22,7 +22,7 @@ export function Header() {
       <a href="#top" aria-label="커리어링크 홈" className="shrink-0">
         <img src={logoMark} alt="커리어링크" className="h-[23px] w-auto" />
       </a>
-      <nav className="flex min-w-0 flex-wrap items-center justify-end gap-x-5 gap-y-2 text-base font-medium text-ink lg:gap-x-8">
+      <nav className="flex min-w-0 flex-wrap items-center justify-end gap-x-5 gap-y-2 text-base font-medium text-title lg:gap-x-8">
         {NAV_LINKS.map((link) => (
           <a key={link.label} href={link.href} className="whitespace-nowrap hover:opacity-80">
             {link.label}
@@ -32,7 +32,7 @@ export function Header() {
             나머지와 같은 무게로 두지 않고 버튼으로 뺀다. 연결할 곳이 정해지면 링크로 바꾼다. */}
         <button
           type="button"
-          className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-card bg-[#0c0805] px-4 py-2 text-[15px] font-semibold tracking-[-0.08px] text-white transition-colors hover:bg-[#2a211c]"
+          className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-card bg-cta px-4 py-2 text-[15px] font-semibold tracking-[-0.08px] text-white transition-colors hover:bg-cta-hover"
         >
           도입문의
         </button>

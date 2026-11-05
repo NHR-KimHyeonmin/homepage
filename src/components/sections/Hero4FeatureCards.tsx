@@ -157,9 +157,9 @@ export function Hero4FeatureCards() {
   const card = CARDS.find((item) => item.id === active) ?? CARDS[0]
 
   return (
-    <Section className="bg-gradient-to-b from-white from-60% to-surface-blue pb-28 pt-16 md:pb-[220px] md:pt-32">
+    <Section className="section-pt section-pb bg-brand-50">
       <Container className="flex flex-col items-center">
-        <h3 className="text-center text-[40px] font-bold leading-[1.4] tracking-[-1.12px] text-black md:text-[48px]">
+        <h3 className="text-center type-title">
           <span className="block">지원서를 읽는 일만</span>
           <span className="block">남기는 평가 도구</span>
         </h3>
@@ -187,19 +187,19 @@ export function Hero4FeatureCards() {
                 className="flex flex-col"
               >
                 <div>
-                  <h4 className="text-[15px] font-bold leading-[1.5] tracking-[-0.09px] text-[#3379f3]">{card.title}</h4>
-                  <p className="whitespace-pre-line pt-4 text-[24px] font-semibold leading-[1.55] tracking-[-0.12px] text-[#212121]">{card.description}</p>
+                  <h4 className="text-[15px] font-bold leading-[1.5] tracking-[-0.09px] text-brand-700">{card.title}</h4>
+                  <p className="whitespace-pre-line pt-4 text-[24px] font-semibold leading-[1.55] tracking-[-0.12px] text-title">{card.description}</p>
                 </div>
 
                 {card.details && (
                   <div className="flex flex-col gap-5 pt-[60px]">
                     {card.details.map((detail) => (
                       <div key={detail.title}>
-                        <h5 className="flex items-center gap-2 text-[18px] font-semibold tracking-[-0.09px] text-gray-300">
+                        <h5 className="flex items-center gap-2 text-[18px] font-semibold tracking-[-0.09px] text-title">
                           <detail.Icon size={18} stroke={1.8} className="shrink-0" />
                           {detail.title}
                         </h5>
-                        <p className="pt-1.5 text-[16px] leading-[1.55] tracking-[-0.08px] text-black/55">
+                        <p className="type-card-body pt-1.5">
                           {detail.body}
                         </p>
                       </div>
@@ -210,13 +210,12 @@ export function Hero4FeatureCards() {
             </AnimatePresence>
           </div>
 
-          <div className="relative aspect-square w-full overflow-hidden rounded-media md:aspect-[716/544] md:w-[59%] md:shrink-0"
+          <div className="relative aspect-square w-full overflow-hidden rounded-media shadow-float md:aspect-[716/544] md:w-[59%] md:shrink-0"
             style={{
-              boxShadow: '0 18px 48px -14px rgba(32,40,45,0.22)',
               // 흰 판 위에 흰 목업을 올리면 경계가 사라져 그림이 아니라 글의
               // 일부처럼 보인다. 구역 색(#f4f8ff)과 같은 계열로 옅게 깔아
               // 목업이 그 위에 떠 있게 한다.
-              backgroundImage: 'linear-gradient(135deg, #eaf0f9 0%, #f7f9fc 52%, #e7eef8 100%)',
+              backgroundImage: 'linear-gradient(135deg, #d6ebfa 0%, #edf7fd 52%, #cfe7f8 100%)',
             }}>
             {/* 탭을 고를 때마다 새로 붙어 연출이 처음부터 돈다. */}
             <div className="absolute inset-0 flex items-center justify-center p-4 md:px-8">

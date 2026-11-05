@@ -46,7 +46,7 @@ export function FaqList() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <Section className="flex flex-col items-center pb-20 pt-6 md:pb-40 md:pt-16">
+    <Section className="content-pt section-pb flex flex-col items-center">
       <Container>
         <ul className="flex w-full flex-col">
           {FAQS.map((item, index) => {
@@ -68,8 +68,8 @@ export function FaqList() {
                     aria-expanded={isOpen}
                     className="group flex w-full cursor-pointer items-center gap-3 px-6 py-[18px] text-left"
                   >
-                    <h5 className={`flex-1 text-[22px] font-medium leading-[1.4] tracking-[-0.4px] ${isActive ? 'text-black' : 'text-gray-300 group-hover:text-black'}`}>
-                      <span className="mr-2 text-[#3379f3]">Q.</span>{item.question}
+                    <h5 className={`flex-1 text-[22px] font-medium leading-[1.4] tracking-[-0.4px] ${isActive ? 'text-title' : 'text-body group-hover:text-title'}`}>
+                      <span className="mr-2 text-brand-700">Q.</span>{item.question}
                     </h5>
                     <motion.img
                       animate={{ rotate: isOpen ? 180 : 0 }}
@@ -90,12 +90,12 @@ export function FaqList() {
                         transition={{ duration: 0.25, ease: 'easeInOut' }}
                         className="overflow-hidden"
                       >
-                        <p className="whitespace-pre-line px-6 pb-[18px] text-[18px] leading-[1.58] tracking-[-0.32px] text-gray-300">{item.answer}</p>
+                        <p className="whitespace-pre-line px-6 pb-[18px] text-[18px] leading-[1.58] tracking-[-0.32px] text-body">{item.answer}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </motion.div>
-                {index < FAQS.length - 1 && <div className="h-px w-full bg-[#eceef2]" />}
+                {index < FAQS.length - 1 && <div className="h-px w-full bg-brand-100" />}
               </li>
             )
           })}

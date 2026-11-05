@@ -50,14 +50,14 @@ function FamilySitePicker() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-haspopup="listbox"
-        className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-ui border border-black/10 bg-white px-4 py-2 text-left text-[15px] tracking-[-0.08px] text-gray-300"
+        className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-ui border border-black/10 bg-white px-4 py-2 text-left text-[15px] tracking-[-0.08px] text-body"
       >
         {selected ?? '패밀리 사이트'}
         <IconChevronDown
           size={20}
           stroke={1.8}
           aria-hidden
-          className={`shrink-0 text-ink/60 transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`shrink-0 text-sub transition-transform ${open ? 'rotate-180' : ''}`}
         />
       </button>
 
@@ -88,7 +88,7 @@ function FamilySitePicker() {
                     setOpen(false)
                   }}
                   className={`block w-full cursor-pointer px-4 py-2.5 text-left text-[15px] tracking-[-0.08px] transition-colors ${
-                    isSelected ? 'bg-[#e8f0fe] text-[#3379f3]' : 'text-ink hover:bg-[#f2f4f7]'
+                    isSelected ? 'bg-brand-100 text-brand-700' : 'text-body hover:bg-brand-50'
                   }`}
                 >
                   {site}
@@ -106,7 +106,7 @@ function FamilySitePicker() {
 
 export function Footer() {
   return (
-    <footer className="bg-[#f4f5f7] px-5 py-12 text-gray-300 md:px-8">
+    <footer className="bg-[#f3f6f9] px-5 py-12 text-body md:px-8">
       <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-8">
         {/* 1줄: 바로가기 + 소셜 */}
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
@@ -118,8 +118,8 @@ export function Footer() {
                 {index > 0 && <span aria-hidden className="h-3 w-px bg-black/15" />}
                 <a
                   href={link.href}
-                  className={`whitespace-nowrap transition-colors hover:text-ink ${
-                    link.strong ? 'font-bold text-gray-300' : 'text-[#6c737f]'
+                  className={`whitespace-nowrap transition-colors hover:text-title ${
+                    link.strong ? 'font-bold text-body' : 'text-sub'
                   }`}
                 >
                   {link.label}
@@ -150,8 +150,8 @@ export function Footer() {
 
         {/* 2줄: 사업자 정보 + 패밀리 사이트 */}
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-          <address className="flex flex-col gap-1.5 text-[15px] not-italic leading-[1.6] tracking-[-0.08px] text-[#6c737f]">
-            <span className="font-semibold text-gray-300">(주)엔에이치알</span>
+          <address className="flex flex-col gap-1.5 text-[15px] not-italic leading-[1.6] tracking-[-0.08px] text-sub">
+            <span className="font-semibold text-body">(주)엔에이치알</span>
             <span>07727 서울특별시 강서구 까치산로 23 NHR타워 | 대표이사 김종원</span>
             <span>사업자등록번호: 161-86-01410</span>
           </address>
@@ -159,7 +159,7 @@ export function Footer() {
           <FamilySitePicker />
         </div>
 
-        <p className="text-[15px] tracking-[-0.08px] text-[#6c737f]">© 2026 NHR. All Rights Reserved</p>
+        <p className="text-[15px] tracking-[-0.08px] text-sub">© 2026 NHR. All Rights Reserved</p>
       </div>
     </footer>
   )

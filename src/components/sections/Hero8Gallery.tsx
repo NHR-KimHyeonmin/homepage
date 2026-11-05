@@ -1,5 +1,5 @@
-import { useLayoutEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { IconChevronRight } from '@tabler/icons-react'
 import card1 from '../../assets/sections/hero8-gallery/card-1.webp'
 import card2 from '../../assets/sections/hero8-gallery/card-2.webp'
@@ -54,6 +54,8 @@ const CARDS: ServiceCard[] = [
 const COLLAPSED = 68
 /** 장 사이. */
 const GAP = 14
+/** 다음 장이 펼쳐지는 간격(ms). */
+const INTERVAL = 3000
 /** 무대 높이 = 무대 폭 × 이 값. 펼친 장이 가로로 긴 판이 된다. */
 const RATIO = 0.44
 
@@ -79,6 +81,17 @@ export function Hero8Gallery() {
   const stageRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
   const [active, setActive] = useState(0)
+  /** 읽는 중에 장이 넘어가지 않도록 마우스를 올린 동안은 멈춘다. */
+  const [paused, setPaused] = useState(false)
+  const inView = useInView(stageRef, { amount: 0.4 })
+  const reduceMotion = useReducedMotion()
+
+  // active 가 바뀔 때마다 다시 재므로, 직접 누른 뒤에도 3초를 온전히 보여 준다.
+  useEffect(() => {
+    if (!inView || paused || reduceMotion) return
+    const timer = setTimeout(() => setActive((i) => (i + 1) % CARDS.length), INTERVAL)
+    return () => clearTimeout(timer)
+  }, [active, inView, paused, reduceMotion])
 
   useLayoutEffect(() => {
     const el = stageRef.current
@@ -94,9 +107,15 @@ export function Hero8Gallery() {
   const expanded = Math.max(0, width - (CARDS.length - 1) * (COLLAPSED + GAP))
 
   return (
-    <Section className="flex flex-col items-center overflow-x-clip pb-20 pt-6 md:pb-40 md:pt-16">
+    <Section className="flex flex-col items-center content-pt section-pb overflow-x-clip">
       <Container>
-        <div ref={stageRef} className="w-full" style={{ height: width * RATIO }}>
+        <div
+          ref={stageRef}
+          className="w-full"
+          style={{ height: width * RATIO }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
             <div className="flex h-full" style={{ gap: GAP }}>
               {CARDS.map((card, index) => {
                 const isActive = index === active

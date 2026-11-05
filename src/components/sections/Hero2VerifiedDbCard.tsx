@@ -232,10 +232,10 @@ export function Hero2VerifiedDbCard() {
       style={skin.style}
     >
       <div className="flex flex-col gap-3">
-        <h3 className={clsx('text-[32px] font-bold leading-[1.2] tracking-[-0.64px]', skin.title)}>
+        <h3 className="type-card-title">
           검증된 DB 기반 지원서
         </h3>
-        <p className={clsx('text-[18px] leading-[1.45] tracking-[-0.08px]', skin.body)}>
+        <p className="type-card-body">
           인증된 학교·학과명, 어학성적 데이터를 제공하여, 표기 차이 없이 정확한 지원자 정보를 수집할 수 있습니다.
         </p>
       </div>

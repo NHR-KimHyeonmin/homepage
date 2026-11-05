@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import clsx from 'clsx'
 import bgTexture from '../../assets/sections/testimonials/bg-texture.webp'
 import iconTrash from '../../assets/sections/testimonials/icon-1-trash.png'
 import iconEye from '../../assets/sections/testimonials/icon-2-eye.png'
@@ -8,7 +7,6 @@ import iconLock from '../../assets/sections/testimonials/icon-3-lock.png'
 import iconPin from '../../assets/sections/testimonials/icon-4-pin.png'
 import iconLogout from '../../assets/sections/testimonials/icon-5-logout.png'
 import iconPrinter from '../../assets/sections/testimonials/icon-6-printer.png'
-import { CHIP_SECTION_PT } from '../../lib/sectionRhythm'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
 import { SectionEyebrow } from '../ui/SectionEyebrow'
@@ -84,7 +82,7 @@ export function Testimonials() {
       as={motion.section}
       ref={sectionRef}
       style={{ minHeight }}
-      className={clsx('flex flex-col items-center justify-center gap-[80px] overflow-hidden bg-black pb-12 md:pb-24', CHIP_SECTION_PT)}
+      className="section-pt section-pb flex flex-col items-center justify-center gap-[80px] overflow-hidden bg-black"
     >
       <div aria-hidden className="absolute inset-0 -z-10">
         <div

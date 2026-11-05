@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import clsx from 'clsx'
 import { cardSkin } from '../../lib/cardTheme'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
@@ -19,7 +18,7 @@ export function Hero2DbOgMobileGrid() {
   const memberSkin = cardSkin('member')
 
   return (
-    <Section className="bg-group-intake pb-12 pt-6 md:pb-24 md:pt-16">
+    <Section className="section-pt section-pb bg-brand-50">
       <Container className="flex flex-col gap-6">
         <Hero2VerifiedDbCard />
 
@@ -33,10 +32,10 @@ export function Hero2DbOgMobileGrid() {
             style={mobileSkin.style}
           >
             <div className="flex w-full flex-col gap-3 p-8 pb-0">
-              <h3 className={clsx('text-[32px] font-bold leading-[1.2] tracking-[-0.64px]', mobileSkin.title)}>
+              <h3 className="type-card-title">
                 모바일 반응형 지원서
               </h3>
-              <p className={clsx('text-[18px] leading-[1.45] tracking-[-0.08px]', mobileSkin.body)}>
+              <p className="type-card-body">
                 PC와 모바일 기기에 상관없이 언제 어디에서나 지원서를 작성하고 제출할 수 있습니다.
               </p>
             </div>
@@ -53,10 +52,10 @@ export function Hero2DbOgMobileGrid() {
             style={memberSkin.style}
           >
             <div className="flex w-full flex-col gap-3 p-8">
-              <h3 className={clsx('text-[32px] font-bold leading-[1.2] tracking-[-0.64px]', memberSkin.title)}>
+              <h3 className="type-card-title">
                 회원 · 비회원 서류접수
               </h3>
-              <p className={clsx('text-[18px] leading-[1.45] tracking-[-0.08px]', memberSkin.body)}>
+              <p className="type-card-body">
                 회원전용 공고 또는 비회원전용 공고로 구분하여 공고를 생성할 수 있습니다. 지원자는 로그인해 회원으로
                 지원하거나, 로그인 없이 이름·휴대폰 번호만 넣고 바로 작성을 시작할 수 있습니다.
               </p>

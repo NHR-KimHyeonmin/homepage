@@ -201,7 +201,7 @@ export function Hero00Screening() {
   }
 
   return (
-    <Section id="integrations" className="flex flex-col items-center gap-10 bg-[#f4f8ff] pb-20 pt-6 md:pb-40 md:pt-16">
+    <Section id="integrations" className="flex flex-col items-center content-pt section-pb gap-10 bg-white">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -214,14 +214,14 @@ export function Hero00Screening() {
               길이가 제각각인 세 칸에서 어디가 켜졌는지 훑다 놓치기 쉬웠다.
               칸이 통째로 칠해지면 멀리서도 걸린다. 칸 폭이 저마다 달라
               미끄러질 거리는 실측해 둔다. */}
-          <nav ref={navRef} className="relative mx-auto flex w-fit items-center gap-1 rounded-full bg-[#e2ebfd] p-1.5">
+          <nav ref={navRef} className="relative mx-auto flex w-fit items-center gap-1 rounded-full bg-white p-1.5 shadow-soft">
             {thumb && (
               <motion.span
                 aria-hidden
                 initial={false}
                 animate={{ x: thumb.x, width: thumb.w }}
                 transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                className="absolute left-1.5 top-1.5 h-[calc(100%-12px)] rounded-full bg-white shadow-[0_1px_3px_rgba(32,40,45,0.16)]"
+                className="absolute left-1.5 top-1.5 h-[calc(100%-12px)] rounded-full bg-brand-100"
               />
             )}
             {NAV_TABS.map((tab) => {
@@ -235,7 +235,7 @@ export function Hero00Screening() {
                   aria-pressed={isActive}
                   className={clsx(
                     'relative z-10 flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-[16px] font-semibold tracking-[-0.09px] transition-colors duration-200',
-                    isActive ? 'text-[#3379f3]' : 'text-black/35 hover:bg-[#d2e0fb] hover:text-black/55',
+                    isActive ? 'text-brand-700' : 'text-sub hover:text-body',
                   )}
                 >
                   <img loading="lazy" decoding="async" src={isActive ? tab.iconActive : tab.iconInactive} alt="" className="size-[18px] shrink-0" />
@@ -290,7 +290,7 @@ export function Hero00Screening() {
                 onClick={() => selectTab(card.group)}
                 aria-pressed={card.group === activeTab}
                 className={clsx(
-                  'flex h-[400px] shrink-0 cursor-pointer flex-col gap-4 overflow-hidden rounded-card bg-white p-7 text-left shadow-[0px_4px_10px_0px_rgba(0,66,183,0.04)] transition-opacity duration-300',
+                  'flex h-[400px] shrink-0 cursor-pointer flex-col gap-4 overflow-hidden rounded-card bg-brand-50 p-7 text-left transition-opacity duration-300',
                   card.group === activeTab ? 'opacity-100' : 'opacity-30 hover:opacity-60',
                 )}
                 style={{ width: CARD_WIDTH }}
@@ -300,10 +300,10 @@ export function Hero00Screening() {
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-0.5">
-                    <p className="text-sm font-semibold tracking-[-0.07px] text-gray-200">{card.org}</p>
-                    <p className="text-[22px] font-bold tracking-[-0.11px] text-black">{card.name}</p>
+                    <p className="text-sm font-semibold tracking-[-0.07px] text-sub">{card.org}</p>
+                    <p className="type-card-title">{card.name}</p>
                   </div>
-                  <p className="text-base leading-[1.6] tracking-[-0.09px] text-gray-300">{card.description}</p>
+                  <p className="type-card-body">{card.description}</p>
                 </div>
               </button>
             ))}
@@ -320,7 +320,7 @@ export function Hero00Screening() {
       >
         <button
           type="button"
-          className="flex cursor-pointer items-center justify-center rounded-full bg-ink px-[30px] py-3 text-xl font-semibold text-white transition-colors hover:bg-black"
+          className="flex cursor-pointer items-center justify-center rounded-card bg-cta px-7 py-3.5 text-[19px] font-semibold text-white transition-colors hover:bg-cta-hover"
         >
           연동 문의하기
         </button>

@@ -31,7 +31,7 @@ import { Hero2ThemeFrame117 } from './Hero2ThemeFrame117'
  */
 const PALETTE = ['#0284C7', '#6E23D7', '#A855F7', '#DB2777', '#F43F5E']
 /** 가운데 칸에서 시작해 양옆으로 도는 편이 줄 전체가 눈에 들어온다. */
-const DEFAULT_COLOR = PALETTE[2]
+const DEFAULT_COLOR = PALETTE[0]
 
 /**
  * 색상 피커와 목업을 담는 패널 배경. tana.inc 의 FeatureVisuals_panel 처럼
@@ -114,7 +114,7 @@ export function Hero2ThemeShowcase() {
   const { ref: fitRef, scale } = useFitScale(MOCKUP_WIDTH)
 
   return (
-    <Section className="flex flex-col items-center overflow-hidden bg-group-recruit pb-12 pt-6 md:pb-24 md:pt-16">
+    <Section className="flex flex-col items-center content-pt overflow-hidden bg-white">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 32 }}

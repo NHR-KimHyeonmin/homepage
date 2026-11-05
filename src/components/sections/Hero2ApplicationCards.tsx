@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import clsx from 'clsx'
 import iconBattery from '../../assets/sections/hero2-application-cards/icon-battery.svg'
 import iconPlus from '../../assets/sections/hero2-application-cards/icon-plus.svg'
 import iconSignal from '../../assets/sections/hero2-application-cards/icon-signal.svg'
@@ -60,7 +59,7 @@ export function Hero2ApplicationCards() {
   }, [doneTyping])
 
   return (
-    <Section className="bg-group-recruit pb-12 pt-6 md:pb-24 md:pt-6">
+    <Section className="bg-white pt-5">
       <Container>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           <motion.div
@@ -81,10 +80,10 @@ export function Hero2ApplicationCards() {
             style={ogSkin.style}
           >
             <div className="flex w-full flex-col gap-3 p-8">
-              <h3 className={clsx('text-[32px] font-bold leading-[1.2] tracking-[-0.64px]', ogSkin.title)}>
+              <h3 className="type-card-title">
                 공고별 OG설정
               </h3>
-              <p className={clsx('text-[18px] leading-[1.45] tracking-[-0.09px]', ogSkin.body)}>
+              <p className="type-card-body">
                 공고별 오픈그래프 이미지를 설정해 SNS·메신저에 채용 공고가 공유될 때 자사의 채용 이미지를 보여줄 수 있습니다.
               </p>
             </div>
@@ -178,10 +177,10 @@ export function Hero2ApplicationCards() {
             style={promoSkin.style}
           >
             <div className="flex w-full flex-col gap-3 p-8">
-              <h3 className={clsx('text-[32px] font-bold leading-[1.2] tracking-[-0.64px]', promoSkin.title)}>
+              <h3 className="type-card-title">
                 채용 공고 홍보
               </h3>
-              <p className={clsx('text-[18px] leading-[1.45] tracking-[-0.09px]', promoSkin.body)}>
+              <p className="type-card-body">
                 인디스워크, 캐치, 디맨드 등의 홍보 채널에 공고 정보가 연동되어 손쉽게 채용공고를 게재할 수 있습니다.
               </p>
             </div>

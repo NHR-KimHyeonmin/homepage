@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
-import clsx from 'clsx'
 import { cardSkin, type CardId } from '../../lib/cardTheme'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
@@ -38,7 +37,7 @@ const CARDS: CardData[] = [
  */
 export function Hero2SeoAnalyticsGrid() {
   return (
-    <Section className="bg-group-recruit pt-12 md:pt-16">
+    <Section className="content-pt bg-white">
       <Container>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           {CARDS.map((card, i) => {
@@ -54,10 +53,10 @@ export function Hero2SeoAnalyticsGrid() {
               style={skin.style}
             >
               <div className="flex w-full flex-col gap-3 p-8">
-                <h3 className={clsx('text-[32px] font-bold leading-[1.2] tracking-[-0.64px]', skin.title)}>
+                <h3 className="type-card-title">
                   {card.title}
                 </h3>
-                <p className={clsx('text-[18px] leading-[1.45] tracking-[-0.08px]', skin.body)}>{card.description}</p>
+                <p className="type-card-body">{card.description}</p>
               </div>
               <div className="flex w-full flex-1 items-start justify-center overflow-hidden">
                 {card.visual}

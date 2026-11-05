@@ -89,7 +89,7 @@ export function Hero3Dashboard() {
   }, [activeTab])
 
   return (
-    <Section id="dashboard" className="flex flex-col items-center bg-group-recruit pb-20 pt-1 md:pb-40 md:pt-2">
+    <Section id="dashboard" className="flex flex-col section-pb items-center bg-white pt-1 md:pt-2">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -101,14 +101,14 @@ export function Hero3Dashboard() {
             전형을 어떤 꼴로 운영할지 고르는 일은 나머지 셋(대시보드·발송·평가
             그룹)처럼 "운영 중에 쓰는 기능" 이 아니라 그 앞에 오는 결정이라,
             같은 줄에서 고르는 것으로 보이면 위계가 뒤섞인다. */}
-        <div className="flex w-full flex-col items-center pb-[104px] md:pb-[168px]">
+        <div className="flex w-full flex-col items-center pb-[76px] md:pb-[140px]">
           <Hero3ScreeningToggle />
         </div>
 
         {/* 탭 묶음이 무슨 이야기에 딸린 것인지 말해 주는 제목. 위 섹션 제목은
             "일반 / 간편 전형" 을 가리키고 여기부터는 운영 중에 쓰는 기능들이라,
             한 섹션 안에 제목이 둘이다. */}
-        <h3 className="pb-8 text-center text-[40px] font-bold leading-[1.4] tracking-[-1.12px] text-black md:text-[48px]">
+        <h3 className="pb-8 text-center type-title">
           <span className="block">반복되는 채용업무를</span>
           <span className="block">보다 간결하게</span>
         </h3>
@@ -148,7 +148,7 @@ export function Hero3Dashboard() {
         {/* 설명문은 목업 아래에 둔다 — 탭을 누르면 바뀌는 건 그림이고, 글은
             그 그림이 무엇인지 뒤에서 확인해 주는 말이다. 위에 두면 그림이
             나오기 전에 설명부터 읽히는데, 이 블록은 보고 나서 읽는 쪽이다. */}
-        <p className="w-full max-w-[1100px] whitespace-pre-line px-8 pt-[30px] text-center text-[20px] font-medium leading-[1.45] tracking-[-0.1px] text-black/55">
+        <p className="w-full max-w-[1100px] whitespace-pre-line px-8 pt-[30px] text-center type-lead">
           {TAB_DESCRIPTIONS[activeTab]}
         </p>
       </motion.div>

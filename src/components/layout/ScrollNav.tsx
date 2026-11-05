@@ -68,7 +68,7 @@ export function ScrollNav() {
        구역마다 색을 뒤집으면 구역 경계와 실제 배경이 어긋나는 자리에서 사라진다. */
     <nav
       aria-label="페이지 구역 바로가기"
-      className="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center rounded-full bg-white/80 px-1 py-2 shadow-[0_2px_12px_rgba(32,40,45,0.16)] ring-1 ring-black/5 backdrop-blur-md xl:flex"
+      className="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center rounded-full bg-white/80 px-1 py-2 shadow-soft backdrop-blur-md xl:flex"
     >
       {CHAPTERS.map((chapter) => {
         const isActive = chapter.id === active
@@ -89,11 +89,11 @@ export function ScrollNav() {
             <span
               className={clsx(
                 'block w-1.5 rounded-full transition-all duration-300',
-                isActive ? 'h-[18px] bg-ink' : 'h-1.5 bg-ink/25 group-hover:bg-ink/55',
+                isActive ? 'h-[18px] bg-brand-700' : 'h-1.5 bg-brand-200 group-hover:bg-brand-500',
               )}
             />
             {/* 이름표는 마우스를 올리거나 키보드로 고른 동안에만 나온다. 지금 구역은 막대가 알려 준다. */}
-            <span className="pointer-events-none absolute right-full mr-2.5 whitespace-nowrap rounded-[6px] bg-ink px-2 py-1 text-[12px] font-semibold leading-none text-white opacity-0 shadow-[0_2px_8px_rgba(32,40,45,0.25)] transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
+            <span className="pointer-events-none absolute right-full mr-2.5 whitespace-nowrap rounded-[6px] bg-title px-2 py-1 text-[12px] font-semibold leading-none text-white opacity-0 shadow-[0_2px_8px_rgba(32,40,45,0.25)] transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
               {chapter.label}
             </span>
           </button>

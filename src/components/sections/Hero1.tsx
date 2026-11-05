@@ -83,16 +83,19 @@ const IMAGE_DELAY_S = (REVEAL_STAGGER_MS * 2) / 1000
 const STAGE_GRADIENT = [
   // 왼쪽을 살짝 띄우는 가로 기울기
   'linear-gradient(90deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0) 58%)',
+  // 하늘색과 이웃한 두 색을 양쪽 아래에서 번지게 한다. 왼쪽은 연보라, 오른쪽은 민트.
+  'radial-gradient(58% 62% at 12% 88%, rgba(170, 176, 255, 0.9) 0%, rgba(170, 176, 255, 0) 100%)',
+  'radial-gradient(52% 58% at 90% 84%, rgba(112, 232, 218, 0.8) 0%, rgba(112, 232, 218, 0) 100%)',
   // 본체: 위에서 아래로 흐르는 세로 램프
   [
     'linear-gradient(180deg',
-    '#f2f1f6 0%',
-    '#ded9ed 24%',
-    '#b6aeeb 40%',
-    '#8d80e7 55%',
-    '#5f69ea 70%',
-    '#5a9bf6 85%',
-    '#79cefb 100%)',
+    '#f5fafe 0%',
+    '#e3f1fb 24%',
+    '#c5e3f7 42%',
+    '#9dd7f5 58%',
+    '#75c5f0 72%',
+    '#39bbf3 88%',
+    '#0d9ceb 100%)',
   ].join(', '),
 ].join(', ')
 
@@ -114,7 +117,7 @@ const STAGE_MASK = `${STAGE_ARCH}, ${STAGE_FOOT}`
  * 걸려 있어서, 같이 두면 모눈이 늘었다 줄었다 하며 움직임이 드러난다.
  */
 /** 머리글에 입히는 기울기. 레퍼런스에서 뽑은 두 끝값 그대로다. */
-const HEADLINE_GRADIENT = 'linear-gradient(100deg, #1b1b36 0%, #262845 45%, #3a3c58 100%)'
+const HEADLINE_GRADIENT = 'linear-gradient(100deg, #10263a 0%, #15304a 45%, #1d3d58 100%)'
 
 const GRID_SIZE = 28
 const GRID_LINE = 'rgba(255, 255, 255, 0.09)'
@@ -129,7 +132,7 @@ const STAGE_GRID = [
  * 청색 슬레이트를 쓴다. 넓게 퍼지는 한 겹과 바짝 붙는 한 겹을 겹쳐
  * 떠 있는 느낌만 주고 윤곽은 흐리지 않는다.
  */
-const DASHBOARD_SHADOW = '0 24px 60px -12px rgba(47, 68, 116, 0.28), 0 2px 10px 0 rgba(47, 68, 116, 0.12)'
+const DASHBOARD_SHADOW = '0 24px 60px -12px rgba(13, 82, 140, 0.28), 0 2px 10px 0 rgba(13, 82, 140, 0.12)'
 
 /**
  * 아치가 천천히 눌렸다 부풀기를 반복한다. 가로는 건드리지 않고 scaleY 만
@@ -209,7 +212,7 @@ export function Hero1() {
     >
       {/* 흰 바탕 위의 그라데이션 아치. 인트로가 도는 동안에도 끝난 뒤에도
           같은 자리에 있고, 아래를 축으로 줄었다 부푸는 움직임만 이어진다. */}
-      <div aria-hidden className="absolute inset-0 -z-10 bg-surface-page">
+      <div aria-hidden className="absolute inset-0 -z-10 bg-white">
         <motion.div
           className="size-full origin-bottom"
           style={{
@@ -244,7 +247,7 @@ export function Hero1() {
             key="headline"
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="absolute inset-x-0 top-[50vh] z-10 -translate-y-1/2 px-5 text-center text-ink md:px-8"
+            className="absolute inset-x-0 top-[50vh] z-10 -translate-y-1/2 px-5 text-center text-title md:px-8"
           >
             <Hero1TypedHeadline start onDone={() => setPhase('holding')} />
           </motion.div>
@@ -259,7 +262,7 @@ export function Hero1() {
         aria-hidden={!revealed}
         className={`flex w-full max-w-[1080px] flex-col items-center gap-12 pt-10 text-center ${revealed ? '' : 'pointer-events-none'}`}
       >
-        <div className="flex flex-col items-center gap-6 text-ink">
+        <div className="flex flex-col items-center gap-6 text-title">
           <motion.p
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 24 }}
@@ -289,7 +292,7 @@ export function Hero1() {
           animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 24 }}
           transition={{ ...REVEAL_TRANSITION, delay: revealed ? CTA_DELAY_S : 0 }}
         >
-          <Button variant="glass" className="px-7 py-3.5 text-[19px]">
+          <Button variant="dark" className="px-7 py-3.5 text-[19px]">
             도입 문의하기
           </Button>
         </motion.div>

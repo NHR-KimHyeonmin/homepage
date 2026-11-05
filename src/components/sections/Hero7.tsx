@@ -63,7 +63,7 @@ export function Hero7() {
   const go = (next: number) => setIndex(((next % total) + total) % total)
 
   return (
-    <Section id="testimonials" className="flex flex-col items-center bg-surface-blue py-10 md:pb-16 md:pt-[72px]">
+    <Section id="testimonials" className="flex flex-col items-center section-pt section-pb bg-brand-50">
       <Container className="flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -97,10 +97,10 @@ export function Hero7() {
                 className="col-start-1 row-start-1 flex flex-col items-center gap-5 text-center"
               >
                 <blockquote className="flex flex-col gap-4">
-                  <p className="text-[34px] font-semibold leading-[1.35] tracking-[-0.68px] text-black">
+                  <p className="text-[34px] font-semibold leading-[1.35] tracking-[-0.68px] text-title">
                     {review.quote}
                   </p>
-                  <p className="text-base leading-[1.58] tracking-[-0.36px] text-black/55">{review.body}</p>
+                  <p className="type-card-body">{review.body}</p>
                 </blockquote>
                 <figcaption className="flex flex-col items-center gap-2 pt-2">
                   {review.logo ? (
@@ -112,11 +112,11 @@ export function Hero7() {
                       className="h-8 w-[106px] object-contain"
                     />
                   ) : (
-                    <span className="flex h-8 items-center text-base font-bold tracking-[-0.08px] text-black/30">
+                    <span className="flex h-8 items-center text-base font-bold tracking-[-0.08px] text-sub">
                       {review.company}
                     </span>
                   )}
-                  <span className="text-sm tracking-[-0.07px] text-black/45">{review.author}</span>
+                  <span className="text-sm tracking-[-0.07px] text-sub">{review.author}</span>
                 </figcaption>
               </motion.figure>
             )
@@ -143,7 +143,7 @@ export function Hero7() {
                 aria-label={`${i + 1}번째 후기 보기`}
                 aria-current={i === index}
                 className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${
-                  i === index ? 'w-6 bg-black/70' : 'w-2 bg-black/20 hover:bg-black/35'
+                  i === index ? 'w-6 bg-brand-700' : 'w-2 bg-brand-200 hover:bg-brand-500/60'
                 }`}
               />
             ))}
