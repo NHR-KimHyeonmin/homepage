@@ -15,7 +15,7 @@ import clsx from 'clsx'
  * 동시에 보이는 구간에서 깜빡인다.
  */
 const CHAPTERS: { id: string; label: string }[] = [
-  { id: 'top', label: 'MAIN' },
+  { id: 'top', label: '홈' },
   { id: 'hero2-headline', label: '모집' },
   { id: 'hero2-application-title', label: '접수' },
   { id: 'dashboard', label: '운영' },
@@ -97,8 +97,8 @@ export function ScrollNav() {
               className={clsx(
                 'block w-1.5 rounded-full transition-all duration-300',
                 isActive
-                  ? clsx('h-[18px]', onDark ? 'bg-[#7fd0ff]' : 'bg-brand-700')
-                  : clsx('h-1.5', onDark ? 'bg-white/40 group-hover:bg-white/80' : 'bg-brand-200 group-hover:bg-brand-500'),
+                  ? clsx('h-[18px]', onDark ? 'bg-white' : 'bg-[#4f6272]')
+                  : clsx('h-1.5', onDark ? 'bg-white/40 group-hover:bg-white/80' : 'bg-[#d3d9df] group-hover:bg-[#9aa5b1]'),
               )}
             />
             {/* 이름표는 마우스를 올리거나 키보드로 고른 동안에만 나온다. 지금 구역은 막대가 알려 준다. */}
