@@ -43,23 +43,33 @@ export function Hero1TypedHeadline({ start, onDone }: Hero1TypedHeadlineProps) {
   }, [done])
 
   const revealed = FULL_TEXT.slice(0, count)
-  const [line1, line2 = ''] = revealed.split('\n')
+  const [line1, line2] = revealed.split('\n')
+  // 커서는 지금 쓰고 있는 줄의 마지막 글자 뒤에 둔다. 줄바꿈이 나오기 전까지는
+  // 첫 줄, 그다음부터 둘째 줄.
+  const onSecondLine = line2 !== undefined
+
+  const cursor = start && !done && (
+    <span
+      aria-hidden
+      className="ml-1 inline-block h-[1em] w-[3px] translate-y-[1px] bg-ink align-middle"
+      style={{
+        animation: !typingStarted ? `hero1-cursor-blink ${CURSOR_BLINK_MS}ms step-end infinite` : 'none',
+        opacity: !typingStarted ? undefined : 1,
+      }}
+    />
+  )
 
   return (
     <h1 className="text-[40px] font-bold leading-[1.28] md:text-[64px]">
-      <span className="block">{line1}</span>
       <span className="block">
-        {line2}
-        {start && !done && (
-          <span
-            aria-hidden
-            className="ml-1 inline-block h-[1em] w-[3px] translate-y-[1px] bg-ink align-middle"
-            style={{
-              animation: !typingStarted ? `hero1-cursor-blink ${CURSOR_BLINK_MS}ms step-end infinite` : 'none',
-              opacity: !typingStarted ? undefined : 1,
-            }}
-          />
-        )}
+        {line1}
+        {!onSecondLine && cursor}
+      </span>
+      {/* 둘째 줄 자리는 처음부터 잡아 둔다 — 비어 있다가 생기면 가운데 정렬된
+          머리글 전체가 반 줄 위로 밀린다. */}
+      <span className="block">
+        {line2 || ' '}
+        {onSecondLine && cursor}
       </span>
       <span className="sr-only">
         {LINES[0]}, {LINES[1]}

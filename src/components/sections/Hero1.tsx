@@ -8,7 +8,7 @@ import { AdminFrame, FRAME_HEIGHT, FRAME_WIDTH, VIEW_ORDER, type AdminView } fro
 import { VIEWS } from './hero1-admin/views'
 
 /** 자동 순회 간격. */
-const NAV_AUTOPLAY_MS = 2500
+const NAV_AUTOPLAY_MS = 3500
 
 // Figma node 2323:26304 — custom branded cursor (arrow + "careerlink" pill),
 // hotspot (22, 27) lines up with the arrow's own tip.
