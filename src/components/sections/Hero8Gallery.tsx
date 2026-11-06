@@ -45,7 +45,7 @@ const CARDS: ServiceCard[] = [
   },
   {
     name: 'peak',
-    href: 'https://blog.peak.io.kr/',
+    href: 'https://peak.io.kr/',
     image: card4,
     description: '채용 프로세스 구축부터 온보딩 설계까지, 기업의 채용 문제를 해결하는 All-in-One 채용솔루션입니다.',
   },
@@ -205,7 +205,7 @@ export function Hero8Gallery() {
                         rel="noopener noreferrer"
                         tabIndex={isActive ? 0 : -1}
                         className={clsx(
-                          'flex w-fit items-center gap-1 pt-1 text-[14px] font-bold tracking-[-0.28px] text-white hover:underline',
+                          '-ml-2.5 mt-1 flex w-fit items-center gap-1 rounded-[8px] px-2.5 py-1.5 text-[14px] font-bold tracking-[-0.28px] text-white transition-colors hover:bg-white/15',
                           isActive && 'pointer-events-auto',
                         )}
                       >

@@ -105,7 +105,7 @@ export function Footer() {
   return (
     <footer className="bg-[#1e272c] px-5 py-12 text-white/70 md:px-8">
       <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-8">
-        {/* 1줄: 바로가기 */}
+        {/* 1줄: 바로가기 + 패밀리 사이트 */}
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[15px] tracking-[-0.08px]">
             {NAV_LINKS.map((link, index) => (
@@ -127,18 +127,15 @@ export function Footer() {
             ))}
           </nav>
 
+          <FamilySitePicker />
         </div>
 
-        {/* 2줄: 사업자 정보 + 패밀리 사이트 */}
-        <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-          <address className="flex flex-col gap-1.5 text-[15px] not-italic leading-[1.6] tracking-[-0.08px] text-white/60">
+        {/* 2줄: 사업자 정보 */}
+        <address className="flex flex-col gap-1.5 text-[15px] not-italic leading-[1.6] tracking-[-0.08px] text-white/60">
             <span className="font-semibold text-white/85">(주)엔에이치알</span>
             <span>07727 서울특별시 강서구 까치산로 23 NHR타워 | 대표이사 김종원</span>
             <span>사업자등록번호: 161-86-01410</span>
-          </address>
-
-          <FamilySitePicker />
-        </div>
+        </address>
 
         <p className="text-[15px] tracking-[-0.08px] text-white/60">© 2026 NHR. All Rights Reserved</p>
       </div>
