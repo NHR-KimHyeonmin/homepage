@@ -294,7 +294,8 @@ export function Hero00Screening() {
                 style={{ width: CARD_WIDTH }}
               >
                 <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-ui border border-gray-150 bg-white">
-                  <img loading="lazy" decoding="async" src={card.logo} alt={`${card.name} 로고`} className="h-full w-full object-contain" />
+                  {/* 로고 파일은 여백 없이 잘라 두고, 칸 안쪽 여백으로 가운데에 앉힌다. */}
+                  <img loading="lazy" decoding="async" src={card.logo} alt={`${card.name} 로고`} className="size-full object-contain p-1.5" />
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-0.5">

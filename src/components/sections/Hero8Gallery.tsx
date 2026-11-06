@@ -30,7 +30,7 @@ const CARDS: ServiceCard[] = [
   {
     name: '채용 마케팅',
     image: card5,
-    description: '개인과 조직에 대한 다차원적 진단을 바탕으로 적합한 인재를 확보할 수 있도록 돕는 진단 솔루션입니다.',
+    description: '채용부터 조직문화까지, 전방위적인 HR 마케팅 통합 솔루션으로 HR 브랜딩의 방향을 제시합니다.',
   },
   {
     name: '채용 컨설팅',
@@ -40,12 +40,12 @@ const CARDS: ServiceCard[] = [
   {
     name: 'peak',
     image: card4,
-    description: '개인과 조직에 대한 다차원적 진단을 바탕으로 적합한 인재를 확보할 수 있도록 돕는 진단 솔루션입니다.',
+    description: '채용 프로세스 구축부터 온보딩 설계까지, 기업의 채용 문제를 해결하는 All-in-One 채용솔루션입니다.',
   },
   {
     name: '20대 연구소',
     image: card6,
-    description: '개인과 조직에 대한 다차원적 진단을 바탕으로 적합한 인재를 확보할 수 있도록 돕는 진단 솔루션입니다.',
+    description: '20대 유저의 라이프스타일, 가치관, 소비 트렌드를 연구하여 기업의 마케팅 전략 수립에 필요한 인사이트를 지원합니다.',
   },
 ]
 
