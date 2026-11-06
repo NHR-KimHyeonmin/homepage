@@ -1,41 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import cursorImg from '../../assets/sections/hero1/cursor/cursor.png'
-import dashboardHomeMain from '../../assets/sections/hero1/dashboard-home-main.webp'
-import dashboardJobPostingsMain from '../../assets/sections/hero1/dashboard-jobpostings-main.webp'
-import viewApplicants from '../../assets/sections/hero1/views/applicants.webp'
-import viewHiringProcess from '../../assets/sections/hero1/views/hero-process.webp'
-import viewSending from '../../assets/sections/hero1/views/sending.webp'
-import viewSiteBuilder from '../../assets/sections/hero1/views/site-builder.webp'
 import { Button } from '../ui/Button'
 import { Section } from '../ui/Section'
-import { Hero1Sidebar, NAV_VIEW_ORDER, type Hero1MainView } from './Hero1Sidebar'
-import { Hero1TopBar } from './Hero1TopBar'
 import { Hero1TypedHeadline } from './Hero1TypedHeadline'
+import { AdminFrame, FRAME_HEIGHT, FRAME_WIDTH, VIEW_ORDER, type AdminView } from './hero1-admin/AdminShell'
+import { VIEWS } from './hero1-admin/views'
 
-const MAIN_IMAGES: Record<Hero1MainView, { src: string; alt: string }> = {
-  home: { src: dashboardHomeMain, alt: '커리어링크 관리자 대시보드 홈' },
-  jobPostings: { src: dashboardJobPostingsMain, alt: '채용 공고 현황' },
-  hiringProcess: { src: viewHiringProcess, alt: '채용 전형 관리' },
-  applicants: { src: viewApplicants, alt: '지원자 관리' },
-  sending: { src: viewSending, alt: '발송 관리' },
-  siteBuilder: { src: viewSiteBuilder, alt: '채용 사이트 빌더' },
-}
-
-/** 자동 순회 간격. 순서는 사이드바가 그리는 순서(NAV_VIEW_ORDER)를 그대로
- *  따른다 — 메뉴 배치와 따로 놀면 "위에서 아래로" 가 깨진다. */
+/** 자동 순회 간격. */
 const NAV_AUTOPLAY_MS = 2500
 
 // Figma node 2323:26304 — custom branded cursor (arrow + "careerlink" pill),
-// shown across the whole dashboard mockup card (sidebar and screenshot
-// alike) — hotspot (22, 27) lines up with the arrow's own tip.
-const DASHBOARD_CARD_STYLE = { aspectRatio: '1280 / 740', cursor: `url(${cursorImg}) 22 27, auto` }
-
-// The admin page background behind every content-pane screenshot — sampled
-// straight out of the exported views, so the strip left over below a
-// screenshot (at viewport widths where the card is narrower than its full
-// 1280px) is indistinguishable from the image itself.
-const MAIN_PANE_BG = '#f0f4f9'
+// hotspot (22, 27) lines up with the arrow's own tip.
+const DASHBOARD_CURSOR = `url(${cursorImg}) 22 27, auto`
 
 // How long the fully-typed headline sits still before it starts fading out.
 const HOLD_TITLE_MS = 1000
@@ -120,7 +97,7 @@ const STAGE_MASK = `${STAGE_ARCH}, ${STAGE_FOOT}`
 const HEADLINE_GRADIENT = 'linear-gradient(100deg, #10263a 0%, #15304a 45%, #1d3d58 100%)'
 
 const GRID_SIZE = 28
-const GRID_LINE = 'rgba(255, 255, 255, 0.09)'
+const GRID_LINE = 'rgba(255, 255, 255, 0.18)'
 const STAGE_GRID = [
   `repeating-linear-gradient(0deg, ${GRID_LINE} 0 1px, transparent 1px ${GRID_SIZE}px)`,
   `repeating-linear-gradient(90deg, ${GRID_LINE} 0 1px, transparent 1px ${GRID_SIZE}px)`,
@@ -132,7 +109,7 @@ const STAGE_GRID = [
  * 청색 슬레이트를 쓴다. 넓게 퍼지는 한 겹과 바짝 붙는 한 겹을 겹쳐
  * 떠 있는 느낌만 주고 윤곽은 흐리지 않는다.
  */
-const DASHBOARD_SHADOW = '0 24px 60px -12px rgba(13, 82, 140, 0.28), 0 2px 10px 0 rgba(13, 82, 140, 0.12)'
+const DASHBOARD_SHADOW = '0 24px 60px -12px rgba(13, 82, 140, 0.28)'
 
 /**
  * 아치가 천천히 눌렸다 부풀기를 반복한다. 가로는 건드리지 않고 scaleY 만
@@ -152,7 +129,22 @@ const BREATH_TRANSITION = {
 
 export function Hero1() {
   const reduceMotion = useReducedMotion()
-  const [activeNav, setActiveNav] = useState<Hero1MainView>('home')
+  const [activeNav, setActiveNav] = useState<AdminView>('home')
+
+  // 관리자 화면은 1920 x 1080 판으로 그려 두고 카드 폭에 맞춰 zoom 한다.
+  // transform 과 달리 zoom 은 줄인/키운 크기로 다시 그려 글자가 흐려지지 않는다.
+  const cardRef = useRef<HTMLDivElement>(null)
+  const [cardWidth, setCardWidth] = useState(FRAME_WIDTH)
+  useLayoutEffect(() => {
+    const el = cardRef.current
+    if (!el) return
+    const measure = () => setCardWidth(el.clientWidth || FRAME_WIDTH)
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   // 한 번이라도 직접 누르면 자동 전환은 끝난다 — 보고 있는 화면을 타이머가
   // 빼앗는 건 고장으로 읽힌다.
   const [navTakenOver, setNavTakenOver] = useState(false)
@@ -192,15 +184,12 @@ export function Hero1() {
   useEffect(() => {
     if (navTakenOver || reduceMotion || phase !== 'done') return
     const timer = setInterval(() => {
-      setActiveNav((current) => {
-        const next = (NAV_VIEW_ORDER.indexOf(current) + 1) % NAV_VIEW_ORDER.length
-        return NAV_VIEW_ORDER[next]
-      })
+      setActiveNav((current) => VIEW_ORDER[(VIEW_ORDER.indexOf(current) + 1) % VIEW_ORDER.length])
     }, NAV_AUTOPLAY_MS)
     return () => clearInterval(timer)
   }, [navTakenOver, reduceMotion, phase])
 
-  const selectNav = (view: Hero1MainView) => {
+  const selectNav = (view: AdminView) => {
     setNavTakenOver(true)
     setActiveNav(view)
   }
@@ -303,43 +292,36 @@ export function Hero1() {
         initial={{ opacity: 0, y: 48 }}
         animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 48 }}
         transition={{ ...REVEAL_TRANSITION, delay: revealed ? IMAGE_DELAY_S : 0 }}
-        className={`relative w-full max-w-[1280px] overflow-hidden rounded-media bg-white ${revealed ? '' : 'pointer-events-none'}`}
+        className={`relative w-full overflow-hidden rounded-media bg-white lg:w-[80vw] ${revealed ? '' : 'pointer-events-none'}`}
         style={{ boxShadow: DASHBOARD_SHADOW }}
       >
-          <div className="relative w-full" style={DASHBOARD_CARD_STYLE}>
-            <div className="absolute inset-0 flex">
-              <Hero1Sidebar
-                activeNav={activeNav}
-                onSelectView={selectNav}
-                className="w-[260px] shrink-0 border-r border-[#e8eaee]"
-              />
-
-              {/* Right pane = a fixed top bar that never moves, plus the
-                  content-pane screenshot below it. The screenshot is sized
-                  by width only (`w-full`, auto height) so it is never
-                  cropped horizontally — every view shares the same
-                  1020 x 680 content-pane framing. */}
-              <div className="relative flex flex-1 flex-col overflow-hidden" style={{ backgroundColor: MAIN_PANE_BG }}>
-                <Hero1TopBar />
-
-                <div className="relative flex-1 overflow-hidden">
-                  <AnimatePresence initial={false}>
-                    <motion.img
-                      key={activeNav}
-                      src={MAIN_IMAGES[activeNav].src}
-                      alt={MAIN_IMAGES[activeNav].alt}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.35, ease: 'easeInOut' }}
-                      className="absolute inset-x-0 top-0 w-full"
-                    />
-                  </AnimatePresence>
-                </div>
-              </div>
-            </div>
+        <div
+          ref={cardRef}
+          className="relative w-full overflow-hidden"
+          style={{ aspectRatio: `${FRAME_WIDTH} / ${FRAME_HEIGHT}`, cursor: DASHBOARD_CURSOR }}
+        >
+          <div className="absolute left-0 top-0" style={{ zoom: cardWidth / FRAME_WIDTH }}>
+            <AdminFrame active={activeNav} onSelect={selectNav} crumbs={VIEWS[activeNav].crumbs}>
+              {/* 바뀌는 건 본문뿐 — 틀은 그대로 두고 본문만 겹쳐 바꾼다. */}
+              <AnimatePresence initial={false}>
+                <motion.div
+                  key={activeNav}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.35, ease: 'easeInOut' }}
+                  className="absolute inset-0"
+                >
+                  {(() => {
+                    const View = VIEWS[activeNav].Component
+                    return <View />
+                  })()}
+                </motion.div>
+              </AnimatePresence>
+            </AdminFrame>
           </div>
-        </motion.div>
+        </div>
+      </motion.div>
     </Section>
   )
 }

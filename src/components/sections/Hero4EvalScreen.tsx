@@ -715,7 +715,7 @@ export function Hero4EvalScreen() {
   }, [frame])
 
   return (
-    <Section className="content-pt bg-brand-50">
+    <Section className="z-10 content-pt bg-brand-50">
       <Container>
         <div
           ref={ref}
@@ -854,10 +854,10 @@ export function Hero4EvalScreen() {
 
                   {/* 떠 있는 두 버튼 — AI 요약과 메모. */}
                   <div className="absolute bottom-7 right-[46px] flex flex-col gap-2.5 text-[#1d4ed8]">
-                    <span className="flex size-[38px] items-center justify-center rounded-[9px] border border-[#cddcf7] bg-white shadow-[0_1px_4px_rgba(32,40,45,0.12)]">
+                    <span className="flex size-[38px] items-center justify-center rounded-[9px] border border-[#cddcf7] bg-white shadow-[0_1px_4px_rgba(13,82,140,0.12)]">
                       <P.spark size={21} stroke={STROKE} />
                     </span>
-                    <span className="flex size-[38px] items-center justify-center rounded-[9px] border border-[#cddcf7] bg-white shadow-[0_1px_4px_rgba(32,40,45,0.12)]">
+                    <span className="flex size-[38px] items-center justify-center rounded-[9px] border border-[#cddcf7] bg-white shadow-[0_1px_4px_rgba(13,82,140,0.12)]">
                       <P.memo size={21} stroke={STROKE} />
                     </span>
                   </div>

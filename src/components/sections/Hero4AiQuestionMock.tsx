@@ -98,7 +98,7 @@ export function Hero4AiQuestionMock() {
         className="relative font-sans"
         style={{ width: DESIGN_WIDTH, height: DESIGN_HEIGHT, transform: `scale(${scale})`, transformOrigin: 'top left' }}
       >
-        <div className="absolute inset-0 flex flex-col gap-2.5 overflow-hidden rounded-[12px] bg-white p-3 shadow-[0_12px_32px_-12px_rgba(32,40,45,0.22)]">
+        <div className="absolute inset-0 flex flex-col gap-2.5 overflow-hidden rounded-[12px] bg-white p-3 shadow-[0_12px_32px_-12px_rgba(13,82,140,0.22)]">
           <Block title="지원정보">
             <Labeled label="지원 직무">커리어링크 기획 &gt; 디자인</Labeled>
           </Block>
@@ -149,7 +149,7 @@ export function Hero4AiQuestionMock() {
               exit={{ opacity: 0, y: 6 }}
               transition={{ duration: 0.22, ease: 'easeOut' }}
               style={{ transformOrigin: 'bottom right' }}
-              className="absolute bottom-4 right-[66px] top-4 z-10 flex w-[372px] flex-col overflow-hidden rounded-[10px] border border-[#e1e4e8] bg-white shadow-[0_14px_36px_-10px_rgba(32,40,45,0.38)]"
+              className="absolute bottom-4 right-[66px] top-4 z-10 flex w-[372px] flex-col overflow-hidden rounded-[10px] border border-[#e1e4e8] bg-white shadow-[0_14px_36px_-10px_rgba(13,82,140,0.38)]"
             >
               <div className="flex h-11 shrink-0 items-center gap-1.5 border-b border-[#eceef0] px-3.5 text-[#0042b7]">
                 <IconSparklesFilled size={17} />

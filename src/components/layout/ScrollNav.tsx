@@ -30,6 +30,8 @@ const CHAPTERS: { id: string; label: string }[] = [
 export function ScrollNav() {
   const [active, setActive] = useState(CHAPTERS[0].id)
   const reduceMotion = useReducedMotion()
+  /** 어두운 배경 위에 떠 있는 챕터. */
+  const onDark = active === 'security'
 
   useEffect(() => {
     let frame = 0
@@ -64,11 +66,16 @@ export function ScrollNav() {
     /* 화면 폭이 좁으면 본문 위에 겹친다 — 둘 다 보여 줄 자리가 없으면
        길잡이보다 본문이 먼저다.
 
-       반투명 흰 바탕을 깔아 사진·검은 구역·푸터 어디에 겹쳐도 같은 색으로 읽힌다.
-       구역마다 색을 뒤집으면 구역 경계와 실제 배경이 어긋나는 자리에서 사라진다. */
+       평소엔 반투명 흰 바탕이지만, 어두운 보안 구역 위에서는 흰 바탕이 회색으로
+       탁해지고 옅은 점이 묻힌다. 그 구역이 지금 챕터인 동안만 어두운 판으로 바꾼다 —
+       챕터는 구역 위가 화면 한가운데(= 네비게이터 높이)를 지날 때 바뀌므로,
+       판 색이 바뀌는 순간과 네비게이터 뒤 배경이 바뀌는 순간이 같다. */
     <nav
       aria-label="페이지 구역 바로가기"
-      className="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center rounded-full bg-white/80 px-1 py-2 shadow-soft backdrop-blur-md xl:flex"
+      className={clsx(
+        'fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center rounded-full px-1 py-2 backdrop-blur-md transition-colors duration-300 xl:flex',
+        onDark ? 'bg-white/10 ring-1 ring-white/15' : 'bg-white/80 shadow-soft',
+      )}
     >
       {CHAPTERS.map((chapter) => {
         const isActive = chapter.id === active
@@ -89,7 +96,9 @@ export function ScrollNav() {
             <span
               className={clsx(
                 'block w-1.5 rounded-full transition-all duration-300',
-                isActive ? 'h-[18px] bg-brand-700' : 'h-1.5 bg-brand-200 group-hover:bg-brand-500',
+                isActive
+                  ? clsx('h-[18px]', onDark ? 'bg-[#7fd0ff]' : 'bg-brand-700')
+                  : clsx('h-1.5', onDark ? 'bg-white/40 group-hover:bg-white/80' : 'bg-brand-200 group-hover:bg-brand-500'),
               )}
             />
             {/* 이름표는 마우스를 올리거나 키보드로 고른 동안에만 나온다. 지금 구역은 막대가 알려 준다. */}

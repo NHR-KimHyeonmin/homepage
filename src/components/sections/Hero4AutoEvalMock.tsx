@@ -275,7 +275,7 @@ export function Hero4AutoEvalMock() {
         }}
       >
         {/* 팝업 */}
-        <div className="absolute inset-0 overflow-hidden rounded-[12px] bg-white shadow-[0_12px_32px_-12px_rgba(32,40,45,0.22)]">
+        <div className="absolute inset-0 overflow-hidden rounded-[12px] bg-white shadow-[0_12px_32px_-12px_rgba(13,82,140,0.22)]">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={isResult ? 'result' : 'template'}
@@ -342,7 +342,7 @@ export function Hero4AutoEvalMock() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 12 }}
                 transition={{ duration: 0.25, ease: 'easeOut' }}
-                className="flex h-11 items-center whitespace-nowrap rounded-[8px] bg-[#292c30] px-5 text-[14px] font-medium text-white shadow-[0_8px_20px_-6px_rgba(32,40,45,0.5)]"
+                className="flex h-11 items-center whitespace-nowrap rounded-[8px] bg-[#292c30] px-5 text-[14px] font-medium text-white shadow-[0_8px_20px_-6px_rgba(13,82,140,0.5)]"
               >
                 자동평가 실행이 완료되었습니다.
               </motion.div>

@@ -188,7 +188,7 @@ export function Hero4FeatureCards() {
               >
                 <div>
                   <h4 className="text-[15px] font-bold leading-[1.5] tracking-[-0.09px] text-brand-700">{card.title}</h4>
-                  <p className="whitespace-pre-line pt-4 text-[24px] font-semibold leading-[1.55] tracking-[-0.12px] text-title">{card.description}</p>
+                  <p className="whitespace-pre-line pt-2 text-[24px] font-semibold leading-[1.55] tracking-[-0.12px] text-title">{card.description}</p>
                 </div>
 
                 {card.details && (

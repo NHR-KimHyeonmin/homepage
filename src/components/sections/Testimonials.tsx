@@ -82,9 +82,10 @@ export function Testimonials() {
       as={motion.section}
       ref={sectionRef}
       style={{ minHeight }}
-      className="section-pt section-pb flex flex-col items-center justify-center gap-[80px] overflow-hidden bg-black"
+      className="section-pt section-pb flex flex-col items-center justify-center gap-[80px] overflow-hidden"
     >
-      <div aria-hidden className="absolute inset-0 -z-10">
+      {/* 어두운 배경은 화면 끝까지 깔지 않고, 좌우에 흰 여백을 둔 둥근 박스로 띄운다. */}
+      <div aria-hidden className="absolute inset-y-0 inset-x-3 -z-10 isolate overflow-hidden rounded-[24px] bg-black md:inset-x-5 md:rounded-[32px]">
         <div
           className="absolute inset-0"
           style={{
@@ -116,7 +117,14 @@ export function Testimonials() {
           <h2 className="text-[40px] font-bold leading-[1.4] tracking-[-1.12px] text-white md:text-[48px]">
             지원자와 기업 정보
             <br />
-            보안은 강력하게
+            {/* 배경 남색에 묻히지 않도록 밝은 하늘색 → 연보라로 흐르는 글자색. */}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{ backgroundImage: 'linear-gradient(90deg, #7fd0ff 0%, #9fb4ff 55%, #c6b5ff 100%)' }}
+            >
+              보안
+            </span>
+            은 강력하게
           </h2>
         </motion.div>
 
@@ -128,7 +136,7 @@ export function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, ease: 'easeOut', delay: (i % 3) * 0.08 }}
-              className="flex h-40 flex-col justify-center gap-3 rounded-card border border-white/15 bg-[#292e54]/50 px-8 py-5 shadow-card"
+              className="flex h-40 flex-col justify-center gap-3 rounded-card bg-[#292e54]/50 px-8 py-5 shadow-card"
             >
               <img loading="lazy" decoding="async" src={card.icon} alt="" style={{ width: card.iconSize, height: card.iconSize }} />
               <div className="flex flex-col gap-0.5">

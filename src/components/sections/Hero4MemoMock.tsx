@@ -179,7 +179,7 @@ function MemoPopup() {
       exit={{ opacity: 0, y: 8, scale: 0.98 }}
       transition={{ duration: 0.24, ease: 'easeOut' }}
       style={{ transformOrigin: 'bottom right' }}
-      className="absolute bottom-[68px] right-4 z-10 flex h-[286px] w-[340px] flex-col overflow-hidden rounded-[10px] bg-[#eef2fd] shadow-[0_14px_36px_-10px_rgba(32,40,45,0.38)]"
+      className="absolute bottom-[68px] right-4 z-10 flex h-[286px] w-[340px] flex-col overflow-hidden rounded-[10px] bg-[#eef2fd] shadow-[0_14px_36px_-10px_rgba(13,82,140,0.38)]"
     >
       <div className="flex items-center gap-1.5 px-3.5 pb-2 pt-3">
         <IconNote size={17} stroke={STROKE} className="text-ink" />
@@ -293,7 +293,7 @@ export function Hero4MemoMock() {
         className="relative font-sans"
         style={{ width: DESIGN_WIDTH, height: DESIGN_HEIGHT, transform: `scale(${scale})`, transformOrigin: 'top left' }}
       >
-        <div className="absolute inset-0 overflow-hidden rounded-[12px] bg-white shadow-[0_12px_32px_-12px_rgba(32,40,45,0.22)]">
+        <div className="absolute inset-0 overflow-hidden rounded-[12px] bg-white shadow-[0_12px_32px_-12px_rgba(13,82,140,0.22)]">
           <div className="flex h-11 items-center gap-2 border-b border-[#e8eaed] px-4 text-[12px] text-[#4d5761]">
             <span className="rounded-[6px] border border-[#d2d6db] px-2.5 py-1 text-ink">지원자 비교</span>
             <span className="flex-1 text-center text-ink">지원서 보기 - 김윤서</span>
@@ -353,7 +353,7 @@ export function Hero4MemoMock() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.16 }}
               style={{ left: palette.x, top: palette.y + 14 }}
-              className="absolute z-10 flex items-center gap-1.5 rounded-[8px] border border-[#e1e4e8] bg-white px-2.5 py-1.5 shadow-[0_6px_16px_-6px_rgba(32,40,45,0.3)]"
+              className="absolute z-10 flex items-center gap-1.5 rounded-[8px] border border-[#e1e4e8] bg-white px-2.5 py-1.5 shadow-[0_6px_16px_-6px_rgba(13,82,140,0.3)]"
             >
               <IconHighlight size={15} stroke={STROKE} className="text-[#4d5761]" />
               {SWATCHES.map((color) => (

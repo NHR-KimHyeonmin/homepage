@@ -300,7 +300,7 @@ export function Hero4CompareView() {
         ref={fitRef}
         role="img"
         aria-label={`지원자 ${count}명의 지원서를 나란히 놓고 비교하는 화면`}
-        className="overflow-hidden rounded-[12px] bg-white shadow-[0_12px_32px_-12px_rgba(32,40,45,0.22)] md:mr-[34px]"
+        className="overflow-hidden rounded-[12px] bg-white shadow-[0_12px_32px_-12px_rgba(13,82,140,0.22)] md:mr-[34px]"
         style={{ height: DESIGN_HEIGHT * scale }}
       >
         <div
@@ -323,7 +323,7 @@ export function Hero4CompareView() {
         </div>
       </div>
 
-      <div className="absolute -right-5 top-3 hidden w-[58px] flex-col rounded-[10px] border border-[#e1e4e8] bg-white px-1 py-0.5 shadow-[0_8px_20px_-8px_rgba(32,40,45,0.35)] md:flex">
+      <div className="absolute -right-5 top-3 hidden w-[58px] flex-col rounded-[10px] border border-[#e1e4e8] bg-white px-1 py-0.5 shadow-[0_8px_20px_-8px_rgba(13,82,140,0.35)] md:flex">
         <RailItem label="100%">
           <IconCircleMinus size={15} stroke={STROKE} />
           <IconCirclePlus size={15} stroke={STROKE} />

@@ -185,7 +185,7 @@ function SettingCard({
   switchRef: React.Ref<HTMLSpanElement>
 }) {
   return (
-    <div className="flex h-[40px] items-center justify-between gap-5 rounded-[10px] bg-white px-3.5 text-[14px] font-medium text-ink shadow-[0_6px_18px_-4px_rgba(32,40,45,0.25)]">
+    <div className="flex h-[40px] items-center justify-between gap-5 rounded-[10px] bg-white px-3.5 text-[14px] font-medium text-ink shadow-[0_6px_18px_-4px_rgba(13,82,140,0.25)]">
       {label}
       <span ref={switchRef} className="relative block h-[18px] w-[36px] shrink-0">
         <span
@@ -195,7 +195,7 @@ function SettingCard({
           initial={false}
           animate={{ x: on ? 18 : 0 }}
           transition={{ type: 'spring', stiffness: 520, damping: 32 }}
-          className={`absolute left-0 top-0 size-[18px] rounded-full shadow-[0_1px_3px_rgba(32,40,45,0.35)] transition-colors duration-200 ${
+          className={`absolute left-0 top-0 size-[18px] rounded-full shadow-[0_1px_3px_rgba(13,82,140,0.35)] transition-colors duration-200 ${
             on ? 'bg-[#0042b7]' : 'bg-white'
           }`}
         />
@@ -295,7 +295,7 @@ export function Hero4BlindMock() {
         className="relative font-sans"
         style={{ width: DESIGN_WIDTH, height: DESIGN_HEIGHT, transform: `scale(${scale})`, transformOrigin: 'top left' }}
       >
-        <div className="absolute inset-0 flex flex-col gap-2.5 overflow-hidden rounded-[12px] bg-white p-3 shadow-[0_12px_32px_-12px_rgba(32,40,45,0.22)]">
+        <div className="absolute inset-0 flex flex-col gap-2.5 overflow-hidden rounded-[12px] bg-white p-3 shadow-[0_12px_32px_-12px_rgba(13,82,140,0.22)]">
           <Block title="지원정보">
             <Labeled label="지원 직무">커리어링크 기획 &gt; 디자인</Labeled>
           </Block>
