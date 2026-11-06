@@ -5,8 +5,8 @@ import { IconChevronDown } from '@tabler/icons-react'
 const NAV_LINKS = [
   { label: '개인정보처리방침', href: '#', strong: true },
   { label: '서비스 소개', href: '#' },
-  { label: '도입문의', href: '#contact' },
-  { label: 'CI 소개', href: '#' },
+  { label: '도입문의', href: '/#contact' },
+  { label: 'CI 소개', href: '/ci' },
   { label: '업데이트 노트', href: 'https://careerlink-updatenotes.oopy.io/?utm_source=careerlink&utm_medium=official&utm_campaign=nhr' },
 ]
 

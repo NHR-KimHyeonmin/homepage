@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
 import clsx from 'clsx'
 import { useFitScale } from '../../hooks/useFitScale'
 import { hexToHsl, hslToHex } from '../../lib/colorShades'
@@ -90,8 +90,16 @@ export function Hero2ThemeShowcase() {
   // 타이머가 빼앗는 건 고장으로 읽힌다.
   const [takenOver, setTakenOver] = useState(false)
 
+  // 화면에 들어온 동안만 돈다. 들어오는 순간 첫 색(블루)으로 되돌려, 페이지를
+  // 열자마자 타이머가 미리 몇 칸 넘겨 둔 색을 보게 되는 일이 없게 한다.
+  const sectionRef = useRef<HTMLElement>(null)
+  const inView = useInView(sectionRef, { amount: 0.3 })
   useEffect(() => {
-    if (takenOver || reduceMotion) return
+    if (inView && !takenOver) setSelectedColor(DEFAULT_COLOR)
+  }, [inView, takenOver])
+
+  useEffect(() => {
+    if (takenOver || reduceMotion || !inView) return
     const timer = setInterval(() => {
       setSelectedColor((current) => {
         const next = (PALETTE.indexOf(current) + 1) % PALETTE.length
@@ -99,7 +107,7 @@ export function Hero2ThemeShowcase() {
       })
     }, AUTOPLAY_MS)
     return () => clearInterval(timer)
-  }, [takenOver, reduceMotion])
+  }, [takenOver, reduceMotion, inView])
 
   const pickColor = (hex: string) => {
     setTakenOver(true)
@@ -114,7 +122,7 @@ export function Hero2ThemeShowcase() {
   const { ref: fitRef, scale } = useFitScale(MOCKUP_WIDTH)
 
   return (
-    <Section className="flex flex-col items-center content-pt overflow-hidden bg-white">
+    <Section ref={sectionRef} className="flex flex-col items-center content-pt overflow-hidden bg-white">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 32 }}

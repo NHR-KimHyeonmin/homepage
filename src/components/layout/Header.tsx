@@ -1,13 +1,13 @@
 import logoMark from '../../assets/sections/header/logo-mark.png'
 
 /**
- * 상단 탭. 각 항목은 페이지 안의 해당 섹션으로 내려간다 — 바깥으로
- * 나가는 링크가 아니므로 전부 같은 페이지의 앵커다.
+ * 상단 탭. 각 항목은 홈의 해당 섹션으로 내려간다. /ci 같은 다른 페이지에서도
+ * 눌리도록 경로를 붙인다 — 홈에서는 같은 문서 안 이동이라 그대로 스크롤된다.
  */
 const NAV_LINKS = [
-  { label: '상품 소개', href: '#top' },
-  { label: '운영 지원', href: '#support' },
-  { label: 'FAQ', href: '#faq' },
+  { label: '상품 소개', href: '/#top' },
+  { label: '운영 지원', href: '/#support' },
+  { label: 'FAQ', href: '/#faq' },
 ]
 
 /**
@@ -18,8 +18,9 @@ const NAV_LINKS = [
  */
 export function Header() {
   return (
-    <header className="absolute inset-x-0 top-0 z-50 flex flex-wrap items-center justify-between gap-x-4 gap-y-3 px-5 py-6 md:px-8">
-      <a href="#top" aria-label="커리어링크 홈" className="shrink-0">
+    /* 스크롤해도 늘 위에 붙어 있다. 흰 바탕 아래 옅은 그림자로 본문과 구분한다. */
+    <header className="fixed inset-x-0 top-0 z-50 flex flex-wrap items-center justify-between gap-x-4 gap-y-3 bg-white px-5 py-4 shadow-[0_2px_14px_rgba(16,38,58,0.07)] md:px-8">
+      <a href="/#top" aria-label="커리어링크 홈" className="shrink-0">
         <img src={logoMark} alt="커리어링크" className="h-[23px] w-auto" />
       </a>
       <nav className="flex min-w-0 flex-wrap items-center justify-end gap-x-5 gap-y-2 text-base font-medium text-title lg:gap-x-8">

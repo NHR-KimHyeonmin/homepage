@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
+import clsx from 'clsx'
 import { IconChevronRight } from '@tabler/icons-react'
 import card1 from '../../assets/sections/hero8-gallery/card-1.webp'
 import card2 from '../../assets/sections/hero8-gallery/card-2.webp'
@@ -12,6 +13,7 @@ import { Section } from '../ui/Section'
 
 interface ServiceCard {
   name: string
+  href: string
   image: string
   description: string
 }
@@ -19,31 +21,37 @@ interface ServiceCard {
 const CARDS: ServiceCard[] = [
   {
     name: '커리어톡',
+    href: 'https://www.careertalk.kr/home',
     image: card2,
     description: '채용 관련 행사를 올인원으로 준비할 수 있는 운영 솔루션, 국내/외 탑티어 유저가 꾸준히 확보되는 플랫폼입니다.',
   },
   {
     name: '커리어앤',
+    href: 'https://n-hrlab.careerlink.kr/',
     image: card1,
     description: '개인과 조직에 대한 다차원적 진단을 바탕으로 적합한 인재를 확보할 수 있도록 돕는 진단 솔루션입니다.',
   },
   {
     name: '채용 마케팅',
+    href: 'https://nhr.kr/project_HRM',
     image: card5,
     description: '채용부터 조직문화까지, 전방위적인 HR 마케팅 통합 솔루션으로 HR 브랜딩의 방향을 제시합니다.',
   },
   {
     name: '채용 컨설팅',
+    href: 'https://nhr.kr/project_HRC',
     image: card3,
     description: '채용 직무 분석, 채용 역량 모델링, 채용평가 재설계 및 교육, 서류/필기/면접전형 대행을 진행합니다.',
   },
   {
     name: 'peak',
+    href: 'https://blog.peak.io.kr/',
     image: card4,
     description: '채용 프로세스 구축부터 온보딩 설계까지, 기업의 채용 문제를 해결하는 All-in-One 채용솔루션입니다.',
   },
   {
     name: '20대 연구소',
+    href: 'https://www.20slab.org/',
     image: card6,
     description: '20대 유저의 라이프스타일, 가치관, 소비 트렌드를 연구하여 기업의 마케팅 전략 수립에 필요한 인사이트를 지원합니다.',
   },
@@ -120,17 +128,22 @@ export function Hero8Gallery() {
               {CARDS.map((card, index) => {
                 const isActive = index === active
                 return (
-                  <motion.button
+                  // 장을 펼치는 버튼 안에 링크를 넣을 수 없어(버튼 안 링크는 잘못된 마크업),
+                  // 폭이 바뀌는 판을 밖에 두고 버튼과 글 묶음을 그 안에 나란히 놓는다.
+                  <motion.div
                     key={card.name}
-                    type="button"
-                    onClick={() => setActive(index)}
-                    aria-expanded={isActive}
-                    aria-label={card.name}
                     initial={false}
                     animate={{ width: isActive ? expanded : COLLAPSED }}
                     transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                     style={{ height: '100%' }}
-                    className="relative shrink-0 cursor-pointer overflow-hidden rounded-media bg-[#111] text-left"
+                    className="relative shrink-0 overflow-hidden rounded-media bg-[#111]"
+                  >
+                  <button
+                    type="button"
+                    onClick={() => setActive(index)}
+                    aria-expanded={isActive}
+                    aria-label={card.name}
+                    className="absolute inset-0 cursor-pointer text-left"
                   >
                     <img
                       loading={index < 2 ? 'eager' : 'lazy'}
@@ -173,23 +186,34 @@ export function Hero8Gallery() {
                       </span>
                     </motion.div>
 
+                  </button>
+
                     <motion.div
                       initial={false}
                       animate={{ opacity: isActive ? 1 : 0 }}
                       transition={{ duration: isActive ? 0.4 : 0.15, delay: isActive ? 0.2 : 0 }}
                       style={{ width: expanded }}
-                      className="absolute bottom-0 left-0 flex flex-col gap-2 p-7"
+                      className="pointer-events-none absolute bottom-0 left-0 flex flex-col gap-2 p-7"
                     >
                       <h5 className="text-[22px] font-bold leading-[1.25] tracking-[-0.44px] text-white">
                         {card.name}
                       </h5>
                       <p className="text-[16px] leading-[1.5] tracking-[-0.08px] text-white/75">{card.description}</p>
-                      <span className="flex items-center gap-1 pt-1 text-[14px] font-bold tracking-[-0.28px] text-white">
+                      <a
+                        href={card.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        tabIndex={isActive ? 0 : -1}
+                        className={clsx(
+                          'flex w-fit items-center gap-1 pt-1 text-[14px] font-bold tracking-[-0.28px] text-white hover:underline',
+                          isActive && 'pointer-events-auto',
+                        )}
+                      >
                         자세히 보기
                         <IconChevronRight size={16} stroke={2} />
-                      </span>
+                      </a>
                     </motion.div>
-                  </motion.button>
+                  </motion.div>
                 )
               })}
           </div>

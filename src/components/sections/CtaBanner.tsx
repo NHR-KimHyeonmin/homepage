@@ -19,10 +19,10 @@ export function CtaBanner() {
       {/* 보안 구역과 같은 전체 폭 둥근 박스(좌우 흰 여백만 남긴다). 아래 여백이 푸터와의 간격이다. */}
       <div className="mx-3 md:mx-5">
       <div className="relative isolate flex flex-col items-center justify-center gap-9 overflow-hidden rounded-[24px] bg-[#dcebf8] md:rounded-[32px] px-5 py-12 text-center md:px-8 md:pb-24 md:pt-[120px]">
-      {/* 글자가 읽히도록 그림만 흐린다. 흐린 가장자리가 비치지 않게 박스보다 크게 깐다. */}
+      {/* 사진은 흐리지 않고 그대로 깐다 — 글자는 위의 남색 막이 받쳐 준다. */}
       <div
         aria-hidden
-        className="absolute -inset-10 -z-10 bg-cover bg-center blur-[2px]"
+        className="absolute inset-0 -z-10 bg-cover bg-center"
         style={{ backgroundImage: `url(${ctaBackground})` }}
       />
       {/* 흰 제목이 밝은 사진에 묻히지 않도록 남색 막을 한 겹 덮는다. */}
