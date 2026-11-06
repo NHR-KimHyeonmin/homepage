@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
 import { useFitScale } from '../../hooks/useFitScale'
 import { SCREEN_HEIGHT, SCREEN_WIDTH, SimpleScreen, StandardScreen } from './Hero3ScreeningScreens'
 
@@ -70,6 +70,18 @@ const SHOT_HEIGHT = Math.round(SCREEN_HEIGHT * SHOT_SCALE)
  *  (PillSwitch 를 못 쓰는 이유) 폭을 못박고 미끄러질 거리를 직접 센다. */
 const PILL_CELL_WIDTH = 72
 
+/** 두 장이 자리를 바꾸는 움직임. 천천히 출발해 천천히 멈추게 해 급하게
+ *  튀지 않게 한다. 장·스위치 알약·설명 문장이 같은 박자로 움직인다. */
+const SWAP = { duration: 0.7, ease: [0.45, 0, 0.2, 1] as const }
+
+/** 카드는 자리 이동은 SWAP 박자로 하되, 투명도는 먼저 끝낸다. 앞뒤 순서(z)는
+ *  바뀌는 즉시 넘어가는데 투명도가 느리면, 반투명한 채 앞으로 온 카드 너머로
+ *  뒤로 가는 카드가 이동 내내 비쳐 보인다. */
+const CARD_SWAP = { ...SWAP, opacity: { duration: 0.2, ease: 'easeOut' as const } }
+
+/** 저절로 바뀌는 간격. */
+const AUTOPLAY_MS = 4000
+
 type ScreeningId = (typeof SCREENINGS)[number]['id']
 
 /**
@@ -80,13 +92,28 @@ type ScreeningId = (typeof SCREENINGS)[number]['id']
 export function Hero3ScreeningToggle() {
   const { ref, scale } = useFitScale(DESIGN_WIDTH)
   const [selected, setSelected] = useState<ScreeningId>('standard')
+  // 누르기 전까지는 4초마다 일반 ↔ 간편을 저절로 바꿔 둘 다 보여 준다.
+  // 한 번 누르면 멈춘다 — 고른 화면을 타이머가 빼앗으면 고장으로 읽힌다.
+  const [takenOver, setTakenOver] = useState(false)
+  const blockRef = useRef<HTMLDivElement>(null)
+  const inView = useInView(blockRef, { amount: 0.4 })
+  const reduceMotion = useReducedMotion()
+  useEffect(() => {
+    if (takenOver || !inView || reduceMotion) return
+    const timer = setTimeout(() => setSelected((id) => (id === 'standard' ? 'simple' : 'standard')), AUTOPLAY_MS)
+    return () => clearTimeout(timer)
+  }, [selected, takenOver, inView, reduceMotion])
+  const pick = (id: ScreeningId) => {
+    setTakenOver(true)
+    setSelected(id)
+  }
   const current = SCREENINGS.find((item) => item.id === selected) ?? SCREENINGS[0]
 
   return (
     /* 받치던 흰 카드를 뺐다 — 두 장이 서로 앞뒤로 교차하는 게 이 블록이
        보여 줄 전부라, 그걸 담는 상자는 그림을 가두기만 했다. 구역 바탕 위에
        그림자만으로 떠 있는 편이 교차가 더 잘 보인다. */
-    <div className="w-full">
+    <div ref={blockRef} className="w-full">
       <div ref={ref} className="w-full overflow-hidden" style={{ height: DESIGN_HEIGHT * scale }}>
         {/* 가운데 맞춤. useFitScale 은 배율을 1 로 묶어 두므로, 무대(1142)가
             담는 칸(1208)보다 좁은 넓은 화면에서는 왼쪽에 붙어 33px 쯤 왼쪽으로
@@ -115,9 +142,9 @@ export function Hero3ScreeningToggle() {
                 key={screening.id}
                 role="img"
                 aria-label={screening.alt}
-                onClick={isSelected ? undefined : () => setSelected(screening.id)}
+                onClick={isSelected ? undefined : () => pick(screening.id)}
                 animate={slot}
-                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                transition={CARD_SWAP}
                 style={{ position: 'absolute', width: SHOT_WIDTH, height: SHOT_HEIGHT }}
                 className={`overflow-hidden rounded-card border border-[#eceef2] shadow-[0px_4px_24px_0px_rgba(32,40,45,0.12)] ${isSelected ? '' : 'cursor-pointer'}`}
               >
@@ -157,7 +184,7 @@ export function Hero3ScreeningToggle() {
                 aria-hidden
                 initial={false}
                 animate={{ x: SCREENINGS.findIndex((item) => item.id === selected) * PILL_CELL_WIDTH }}
-                transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                transition={SWAP}
                 className="absolute left-[3px] top-[3px] h-[calc(100%-6px)] rounded-full bg-brand-100"
                 style={{ width: PILL_CELL_WIDTH }}
               />
@@ -167,7 +194,7 @@ export function Hero3ScreeningToggle() {
                   <button
                     key={screening.id}
                     type="button"
-                    onClick={() => setSelected(screening.id)}
+                    onClick={() => pick(screening.id)}
                     aria-pressed={isSelected}
                     style={{ width: PILL_CELL_WIDTH }}
                     className={`relative z-10 cursor-pointer whitespace-nowrap rounded-full py-[3px] text-[14px] font-semibold tracking-[-0.07px] transition-colors duration-200 ${
@@ -208,7 +235,7 @@ export function Hero3ScreeningToggle() {
                     initial={{ y: '110%' }}
                     animate={{ y: '0%' }}
                     exit={{ y: '-110%' }}
-                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    transition={SWAP}
                     className="absolute inset-x-0 top-0 text-left text-[20px] font-medium leading-[1.5] tracking-[-0.1px] text-body"
                   >
                     {current.note}
@@ -232,7 +259,7 @@ export function Hero3ScreeningToggle() {
             <button
               key={screening.id}
               type="button"
-              onClick={() => setSelected(screening.id)}
+              onClick={() => pick(screening.id)}
               aria-label={`${screening.label} 보기`}
               aria-current={isSelected}
               className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${

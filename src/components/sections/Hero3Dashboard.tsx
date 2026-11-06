@@ -27,7 +27,7 @@ const TABS: { id: TabId; label: string; icon: ReactNode }[] = [
   },
   {
     id: 'mypage',
-    label: '마이페이지 안내',
+    label: '마이페이지 발송',
     // 지원자 한 사람 앞으로 가는 안내 — 이름표.
     icon: (
       <>
@@ -148,7 +148,7 @@ export function Hero3Dashboard() {
         {/* 설명문은 목업 아래에 둔다 — 탭을 누르면 바뀌는 건 그림이고, 글은
             그 그림이 무엇인지 뒤에서 확인해 주는 말이다. 위에 두면 그림이
             나오기 전에 설명부터 읽히는데, 이 블록은 보고 나서 읽는 쪽이다. */}
-        <p className="w-full max-w-[1100px] whitespace-pre-line px-8 pt-[30px] text-center type-lead">
+        <p className="w-full max-w-[1100px] whitespace-pre-line px-8 pt-[30px] text-center type-lead" style={{ lineHeight: 1.6 }}>
           {TAB_DESCRIPTIONS[activeTab]}
         </p>
       </motion.div>

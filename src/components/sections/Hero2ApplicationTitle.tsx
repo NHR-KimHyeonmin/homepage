@@ -23,7 +23,7 @@ export function Hero2ApplicationTitle() {
           <SectionEyebrow>서류 접수</SectionEyebrow>
           <p className="type-title">자유로운 지원서 설정</p>
           <p className="max-w-[1208px] type-lead">
-            144개의 다양한 지원서 항목을 직접 추가해보변서 지원서 양식을 구성해보세요.
+            100개 이상의 다양한 지원서 항목을 직접 추가해보면서 지원서 양식을 구성해보세요.
           </p>
         </motion.div>
       </Container>

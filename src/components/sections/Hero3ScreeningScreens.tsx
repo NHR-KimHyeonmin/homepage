@@ -104,7 +104,7 @@ function TopBar({ title, action }: { title: string; action: string }) {
         MY
       </span>
       <span className={GHOST}>채용종료</span>
-      <span className="flex h-[44px] items-center gap-2 rounded-[10px] bg-[#1d4ed8] px-4 text-[18px] font-semibold text-white">
+      <span className="flex h-[44px] items-center gap-2 rounded-[10px] bg-[#0042b7] px-4 text-[18px] font-semibold text-white">
         <P.plus size={20} stroke={STROKE} />
         {action}
       </span>
@@ -131,7 +131,7 @@ function HeadActions({ autoEval }: { autoEval?: boolean }) {
     <>
       {autoEval && (
         <span className="flex h-[44px] items-center gap-2 rounded-full bg-[#f1f3f5] px-4 text-[18px] font-semibold text-ink">
-          <Dot color="#1d4ed8" />
+          <Dot color="#0042b7" />
           자동평가 ON
           <P.chevron size={18} stroke={STROKE} />
         </span>
@@ -320,7 +320,7 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
         {/* 끌어 옮기는 손잡이는 뺐다 — 위 "서류전형" 줄에는 없어서, 이 줄만
             손잡이 폭만큼 안쪽으로 밀려 제목 왼쪽이 어긋나 보였다. */}
         <div className="flex items-center gap-3">
-          <span className="flex size-[36px] items-center justify-center rounded-[9px] bg-[#e8f0fe] text-[18px] font-bold text-[#1d4ed8]">
+          <span className="flex size-[36px] items-center justify-center rounded-[9px] bg-[#e8f0fe] text-[18px] font-bold text-[#0042b7]">
             n
           </span>
           <p className="text-[24px] font-bold tracking-[-0.12px] text-ink">커리어앤</p>
@@ -377,8 +377,8 @@ function EmptyAction({ note, label, primary }: { note?: string; label: string; p
       <span
         className={
           primary
-            ? 'flex items-center gap-2 rounded-[10px] bg-[#1d4ed8] px-5 py-3 text-[19px] font-semibold text-white'
-            : 'rounded-[10px] bg-[#eceef2] px-5 py-3 text-[19px] font-medium text-[#b8bdc6]'
+            ? 'flex h-[44px] items-center gap-2 rounded-[10px] bg-[#0042b7] px-5 text-[19px] font-semibold text-white'
+            : 'flex h-[44px] items-center rounded-[10px] bg-[#eceef2] px-5 text-[19px] font-medium text-[#b8bdc6]'
         }
       >
         {label}
@@ -622,7 +622,7 @@ export function SimpleScreen({ active = true }: { active?: boolean }) {
       <TopBar title="2025 커리어링크 신입사원 수시채용" action="채용단계 추가" />
 
       <div className="flex items-center gap-8 border-b border-[#eceef2] text-[19px]">
-        <span className="border-b-[3px] border-[#1d4ed8] pb-3 font-semibold text-[#1d4ed8]">채용단계 보기</span>
+        <span className="border-b-[3px] border-[#0042b7] pb-3 font-semibold text-[#0042b7]">채용단계 보기</span>
         <span className="pb-3 text-[#9aa3af]">전형 보기</span>
       </div>
 
@@ -636,11 +636,11 @@ export function SimpleScreen({ active = true }: { active?: boolean }) {
               <P.cards size={22} stroke={STROKE} />
             </span>
           </span>
-          <span className="flex h-[48px] items-center gap-2 rounded-[10px] bg-[#1d4ed8] px-5 text-[19px] font-semibold text-white">
+          <span className="flex h-[48px] items-center gap-2 rounded-[10px] bg-[#0042b7] px-5 text-[19px] font-semibold text-white">
             <P.plus size={20} stroke={STROKE} />
             전형 등록
           </span>
-          <span className="flex h-[48px] items-center gap-2 rounded-[10px] border border-[#bcd3fa] bg-white px-5 text-[19px] font-semibold text-[#1d4ed8]">
+          <span className="flex h-[48px] items-center gap-2 rounded-[10px] border border-[#bcd3fa] bg-white px-5 text-[19px] font-semibold text-[#0042b7]">
             지원자 추가
             <P.chevron size={18} stroke={STROKE} />
           </span>
@@ -658,7 +658,7 @@ export function SimpleScreen({ active = true }: { active?: boolean }) {
             >
               <Glyph size={22} stroke={STROKE} />
               {i === 2 && (
-                <span className="absolute -right-2 -top-2 flex size-[26px] items-center justify-center rounded-full bg-[#1d4ed8] text-[15px] font-bold text-white">
+                <span className="absolute -right-2 -top-2 flex size-[26px] items-center justify-center rounded-full bg-[#0042b7] text-[15px] font-bold text-white">
                   9
                 </span>
               )}
