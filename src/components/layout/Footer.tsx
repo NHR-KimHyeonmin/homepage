@@ -1,17 +1,22 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { IconBrandLinkedin, IconChevronDown } from '@tabler/icons-react'
+import { IconChevronDown } from '@tabler/icons-react'
 
 const NAV_LINKS = [
   { label: '개인정보처리방침', href: '#', strong: true },
   { label: '서비스 소개', href: '#' },
   { label: '도입문의', href: '#contact' },
   { label: 'CI 소개', href: '#' },
-  { label: '업데이트 노트', href: '#' },
+  { label: '업데이트 노트', href: 'https://careerlink-updatenotes.oopy.io/?utm_source=careerlink&utm_medium=official&utm_campaign=nhr' },
 ]
 
-/** TODO: 실제 주소를 받으면 value 에 넣고 onChange 로 이동시킨다. */
-const FAMILY_SITES = ['대학내일', 'NHR', 'N-HR연구소(커리어앤)', '올인원 채용솔루션 peak']
+/** 패밀리 사이트. 고르면 새 탭으로 연다. */
+const FAMILY_SITES = [
+  { label: '대학내일', href: 'https://corp.univ.me/' },
+  { label: 'NHR', href: 'https://nhr.kr/' },
+  { label: 'N-HR연구소(커리어앤)', href: 'https://n-hrlab.careerlink.kr/lab' },
+  { label: '올인원 채용솔루션 peak', href: 'https://peak.io.kr/' },
+]
 
 /**
  * 패밀리 사이트 고르개.
@@ -24,7 +29,6 @@ const FAMILY_SITES = ['대학내일', 'NHR', 'N-HR연구소(커리어앤)', '올
  */
 function FamilySitePicker() {
   const [open, setOpen] = useState(false)
-  const [selected, setSelected] = useState<string | null>(null)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -49,10 +53,10 @@ function FamilySitePicker() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        aria-haspopup="listbox"
+        aria-haspopup="menu"
         className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-ui border border-white/15 bg-white/5 px-4 py-2 text-left text-[15px] tracking-[-0.08px] text-white/80 transition-colors hover:bg-white/10"
       >
-        {selected ?? '패밀리 사이트'}
+        패밀리 사이트
         <IconChevronDown
           size={20}
           stroke={1.8}
@@ -67,7 +71,7 @@ function FamilySitePicker() {
       <AnimatePresence initial={false}>
         {open && (
           <motion.ul
-            role="listbox"
+            role="menu"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -75,27 +79,20 @@ function FamilySitePicker() {
             className="absolute bottom-full left-0 right-0 z-20 overflow-hidden rounded-ui border border-black/10 bg-white shadow-[0_12px_28px_-8px_rgba(32,41,57,0.3)]"
           >
             <div className="py-1">
-          {FAMILY_SITES.map((site) => {
-            const isSelected = site === selected
-            return (
-              <li key={site}>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected={isSelected}
-                  onClick={() => {
-                    setSelected(site)
-                    setOpen(false)
-                  }}
-                  className={`block w-full cursor-pointer px-4 py-2.5 text-left text-[15px] tracking-[-0.08px] transition-colors ${
-                    isSelected ? 'bg-brand-100 text-brand-700' : 'text-body hover:bg-brand-50'
-                  }`}
-                >
-                  {site}
-                </button>
-              </li>
-            )
-              })}
+          {FAMILY_SITES.map((site) => (
+            <li key={site.label} role="none">
+              <a
+                href={site.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                role="menuitem"
+                onClick={() => setOpen(false)}
+                className="block w-full px-4 py-2.5 text-left text-[15px] tracking-[-0.08px] text-body transition-colors hover:bg-brand-50"
+              >
+                {site.label}
+              </a>
+            </li>
+          ))}
             </div>
           </motion.ul>
         )}
@@ -108,7 +105,7 @@ export function Footer() {
   return (
     <footer className="bg-[#1e272c] px-5 py-12 text-white/70 md:px-8">
       <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-8">
-        {/* 1줄: 바로가기 + 소셜 */}
+        {/* 1줄: 바로가기 */}
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[15px] tracking-[-0.08px]">
             {NAV_LINKS.map((link, index) => (
@@ -118,6 +115,8 @@ export function Footer() {
                 {index > 0 && <span aria-hidden className="h-3 w-px bg-white/20" />}
                 <a
                   href={link.href}
+                  // 바깥 사이트는 새 탭으로 연다 — 보던 홈페이지 자리를 잃지 않게.
+                  {...(link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                   className={`whitespace-nowrap transition-colors hover:text-white ${
                     link.strong ? 'font-bold text-white' : 'text-white/60'
                   }`}
@@ -128,24 +127,6 @@ export function Footer() {
             ))}
           </nav>
 
-          <nav className="flex items-center gap-3">
-            {/* 네이버는 Tabler 에 브랜드 아이콘이 없다. 손으로 그리지 않고
-                머리글자를 그대로 세운다. */}
-            <a
-              href="#"
-              aria-label="네이버 블로그"
-              className="flex size-9 items-center justify-center rounded-full bg-white/10 text-[15px] font-bold text-white transition-colors hover:bg-white/20"
-            >
-              N
-            </a>
-            <a
-              href="#"
-              aria-label="링크드인"
-              className="flex size-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-            >
-              <IconBrandLinkedin size={20} stroke={1.8} />
-            </a>
-          </nav>
         </div>
 
         {/* 2줄: 사업자 정보 + 패밀리 사이트 */}
