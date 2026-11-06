@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { useInView, useReducedMotion } from 'framer-motion'
 import clsx from 'clsx'
 import rightPanel from '../../assets/sections/hero2-application-builder/builder-right-panel.webp'
-import toolbar from '../../assets/sections/hero2-application-builder/builder-toolbar.webp'
 import chevron from '../../assets/sections/hero2-application-builder/icon-row-chevron.svg'
 import chevronDisabled from '../../assets/sections/hero2-application-builder/icon-row-chevron-disabled.svg'
 import { useFitScale } from '../../hooks/useFitScale'
@@ -51,14 +50,6 @@ const DESIGN_HEIGHT = 710
 const TOOLBAR_HEIGHT = 57.5
 
 /**
- * Basic | Retro | 지원자 전환 탭. 툴바는 통째로 내보낸 스크린샷이라 그 안의
- * 탭은 눌리지 않는다 — 이미지 속 탭 자리에 같은 모양의 DOM 탭을 덮어
- * 그린다. 좌표는 builder-toolbar.webp(2560x115)에서 테두리 픽셀을 직접
- * 읽어 구한 값을 설계 좌표(1280x57.5)로 환산한 것이다: 묶음 x 596~981,
- * y 17~96 → 절반.
- *
- */
-/**
  * 데모가 끝난 뒤 사용자의 마우스 포인터를 데모 커서와 같은 동그라미로
  * 바꾼다. 커서 이미지는 무대의 scale 을 따라가지 않으므로, 화면에 찍히는
  * 크기(30px * 0.95)에 맞춰 32x32 로 그렸다.
@@ -66,7 +57,6 @@ const TOOLBAR_HEIGHT = 57.5
 const POINTER_SKIN =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='16' cy='16' r='13' fill='rgba(77,87,97,0.7)' stroke='white' stroke-width='2'/%3E%3C/svg%3E\") 16 16, auto"
 
-const TAB_BOX = { left: 298, top: 8.5, width: 192.5, height: 39.5 }
 const TABS = [
   { view: 'basic' as const, label: 'Basic', width: 63 },
   { view: 'retro' as const, label: 'Retro', width: 64 },
@@ -294,34 +284,46 @@ export function Hero2FormBuilderMockup() {
           cursor: pointerSkin ? POINTER_SKIN : undefined,
         }}
       >
-        <div className="relative">
-          <img loading="lazy" decoding="async" src={toolbar} alt="" className="block w-full" style={{ height: TOOLBAR_HEIGHT }} />
-          <div
-            className="absolute flex overflow-hidden rounded-ui border-[0.667px] border-[#d2d6db] bg-white"
-            style={TAB_BOX}
-          >
-            {TABS.map((tab, index) => {
-              const isActive = tab.view === view
-              return (
-                <button
-                  key={tab.label}
-                  type="button"
-                  data-demo={`tab-${tab.view}`}
-                  onClick={() => setView(tab.view)}
-                  aria-pressed={isActive}
-                  className={clsx(
-                    'h-full cursor-pointer text-[13.5px] leading-none transition-colors',
-                    index > 0 && 'border-l-[0.667px] border-[#d2d6db]',
-                    isActive
-                      ? 'bg-[#f3f4f6] font-semibold text-[#111]'
-                      : 'bg-white font-medium text-[#6c737f] hover:text-[#212121]',
-                  )}
-                  style={{ width: tab.width }}
-                >
-                  {tab.label}
-                </button>
-              )
-            })}
+        {/* 상단 툴바. 아래 세 칸(메뉴 350 · 지원서 580 · 설정 350)에 맞춰 나눈다 —
+            제목 입력이 바로 아래 지원서와 같은 폭으로 놓여 "이 양식의 제목" 으로 읽힌다. */}
+        <div className="flex border-b border-[#e5e7eb] bg-white" style={{ height: TOOLBAR_HEIGHT }}>
+          <div className="flex w-[350px] shrink-0 items-center justify-between pl-6">
+            <span className="text-[12.5px] font-medium text-[#4d5761]">경력지원서</span>
+            <div className="flex h-[39.5px] shrink-0 overflow-hidden rounded-ui border-[0.667px] border-[#d2d6db] bg-white">
+              {TABS.map((tab, index) => {
+                const isActive = tab.view === view
+                return (
+                  <button
+                    key={tab.label}
+                    type="button"
+                    data-demo={`tab-${tab.view}`}
+                    onClick={() => setView(tab.view)}
+                    aria-pressed={isActive}
+                    className={clsx(
+                      'h-full cursor-pointer text-[13.5px] leading-none transition-colors',
+                      index > 0 && 'border-l-[0.667px] border-[#d2d6db]',
+                      isActive
+                        ? 'bg-[#f3f4f6] font-semibold text-[#111]'
+                        : 'bg-white font-medium text-[#6c737f] hover:text-[#212121]',
+                    )}
+                    style={{ width: tab.width }}
+                  >
+                    {tab.label}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+          {/* 오른쪽 끝은 지원서 카드와 맞추고, 왼쪽은 탭과 8px 만 띄운다. */}
+          <div className="flex w-[580px] shrink-0 items-center pl-2 pr-4">
+            <span className="flex h-[39.5px] w-full items-center rounded-[8px] border-[0.667px] border-[#d2d6db] px-3.5 text-[15px] text-[#212121]">
+              경력지원서
+            </span>
+          </div>
+          <div className="flex min-w-0 flex-1 items-center gap-2 pr-2">
+            <span className="ml-auto flex h-[39.5px] shrink-0 items-center rounded-ui bg-[#0042b7] px-4 text-[13.5px] font-semibold text-white">
+              신규 지원서 생성
+            </span>
           </div>
         </div>
 

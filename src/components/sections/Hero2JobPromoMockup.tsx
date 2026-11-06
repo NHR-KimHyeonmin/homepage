@@ -17,7 +17,7 @@ import logoIndeed from '../../assets/sections/hero2-application-cards/channels/i
 const CHANNELS = [
   { src: logoIndeed, alt: '인디스워크', w: 30 },
   { src: logoCatch, alt: '캐치', w: 34 },
-  { src: logoDemand, alt: '디맨드', w: 33 },
+  { src: logoDemand, alt: '디맨드', w: 34 }, // 52px 칸에 짝수 폭이어야 가운데가 정수 px — 홀수면 확대 연출이 끝날 때 반 px 튄다
   { src: logoFacebook, alt: '페이스북', w: 38 },
 ]
 

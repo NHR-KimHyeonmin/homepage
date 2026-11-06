@@ -257,10 +257,10 @@ export function Hero2ThemeFrame117({ color }: Hero2ThemeFrame117Props) {
               <div className="flex flex-col items-center px-8 pb-7 pt-11 text-center">
                 <p className="text-base font-bold text-[#212121]">Recruit</p>
                 <h3 className="pt-3 text-2xl font-bold text-[#212121]">채용공고</h3>
-                <p className="max-w-[380px] pt-2.5 text-[13px] leading-[18px] text-[#6c737f]">
-                  커리어링크와 함께 하실 분을 모집합니다.
+                <p className="max-w-[420px] pt-2.5 text-[13px] leading-[18px] text-[#6c737f]">
+                  채용 브랜딩부터 지원자 관리까지
                   <br />
-                  채용 브랜딩부터 지원자 관리까지 지원자와 기업 모두에게 편리한 채용 솔루션을 제공합니다.
+                  지원자와 기업 모두에게 편리한 채용 솔루션을 제공합니다.
                   <br />
                   커리어링크에서 현재 진행중인 채용공고를 확인해보세요.
                 </p>

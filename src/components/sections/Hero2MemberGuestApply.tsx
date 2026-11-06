@@ -138,7 +138,7 @@ function Panel({
           <BadgeIcon tone={tone} shown={shown} />
           {badge}
         </span>
-        <span className={clsx('text-[12px] leading-[16px]', skin.note)}>{note}</span>
+        <span className={clsx('text-[12px] font-medium leading-[16px]', skin.note)}>{note}</span>
         {closable && (
           <svg aria-hidden viewBox="0 0 24 24" className="ml-auto size-[15px]">
             <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="#9499a2" strokeWidth="2" strokeLinecap="round" />
@@ -181,7 +181,7 @@ export function Hero2MemberGuestApply() {
               직무를 고르는 단계는 그 이야기에 들어 있지 않다. */}
           <div className="mx-auto flex h-[86px] w-[540px] items-center justify-between rounded-card bg-white px-4 py-2 shadow-card">
             <div className="flex min-w-0 flex-col gap-1">
-              <p className="truncate text-[15px] font-bold leading-[22px] tracking-[-0.3px] text-[#212121]">
+              <p className="truncate text-[15px] font-semibold leading-[22px] tracking-[-0.3px] text-[#212121]">
                 커리어링크 경력사원 채용
               </p>
               <p className="text-[11px] leading-[15px] text-black/45">
@@ -254,7 +254,7 @@ export function Hero2MemberGuestApply() {
           <div className="grid grid-cols-2 items-start gap-5">
             <Panel badge="회원" note="인증된 내 정보로 지원" tone="member" shown={step >= 3}>
               <div className="flex flex-col gap-[10px]">
-                <Field label="이메일" value="careerlink@gmail.com" />
+                <Field label="이메일" value="honggildong@nhr.kr" />
                 <div className={`${FIELD} justify-between`}>
                   <span className={FIELD_LABEL}>비밀번호</span>
                   {/* `*` 는 글자 상자 위쪽에만 잉크가 있어서, 줄 상자를 가운데
@@ -286,13 +286,13 @@ export function Hero2MemberGuestApply() {
   
             <Panel badge="비회원" note="로그인 없이 바로 시작" tone="guest" closable shown={step >= 4}>
               <div className="flex flex-col gap-[10px]">
-                <Field label="이메일" value="careerlink@nhr.kr" />
+                <Field label="이메일" value="honggildong@nhr.kr" />
                 <div className="flex gap-2">
                   <div className={`${FIELD} w-[86px] shrink-0 justify-between`}>
                     <span className={FIELD_VALUE}>+82</span>
                     <img loading="lazy" decoding="async" src={iconChevron} alt="" className="size-[18px] shrink-0" />
                   </div>
-                  <Field label="휴대폰번호" value="01000005678" className="min-w-0 flex-1" />
+                  <Field label="휴대폰번호" value="010-1234-5678" className="min-w-0 flex-1" />
                 </div>
                 <Field label="이름" value="홍길동" />
               </div>

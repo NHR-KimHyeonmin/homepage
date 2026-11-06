@@ -32,6 +32,8 @@ interface DbField {
 
 interface DbSource {
   logo: string
+  /** 로고 높이(px). 가로로 긴 로고는 낮춰 두 칩의 로고 폭을 비슷하게 맞춘다. */
+  logoHeight: number
   alt: string
   source: string
   note: string
@@ -42,6 +44,7 @@ interface DbSource {
 const SOURCES: DbSource[] = [
   {
     logo: logoYbm,
+    logoHeight: 14,
     alt: 'YBM',
     source: 'YBM 어학성적',
     note: '응시 이력을 그대로 불러옵니다',
@@ -53,9 +56,10 @@ const SOURCES: DbSource[] = [
   },
   {
     logo: logoUnivcert,
+    logoHeight: 20,
     alt: '대학알리미',
     source: '대학알리미 학교 · 학과',
-    note: '실제 개설된 학과만 고를 수 있습니다',
+    note: '정식 고등교육기관 정보를 제공합니다.',
     title: '대학교',
     fields: [
       { label: '학교명', kind: 'select', options: ['서울대학교', '서울과학기술대학교', '서울시립대학교'], chip: '본교' },
@@ -185,7 +189,7 @@ function SourceColumn({ source, steps, step }: { source: DbSource; steps: Column
           step >= steps.chip ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0',
         )}
       >
-        <img loading="lazy" decoding="async" src={source.logo} alt={source.alt} className="h-5 w-auto shrink-0" />
+        <img loading="lazy" decoding="async" src={source.logo} alt={source.alt} className="w-auto shrink-0" style={{ height: source.logoHeight }} />
         <span className="flex flex-col">
           <span className="text-[13px] font-semibold leading-[18px] text-[#212121]">{source.source}</span>
           <span className="text-[11px] leading-[15px] text-black/40">{source.note}</span>

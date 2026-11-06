@@ -18,7 +18,7 @@ import { Hero2JobPromoMockup } from './Hero2JobPromoMockup'
  * "공고 홍보하기" menu wired to the external job channels (Figma node
  * 2337:13527).
  */
-const SHARE_URL = 'https://careers.nhr.kr/jobs/RC202310181234'
+const SHARE_URL = 'https://careers.nhr.kr/jobs/RC202610101234'
 const MS_PER_CHAR = 38
 /** 다 치고 나서 전송 버튼을 누르기까지의 뜸. */
 const SEND_DELAY_MS = 300
