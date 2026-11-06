@@ -143,7 +143,7 @@ export function Hero7() {
                 aria-label={`${i + 1}번째 후기 보기`}
                 aria-current={i === index}
                 className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${
-                  i === index ? 'w-6 bg-brand-700' : 'w-2 bg-brand-200 hover:bg-brand-500/60'
+                  i === index ? 'w-6 bg-[#4f6272]' : 'w-2 bg-[#d3d9df] hover:bg-[#9aa5b1]'
                 }`}
               />
             ))}

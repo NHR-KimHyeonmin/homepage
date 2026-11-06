@@ -1,11 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
-import iconDocTabActive from '../../assets/sections/hero00/icon-doc-tab.svg'
 import iconDocTabInactive from '../../assets/sections/hero00/icon-doc-tab-inactive.svg'
-import iconInterviewTabActive from '../../assets/sections/hero00/icon-interview-tab-active.svg'
 import iconInterviewTabInactive from '../../assets/sections/hero00/icon-interview-tab.svg'
-import iconReferenceTabActive from '../../assets/sections/hero00/icon-reference-tab-active.svg'
 import iconReferenceTabInactive from '../../assets/sections/hero00/icon-reference-tab.svg'
 import logoCareern from '../../assets/sections/hero00/logo-careern.png'
 import logoMonster from '../../assets/sections/hero00/logo-monster.png'
@@ -18,10 +15,10 @@ import { Section } from '../ui/Section'
 
 type ScreeningTab = 'doc' | 'interview' | 'reference'
 
-const NAV_TABS: { id: ScreeningTab; label: string; iconActive: string; iconInactive: string }[] = [
-  { id: 'doc', label: 'AI 서류 검토', iconActive: iconDocTabActive, iconInactive: iconDocTabInactive },
-  { id: 'interview', label: 'AI 면접 / 인적성 검사', iconActive: iconInterviewTabActive, iconInactive: iconInterviewTabInactive },
-  { id: 'reference', label: '레퍼런스 검토', iconActive: iconReferenceTabActive, iconInactive: iconReferenceTabInactive },
+const NAV_TABS: { id: ScreeningTab; label: string; iconInactive: string }[] = [
+  { id: 'doc', label: 'AI 서류 검토', iconInactive: iconDocTabInactive },
+  { id: 'interview', label: 'AI 면접 / 인적성 검사', iconInactive: iconInterviewTabInactive },
+  { id: 'reference', label: '레퍼런스 검토', iconInactive: iconReferenceTabInactive },
 ]
 
 interface PartnerCard {
@@ -221,7 +218,7 @@ export function Hero00Screening() {
                 initial={false}
                 animate={{ x: thumb.x, width: thumb.w }}
                 transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                className="absolute left-1.5 top-1.5 h-[calc(100%-12px)] rounded-full bg-brand-100"
+                className="absolute left-1.5 top-1.5 h-[calc(100%-12px)] rounded-full bg-[#eceff3]"
               />
             )}
             {NAV_TABS.map((tab) => {
@@ -235,10 +232,11 @@ export function Hero00Screening() {
                   aria-pressed={isActive}
                   className={clsx(
                     'relative z-10 flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-[16px] font-semibold tracking-[-0.09px] transition-colors duration-200',
-                    isActive ? 'text-brand-700' : 'text-sub hover:text-body',
+                    isActive ? 'text-title' : 'text-sub hover:text-body',
                   )}
                 >
-                  <img loading="lazy" decoding="async" src={isActive ? tab.iconActive : tab.iconInactive} alt="" className="size-[18px] shrink-0" />
+                  {/* 켜진 탭의 파란 아이콘 대신 회색 아이콘을 짙게 눌러 글자색과 맞춘다. */}
+                  <img loading="lazy" decoding="async" src={tab.iconInactive} alt="" className={clsx('size-[18px] shrink-0 transition-[filter]', isActive && 'brightness-0 opacity-85')} />
                   {tab.label}
                 </button>
               )

@@ -185,7 +185,7 @@ export function Hero3ScreeningToggle() {
                 initial={false}
                 animate={{ x: SCREENINGS.findIndex((item) => item.id === selected) * PILL_CELL_WIDTH }}
                 transition={SWAP}
-                className="absolute left-[3px] top-[3px] h-[calc(100%-6px)] rounded-full bg-brand-100"
+                className="absolute left-[3px] top-[3px] h-[calc(100%-6px)] rounded-full bg-[#eceff3]"
                 style={{ width: PILL_CELL_WIDTH }}
               />
               {SCREENINGS.map((screening) => {
@@ -198,7 +198,7 @@ export function Hero3ScreeningToggle() {
                     aria-pressed={isSelected}
                     style={{ width: PILL_CELL_WIDTH }}
                     className={`relative z-10 cursor-pointer whitespace-nowrap rounded-full py-[3px] text-[14px] font-semibold tracking-[-0.07px] transition-colors duration-200 ${
-                      isSelected ? 'text-brand-700' : 'text-sub hover:text-body'
+                      isSelected ? 'text-title' : 'text-sub hover:text-body'
                     }`}
                   >
                     {screening.label}
@@ -263,7 +263,7 @@ export function Hero3ScreeningToggle() {
               aria-label={`${screening.label} 보기`}
               aria-current={isSelected}
               className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${
-                isSelected ? 'w-6 bg-brand-700' : 'w-2 bg-brand-200 hover:bg-brand-500/60'
+                isSelected ? 'w-6 bg-[#4f6272]' : 'w-2 bg-[#d3d9df] hover:bg-[#9aa5b1]'
               }`}
             />
           )

@@ -70,7 +70,7 @@ export function PillSwitch<T extends string>({
           initial={false}
           animate={{ x: thumb.x, width: thumb.w }}
           transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-          className="absolute left-1.5 top-1.5 h-[calc(100%-12px)] rounded-full bg-brand-100"
+          className="absolute left-1.5 top-1.5 h-[calc(100%-12px)] rounded-full bg-[#eceff3]"
         />
       )}
       {items.map((item) => {
@@ -84,7 +84,7 @@ export function PillSwitch<T extends string>({
             data-pill={item.id}
             className={clsx(
               'relative z-10 flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-[16px] font-semibold tracking-[-0.09px] transition-colors duration-200',
-              isActive ? 'text-brand-700' : 'text-sub hover:text-body',
+              isActive ? 'text-title' : 'text-sub hover:text-body',
             )}
           >
             {item.icon && (

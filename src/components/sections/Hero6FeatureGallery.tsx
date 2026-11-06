@@ -88,28 +88,16 @@ export function Hero6FeatureGallery() {
     scrollRef.current?.scrollBy({ left: direction * (CARD_WIDTH + CARD_GAP), behavior: 'smooth' })
 
   const arrow =
-    'flex size-10 cursor-pointer items-center justify-center rounded-full bg-white text-brand-700 shadow-soft transition-opacity disabled:cursor-default disabled:opacity-40'
+    'flex size-10 cursor-pointer items-center justify-center rounded-full bg-white text-sub shadow-soft transition-opacity disabled:cursor-default disabled:opacity-40'
 
   return (
-    <Section className="content-pt flex flex-col items-center">
+    <Section className="z-10 content-pt flex flex-col items-center">
       {/* 제목이 선 칸을 높이 0 으로 본떠, 폭이 바뀌어도 첫 카드 자리를 재서 맞춘다. */}
       <div aria-hidden className="pointer-events-none absolute left-0 top-0 h-0 w-full">
         <div className="mx-auto h-0 w-full max-w-[1280px] px-5 md:px-8">
           <div ref={probeRef} className="h-0" />
         </div>
       </div>
-
-      {/* 제목과 카드 사이 여백 안에 걸쳐 두어, 다른 구역과 간격이 달라지지 않게 한다. */}
-      <Container className="relative hidden h-0 md:block">
-        <div className="absolute bottom-3 right-8 flex gap-3">
-          <button type="button" onClick={() => move(-1)} disabled={edge.start} aria-label="이전 카드 보기" className={arrow}>
-            <IconChevronLeft size={22} stroke={1.8} />
-          </button>
-          <button type="button" onClick={() => move(1)} disabled={edge.end} aria-label="다음 카드 보기" className={arrow}>
-            <IconChevronRight size={22} stroke={1.8} />
-          </button>
-        </div>
-      </Container>
 
       <div
         ref={scrollRef}
@@ -138,6 +126,15 @@ export function Hero6FeatureGallery() {
           ))}
         </motion.div>
       </div>
+      {/* 넘김 화살표는 카드 줄 바로 아래, 콘텐츠 폭의 오른쪽 끝에 둔다. */}
+      <Container className="mt-8 hidden justify-end gap-3 md:flex">
+        <button type="button" onClick={() => move(-1)} disabled={edge.start} aria-label="이전 카드 보기" className={arrow}>
+          <IconChevronLeft size={22} stroke={1.8} />
+        </button>
+        <button type="button" onClick={() => move(1)} disabled={edge.end} aria-label="다음 카드 보기" className={arrow}>
+          <IconChevronRight size={22} stroke={1.8} />
+        </button>
+      </Container>
     </Section>
   )
 }
