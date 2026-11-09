@@ -5,6 +5,7 @@ import rightPanel from '../../assets/sections/hero2-application-builder/builder-
 import chevron from '../../assets/sections/hero2-application-builder/icon-row-chevron.svg'
 import chevronDisabled from '../../assets/sections/hero2-application-builder/icon-row-chevron-disabled.svg'
 import { useFitScale } from '../../hooks/useFitScale'
+import { BRAND_CURSOR, BrandCursorFollower } from '../ui/BrandCursorFollower'
 import { FormApplicantCard } from './Hero2FormBuilderApplicant'
 import { FormPreviewCard } from './Hero2FormBuilderCards'
 import { FORM_SECTIONS, type FormSection } from './Hero2FormBuilderData'
@@ -48,14 +49,6 @@ const CARD_SHADOW = [
 const DESIGN_WIDTH = 1280
 const DESIGN_HEIGHT = 710
 const TOOLBAR_HEIGHT = 57.5
-
-/**
- * 데모가 끝난 뒤 사용자의 마우스 포인터를 데모 커서와 같은 동그라미로
- * 바꾼다. 커서 이미지는 무대의 scale 을 따라가지 않으므로, 화면에 찍히는
- * 크기(30px * 0.95)에 맞춰 32x32 로 그렸다.
- */
-const POINTER_SKIN =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='16' cy='16' r='13' fill='rgba(77,87,97,0.7)' stroke='white' stroke-width='2'/%3E%3C/svg%3E\") 16 16, auto"
 
 const TABS = [
   { view: 'basic' as const, label: 'Basic', width: 63 },
@@ -152,16 +145,12 @@ export function Hero2FormBuilderMockup() {
   // 사람이 직접 누르면 그 자리에서 멈춘다 — 손으로 고른 상태를 데모가
   // 빼앗는 건 고장으로 읽힌다. 섹션을 다시 들어오면 풀린다.
   const [takenOver, setTakenOver] = useState(false)
-  // 데모가 끝나면(또는 사람이 가로채면) 목업 안에서 실제 포인터가 데모와
-  // 같은 동그라미가 된다. 섹션을 벗어나면 원래대로 돌아간다.
-  const [pointerSkin, setPointerSkin] = useState(false)
   // 데모가 끝나는 순간 "이제 직접 해 보라"는 말을 한 번 띄우고 지운다.
   const [hint, setHint] = useState(false)
 
   useEffect(() => {
     if (!inView) {
       setTakenOver(false)
-      setPointerSkin(false)
       setCursor(null)
       setHint(false)
       return
@@ -171,7 +160,6 @@ export function Hero2FormBuilderMockup() {
       // 올린 자리에 유령 커서가 남아 있으면 자기 커서와 헷갈린다.
       setCursor(null)
       setHint(false)
-      setPointerSkin(true)
       return
     }
 
@@ -235,7 +223,6 @@ export function Hero2FormBuilderMockup() {
       }
 
       setCursor(null)
-      setPointerSkin(true)
       setHint(true)
       await sleep(2400)
       if (cancelled) return
@@ -271,19 +258,18 @@ export function Hero2FormBuilderMockup() {
       <div
         ref={stageRef}
         onPointerDownCapture={() => setTakenOver(true)}
-        className={clsx(
-          'relative overflow-hidden rounded-card bg-white',
-          // 버튼마다 걸린 cursor-pointer 가 이기므로 안쪽을 전부 상속으로 돌린다.
-          pointerSkin && '[&_*]:cursor-[inherit]',
-        )}
+        // 버튼마다 걸린 cursor-pointer 가 이기므로 안쪽을 전부 상속으로 돌린다.
+        className="relative overflow-hidden rounded-card bg-white [&_*]:cursor-[inherit]"
         style={{
           width: DESIGN_WIDTH,
           height: DESIGN_HEIGHT,
           transform: `scale(${scale})`,
           transformOrigin: 'top left',
-          cursor: pointerSkin ? POINTER_SKIN : undefined,
+          // 사람 포인터는 데모 중에도 늘 브랜드 커서다. 데모 커서는 동그라미라 서로 헷갈리지 않는다.
+          cursor: BRAND_CURSOR,
         }}
       >
+        <BrandCursorFollower targetRef={stageRef} />
         {/* 상단 툴바. 아래 세 칸(메뉴 350 · 지원서 580 · 설정 350)에 맞춰 나눈다 —
             제목 입력이 바로 아래 지원서와 같은 폭으로 놓여 "이 양식의 제목" 으로 읽힌다. */}
         <div className="flex border-b border-[#e5e7eb] bg-white" style={{ height: TOOLBAR_HEIGHT }}>

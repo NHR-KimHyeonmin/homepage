@@ -3,7 +3,6 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import clsx from 'clsx'
 import { IconCalendar, IconChevronDown } from '@tabler/icons-react'
 import { useFitScale } from '../../hooks/useFitScale'
-import { POINTER_SKIN } from '../../lib/demoCursor'
 import { useSequence } from '../../hooks/useStepSequence'
 
 // Figma node 2320:25679 — "전형운영>평가그룹".
@@ -700,7 +699,6 @@ export function Hero3EvalGroups() {
         // 판 위에서만 모양이 갈린다. 버튼은 판의 모양을 물려받게 한다.
         className="relative [&_button]:cursor-[inherit]!"
         style={{
-          cursor: POINTER_SKIN,
           width: DESIGN_WIDTH,
           height: DESIGN_HEIGHT,
           transform: `scale(${scale})`,

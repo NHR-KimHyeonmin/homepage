@@ -319,7 +319,7 @@ export function Hero00Screening() {
       >
         <button
           type="button"
-          className="flex cursor-pointer items-center justify-center rounded-card bg-cta px-7 py-3.5 text-[19px] font-semibold text-white transition-colors hover:bg-cta-hover"
+          className="flex cursor-pointer items-center justify-center rounded-full bg-cta px-7 py-3.5 text-[19px] font-semibold text-white transition-colors hover:bg-cta-hover"
         >
           연동 문의하기
         </button>

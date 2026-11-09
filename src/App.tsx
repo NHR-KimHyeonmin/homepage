@@ -47,11 +47,11 @@ function App() {
       <main>
         <Hero1 />
         <Hero2LogoMarquee />
-        <Hero2Headline />
-        <Hero2ThemeShowcase />
         <Hero2Highlight />
         <Hero2SeoAnalyticsGrid />
         <Hero2ApplicationCards />
+        <Hero2Headline />
+        <Hero2ThemeShowcase />
         <Hero2ClientShowcase />
         <Hero2ApplicationTitle />
         <Hero2ApplicationBuilder />

@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import { useFitScale } from '../../hooks/useFitScale'
 import { hexToHsl, hslToHex } from '../../lib/colorShades'
 import { Container } from '../ui/Container'
+import { BRAND_CURSOR, BrandCursorFollower } from '../ui/BrandCursorFollower'
 import { Section } from '../ui/Section'
 import { Hero2ThemeColorPicker } from './Hero2ThemeColorPicker'
 import { Hero2ThemeFrame117 } from './Hero2ThemeFrame117'
@@ -93,6 +94,7 @@ export function Hero2ThemeShowcase() {
   // 화면에 들어온 동안만 돈다. 들어오는 순간 첫 색(블루)으로 되돌려, 페이지를
   // 열자마자 타이머가 미리 몇 칸 넘겨 둔 색을 보게 되는 일이 없게 한다.
   const sectionRef = useRef<HTMLElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
   const inView = useInView(sectionRef, { amount: 0.3 })
   useEffect(() => {
     if (inView && !takenOver) setSelectedColor(DEFAULT_COLOR)
@@ -129,9 +131,12 @@ export function Hero2ThemeShowcase() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="relative flex w-full flex-col items-center gap-10 overflow-hidden rounded-media px-6 pt-10 md:aspect-[5/3] md:px-[120px] md:pt-14"
-          style={{ backgroundColor: panelBg(selectedColor), transition: 'background-color 400ms ease' }}
+          ref={panelRef}
+          // 안쪽 버튼이 기본 커서로 돌아가지 않게 전부 판의 커서를 물려받는다.
+          className="relative flex w-full flex-col items-center gap-10 overflow-hidden rounded-media px-6 pt-10 md:aspect-[5/3] md:px-[120px] md:pt-14 [&_*]:cursor-[inherit]"
+          style={{ backgroundColor: panelBg(selectedColor), transition: 'background-color 400ms ease', cursor: BRAND_CURSOR }}
         >
+          <BrandCursorFollower targetRef={panelRef} />
           {/* 스와치를 반투명 유리 알약 위에 올린다. 고채도 칩은 밝은 한색
               그라데이션 위에서 대비가 1.6~2.7 까지 떨어지는데, 색을 어둡게
               바꾸면 탁해지므로 색 대신 바탕을 중화했다. 흰색 55% 에서

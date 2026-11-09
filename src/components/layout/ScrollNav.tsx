@@ -16,7 +16,7 @@ import clsx from 'clsx'
  */
 const CHAPTERS: { id: string; label: string }[] = [
   { id: 'top', label: '홈' },
-  { id: 'hero2-headline', label: '모집' },
+  { id: 'hero2-highlight', label: '모집' },
   { id: 'hero2-application-title', label: '접수' },
   { id: 'dashboard', label: '운영' },
   { id: 'evaluation', label: '평가' },

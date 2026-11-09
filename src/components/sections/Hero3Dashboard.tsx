@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { BRAND_CURSOR, BrandCursorFollower } from '../ui/BrandCursorFollower'
 import { PillSwitch } from '../ui/PillSwitch'
 import { Section } from '../ui/Section'
 import { Hero3CustomDashboard } from './Hero3CustomDashboard'
@@ -128,7 +129,13 @@ export function Hero3Dashboard() {
             마지막 [&>*]:flex-1 이 어느 탭의 패널이든 남는 높이를 채우게 한다 —
             이게 없으면 내용이 짧은 탭에서 흰 카드만 쪼그라들어, 탭을 바꿀
             때마다 카드가 줄었다 늘었다 한다. */}
-        <div ref={panelRef} className="flex w-full flex-col" style={{ minHeight: panelHeight }}>
+        {/* 내 포인터는 세 탭 모두 브랜드 커서다. 연출 속 회색 동그라미 커서는 따로 그려지는 요소라 그대로 남는다. */}
+        <div
+          ref={panelRef}
+          className="flex w-full flex-col [&_*]:cursor-[inherit]"
+          style={{ minHeight: panelHeight, cursor: BRAND_CURSOR }}
+        >
+        <BrandCursorFollower targetRef={panelRef} />
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={activeTab}

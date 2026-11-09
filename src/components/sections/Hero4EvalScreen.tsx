@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 're
 import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
 import clsx from 'clsx'
 import { useSequence } from '../../hooks/useStepSequence'
-import { POINTER_SKIN } from '../../lib/demoCursor'
+import { BRAND_CURSOR, BrandCursorFollower } from '../ui/BrandCursorFollower'
 import {
   IconCake,
   IconCheck,
@@ -725,15 +725,16 @@ export function Hero4EvalScreen() {
           <div
             ref={stageRef}
             data-eval-screen
-            className="relative overflow-hidden rounded-card border border-[#e1e4e8] bg-white font-sans"
+            className="relative overflow-hidden rounded-card border border-[#e1e4e8] bg-white font-sans [&_*]:cursor-[inherit]"
             style={{
               width: W,
               height: H,
               transform: `scale(${scale})`,
               transformOrigin: 'top left',
-              cursor: POINTER_SKIN,
+              cursor: BRAND_CURSOR,
             }}
           >
+            <BrandCursorFollower targetRef={stageRef} />
             <div className="flex h-full">
               {/* ── 왼쪽: 지원서(Basic 뷰) ─────────────────────────── */}
               <div className="flex flex-col" style={{ width: DOC }}>

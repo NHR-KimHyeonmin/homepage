@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { IconCornerDownRight, IconFileSearch } from '@tabler/icons-react'
 import { useSequence } from '../../hooks/useStepSequence'
-import { POINTER_SKIN } from '../../lib/demoCursor'
 import popupTicket from '../../assets/sections/hero3-mypage/popup-admission-ticket.png'
 import popupAttendance from '../../assets/sections/hero3-mypage/popup-attendance.png'
 import popupDocuments from '../../assets/sections/hero3-mypage/popup-documents.png'
@@ -174,7 +173,6 @@ export function Hero3MypagePreview() {
   return (
     <div
       ref={panelRef}
-      style={{ cursor: POINTER_SKIN }}
       className="relative flex w-full flex-col gap-4 overflow-hidden rounded-card bg-white p-6 shadow-card"
     >
       {/* 지원한 공고 하나와 그 안의 전형들. 내 정보와 같은 테두리로 묶는다 —

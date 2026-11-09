@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import { Container } from '../ui/Container'
-import { SectionEyebrow } from '../ui/SectionEyebrow'
 import { Section } from '../ui/Section'
 
 export function Hero2Headline() {
@@ -14,7 +13,6 @@ export function Hero2Headline() {
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="flex flex-col items-center gap-5 text-center"
         >
-          <SectionEyebrow>지원자 모집</SectionEyebrow>
           <div className="type-title">
             <p>지원하고 싶은 사이트,</p>
             <p>들어오고 싶은 회사</p>

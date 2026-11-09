@@ -18,7 +18,7 @@ export function Button({ variant = 'primary', className, children, ...props }: B
   return (
     <button
       className={clsx(
-        'inline-flex cursor-pointer items-center justify-center rounded-card px-5 py-3 text-[18px] font-semibold tracking-[-0.09px] transition-colors',
+        'inline-flex cursor-pointer items-center justify-center rounded-full px-5 py-3 text-[18px] font-semibold tracking-[-0.09px] transition-colors',
         variantClasses[variant],
         className,
       )}

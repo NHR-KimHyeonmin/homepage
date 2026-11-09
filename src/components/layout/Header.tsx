@@ -33,7 +33,7 @@ export function Header() {
             나머지와 같은 무게로 두지 않고 버튼으로 뺀다. 연결할 곳이 정해지면 링크로 바꾼다. */}
         <button
           type="button"
-          className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-card bg-cta px-4 py-2 text-[15px] font-semibold tracking-[-0.08px] text-white transition-colors hover:bg-cta-hover"
+          className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-cta px-4 py-2 text-[15px] font-semibold tracking-[-0.08px] text-white transition-colors hover:bg-cta-hover"
         >
           도입문의
         </button>

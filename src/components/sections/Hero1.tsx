@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import cursorImg from '../../assets/sections/hero1/cursor/cursor.png'
+import { BRAND_CURSOR, BrandCursorFollower } from '../ui/BrandCursorFollower'
 import { Button } from '../ui/Button'
 import { Section } from '../ui/Section'
 import { Hero1TypedHeadline } from './Hero1TypedHeadline'
@@ -10,9 +10,6 @@ import { VIEWS } from './hero1-admin/views'
 /** 자동 순회 간격. */
 const NAV_AUTOPLAY_MS = 3500
 
-// Figma node 2323:26304 — custom branded cursor (arrow + "careerlink" pill),
-// hotspot (22, 27) lines up with the arrow's own tip.
-const DASHBOARD_CURSOR = `url(${cursorImg}) 22 27, auto`
 
 // How long the fully-typed headline sits still before it starts fading out.
 const HOLD_TITLE_MS = 1000
@@ -298,8 +295,9 @@ export function Hero1() {
         <div
           ref={cardRef}
           className="relative w-full overflow-hidden"
-          style={{ aspectRatio: `${FRAME_WIDTH} / ${FRAME_HEIGHT}`, cursor: DASHBOARD_CURSOR }}
+          style={{ aspectRatio: `${FRAME_WIDTH} / ${FRAME_HEIGHT}`, cursor: BRAND_CURSOR }}
         >
+          <BrandCursorFollower targetRef={cardRef} />
           <div className="absolute left-0 top-0" style={{ zoom: cardWidth / FRAME_WIDTH }}>
             <AdminFrame active={activeNav} onSelect={selectNav} crumbs={VIEWS[activeNav].crumbs}>
               {/* 바뀌는 건 본문뿐 — 틀은 그대로 두고 본문만 겹쳐 바꾼다. */}
