@@ -90,6 +90,16 @@
   }
 }
 
+/* 카드의 + 아이콘. 나타날 때 시계 방향으로 한 바퀴 돌며 멈춘다. */
+@keyframes plus-spin {
+  from {
+    rotate: -360deg;
+  }
+  to {
+    rotate: 0deg;
+  }
+}
+
 /* 채용 사이트 띠. 한 벌 길이(--marquee-loop)만큼 흐르면 처음으로 — 둘째 벌이
    같은 그림이라 이음매가 보이지 않는다. 앞뒤 여백 때문에 -50% 로는 맞지 않는다. */
 @keyframes client-marquee {

@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
+import { IconPlus } from '@tabler/icons-react'
 import iconDocTabInactive from '../../assets/sections/hero00/icon-doc-tab-inactive.svg'
 import iconInterviewTabInactive from '../../assets/sections/hero00/icon-interview-tab.svg'
 import iconReferenceTabInactive from '../../assets/sections/hero00/icon-reference-tab.svg'
@@ -28,6 +29,7 @@ interface PartnerCard {
   description: string
   /** Which nav tab lights this card up at full opacity when selected. */
   group: ScreeningTab
+  href: string
 }
 
 const CARDS: PartnerCard[] = [
@@ -35,6 +37,7 @@ const CARDS: PartnerCard[] = [
     logo: logoPrism,
     org: '무하유',
     name: '프리즘',
+    href: 'https://service.prism.work/prism',
     description:
       '프리즘은 생성형 AI 자소서 탐지는 물론, 직무 적합성 등 사람이 판단하기 어려운 요소를 AI가 정밀하게 분석하여 결과를 제공합니다. 이제 지원자의 본질적인 역량에 집중하세요.',
     group: 'doc',
@@ -43,6 +46,7 @@ const CARDS: PartnerCard[] = [
     logo: logoViewinter,
     org: '제네시스랩',
     name: '뷰인터 HR',
+    href: 'https://viewinterhr.com/',
     description:
       'Interactive AI 기술을 기반으로 보다 정확한 인재를 공정하게 선발할 수 있도록 도움을 드리는 AI면접 솔루션입니다.',
     group: 'interview',
@@ -51,6 +55,7 @@ const CARDS: PartnerCard[] = [
     logo: logoMonster,
     org: '무하유',
     name: '몬스터',
+    href: 'https://service.prism.work/monster',
     description:
       '몬스터는 AI면접 답변 내용과 역량검사 결과를 기반으로 서류에서 알 수 없는 진짜 역량을 검증하고 오피스빌런 리스크까지 예측하여 채용 효율과 정확성을 극대화합니다.',
     group: 'interview',
@@ -59,6 +64,7 @@ const CARDS: PartnerCard[] = [
     logo: logoCareern,
     org: 'NHR',
     name: '커리어앤',
+    href: 'https://n-hrlab.careerlink.kr/products',
     description:
       '기업이 보다 직무에 FIT한 역량, 조직에 FIT한 가치관을 가진 인재를 확보할 수 있도록 돕는 성격 진단 솔루션입니다.',
     group: 'interview',
@@ -67,6 +73,7 @@ const CARDS: PartnerCard[] = [
     logo: logoSpector,
     org: 'Spector',
     name: '스펙터',
+    href: 'https://www.specter.co.kr/',
     description:
       '기업, 지원자, 평판 작성자를 연결하는 인재검증(평판조회) 플랫폼입니다. 인재 검증 시간을 단축 시켜주며 채용에 대한 리스크를 감소시켜줍니다.',
     group: 'reference',
@@ -86,7 +93,7 @@ export function Hero00Screening() {
   const { scrollRef, isDragging, overscrollX, dragHandlers } = useDragScroll<HTMLDivElement>((scrolled) =>
     settleAfterDrag(scrolled),
   )
-  const cardRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const cardRefs = useRef<(HTMLAnchorElement | null)[]>([])
   // Empty leading/trailing space so even the first/last card group (프리즘,
   // 스펙터) has enough room to reach true center — without it, centering
   // clamps at the scroll edges and those two groups can only ever slide as
@@ -279,32 +286,63 @@ export function Hero00Screening() {
           <div className="flex items-stretch gap-5">
             <div aria-hidden className="shrink-0" style={{ width: spacerWidth }} />
             {CARDS.map((card, index) => (
-              <button
+              <a
                 key={card.name}
-                type="button"
+                href={card.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                // 링크를 끌면 브라우저가 링크 끌기를 시작해 가로 드래그가 끊긴다.
+                draggable={false}
                 ref={(el) => {
                   cardRefs.current[index] = el
                 }}
-                onClick={() => selectTab(card.group)}
-                aria-pressed={card.group === activeTab}
+                // 흐린 카드를 누르면 그 그룹으로 옮기기만 한다. 사이트는 켜진 카드에서만 열린다.
+                onClick={(event) => {
+                  if (card.group !== activeTab) {
+                    event.preventDefault()
+                    selectTab(card.group)
+                  }
+                }}
+                aria-current={card.group === activeTab ? 'true' : undefined}
                 className={clsx(
-                  'flex h-[400px] shrink-0 cursor-pointer flex-col gap-4 overflow-hidden rounded-card bg-brand-50 p-7 text-left transition-opacity duration-300',
-                  card.group === activeTab ? 'opacity-100' : 'opacity-30 hover:opacity-60',
+                  'group relative flex h-[400px] shrink-0 cursor-pointer flex-col overflow-hidden rounded-card p-7 text-left transition-[opacity,background-color,box-shadow] duration-300',
+                  card.group === activeTab
+                    ? 'bg-brand-50 opacity-100 hover:bg-[#ecf6fc] hover:shadow-[inset_0_0_0_1px_rgba(13,156,235,0.45)]'
+                    : 'bg-brand-50 opacity-30 hover:opacity-60',
                 )}
                 style={{ width: CARD_WIDTH }}
               >
-                <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-ui border border-gray-150 bg-white">
-                  {/* 로고 파일은 여백 없이 잘라 두고, 칸 안쪽 여백으로 가운데에 앉힌다. */}
-                  <img loading="lazy" decoding="async" src={card.logo} alt={`${card.name} 로고`} className="size-full object-contain p-1.5" />
-                </div>
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-col gap-0.5">
-                    <p className="text-sm font-semibold tracking-[-0.07px] text-sub">{card.org}</p>
-                    <p className="type-card-title">{card.name}</p>
+                {/* 켜진 카드에 올리면 내용을 흐리고 "더 알아보기" 를 띄워, 눌렀을 때 어디로 가는지 알린다. */}
+                <div
+                  className={clsx(
+                    'flex flex-col gap-4 transition-[filter] duration-300',
+                    card.group === activeTab && 'group-hover:blur-[7px] group-focus-visible:blur-[7px]',
+                  )}
+                >
+                  <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-ui border border-gray-150 bg-white">
+                    {/* 로고 파일은 여백 없이 잘라 두고, 칸 안쪽 여백으로 가운데에 앉힌다. */}
+                    <img loading="lazy" decoding="async" src={card.logo} alt={`${card.name} 로고`} className="size-full object-contain p-1.5" />
                   </div>
-                  <p className="type-card-body">{card.description}</p>
+                  <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-0.5">
+                      <p className="text-sm font-semibold tracking-[-0.07px] text-sub">{card.org}</p>
+                      <p className="type-card-title">{card.name}</p>
+                    </div>
+                    <p className="type-card-body">{card.description}</p>
+                  </div>
                 </div>
-              </button>
+                {card.group === activeTab && (
+                  <span className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 text-title opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                    <IconPlus
+                      size={28}
+                      stroke={1.8}
+                      aria-hidden
+                      className="group-hover:[animation:plus-spin_0.4s_ease-out] group-focus-visible:[animation:plus-spin_0.4s_ease-out]"
+                    />
+                    <span className="text-[16px] font-semibold">더 알아보기</span>
+                  </span>
+                )}
+              </a>
             ))}
             <div aria-hidden className="shrink-0" style={{ width: spacerWidth }} />
           </div>
