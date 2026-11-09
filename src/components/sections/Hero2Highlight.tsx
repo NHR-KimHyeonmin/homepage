@@ -5,7 +5,7 @@ import { SectionEyebrow } from '../ui/SectionEyebrow'
 
 export function Hero2Highlight() {
   return (
-    <Section id="hero2-highlight" className="flex flex-col section-pt items-center bg-white">
+    <Section id="hero2-highlight" className="flex flex-col items-center bg-white pt-[140px] md:pt-[240px]">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 24 }}

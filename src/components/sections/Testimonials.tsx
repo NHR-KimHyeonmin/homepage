@@ -57,6 +57,8 @@ const CARDS: SecurityCard[] = [
   },
 ]
 
+const CARD_RISE = { hidden: { opacity: 0, y: 40 }, shown: { opacity: 1, y: 0 } }
+
 /**
  * Dark "보안" (security) section. Background is a radial navy-to-black
  * gradient (from the Figma fill) with a low-opacity network-texture image
@@ -128,14 +130,20 @@ export function Testimonials() {
           </h2>
         </motion.div>
 
-        <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
-          {CARDS.map((card, i) => (
+        {/* 묶음이 화면에 들어오면 왼쪽 위 카드부터 오른쪽 아래까지 살짝씩 시차를 두고 함께 올라온다.
+            구역에 들어올 때마다 다시 재생한다. */}
+        <motion.div
+          initial="hidden"
+          whileInView="shown"
+          viewport={{ amount: 0.25 }}
+          transition={{ staggerChildren: 0.1 }}
+          className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3"
+        >
+          {CARDS.map((card) => (
             <motion.div
               key={card.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: 'easeOut', delay: (i % 3) * 0.08 }}
+              variants={CARD_RISE}
+              transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
               className="flex h-40 flex-col justify-center gap-3 rounded-card bg-[#292e54]/50 px-8 py-5 shadow-card"
             >
               <img loading="lazy" decoding="async" src={card.icon} alt="" style={{ width: card.iconSize, height: card.iconSize }} />
@@ -145,7 +153,7 @@ export function Testimonials() {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </Container>
     </Section>
   )
