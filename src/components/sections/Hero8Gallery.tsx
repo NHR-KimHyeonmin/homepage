@@ -23,13 +23,13 @@ const CARDS: ServiceCard[] = [
     name: '커리어톡',
     href: 'https://www.careertalk.kr/home',
     image: card2,
-    description: '채용 관련 행사를 올인원으로 준비할 수 있는 운영 솔루션, 국내/외 탑티어 유저가 꾸준히 확보되는 플랫폼입니다.',
+    description: '기업 탐색부터 채용 행사 참여까지, 탑티어 구직자의 커리어 탐험 플랫폼',
   },
   {
     name: '커리어앤',
     href: 'https://n-hrlab.careerlink.kr/',
     image: card1,
-    description: '개인과 조직에 대한 다차원적 진단을 바탕으로 적합한 인재를 확보할 수 있도록 돕는 진단 솔루션입니다.',
+    description: '개인과 조직에 대한 다차원적 진단을 바탕으로 적합한 인재를 확보할 수 있도록 돕는 진단 솔루션',
   },
   {
     name: '채용 마케팅',
@@ -41,19 +41,19 @@ const CARDS: ServiceCard[] = [
     name: '채용 컨설팅',
     href: 'https://nhr.kr/project_HRC',
     image: card3,
-    description: '채용 직무 분석, 채용 역량 모델링, 채용평가 재설계 및 교육, 서류/필기/면접전형 대행을 진행합니다.',
+    description: '채용 전 과정을 관리하고 운영하며, 기업에서 원하는 적합한 인재를 채용할 수 있도록 HR 전반에 대한 솔루션을 제공합니다.',
   },
   {
     name: 'peak',
     href: 'https://peak.io.kr/',
     image: card4,
-    description: '채용 프로세스 구축부터 온보딩 설계까지, 기업의 채용 문제를 해결하는 All-in-One 채용솔루션입니다.',
+    description: '기업의 채용 문제를 해결하는 All-in-One 채용솔루션',
   },
   {
     name: '20대 연구소',
     href: 'https://www.20slab.org/',
     image: card6,
-    description: '20대 유저의 라이프스타일, 가치관, 소비 트렌드를 연구하여 기업의 마케팅 전략 수립에 필요한 인사이트를 지원합니다.',
+    description: '세대를 통해 시대를 읽은 20대 전문 연구 기관',
   },
 ]
 

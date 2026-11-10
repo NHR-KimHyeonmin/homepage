@@ -132,6 +132,11 @@ export function Hero3Dashboard() {
             마지막 [&>*]:flex-1 이 어느 탭의 패널이든 남는 높이를 채우게 한다 —
             이게 없으면 내용이 짧은 탭에서 흰 카드만 쪼그라들어, 탭을 바꿀
             때마다 카드가 줄었다 늘었다 한다. */}
+        {/* 설명문은 탭 바로 아래, 그림 위에 둔다 — 어떤 기능인지 먼저 읽고 그림을 보게 한다. */}
+        <p className="w-full max-w-[1100px] whitespace-pre-line px-8 pb-8 text-center type-lead md:pb-10" style={{ lineHeight: 1.6 }}>
+          {TAB_DESCRIPTIONS[activeTab]}
+        </p>
+
         {/* 내 포인터는 세 탭 모두 브랜드 커서다. 연출 속 회색 동그라미 커서는 따로 그려지는 요소라 그대로 남는다. */}
         <div
           ref={panelRef}
@@ -157,12 +162,6 @@ export function Hero3Dashboard() {
         </AnimatePresence>
         </div>
 
-        {/* 설명문은 목업 아래에 둔다 — 탭을 누르면 바뀌는 건 그림이고, 글은
-            그 그림이 무엇인지 뒤에서 확인해 주는 말이다. 위에 두면 그림이
-            나오기 전에 설명부터 읽히는데, 이 블록은 보고 나서 읽는 쪽이다. */}
-        <p className="w-full max-w-[1100px] whitespace-pre-line px-8 pt-[30px] text-center type-lead" style={{ lineHeight: 1.6 }}>
-          {TAB_DESCRIPTIONS[activeTab]}
-        </p>
       </motion.div>
     </Section>
   )

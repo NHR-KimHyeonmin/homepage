@@ -61,6 +61,7 @@ function App() {
             그 아래 탭 묶음에는 Hero3Dashboard 가 자기 제목을 따로 들고 있다 —
             두 덩어리가 다른 이야기라 제목도 따로 선다. */}
         <SectionTitle
+          id="operations"
           eyebrow="전형 운영"
           heading={['채용 규모에 따라 선택하는', '전형관리 방식']}
         />
@@ -77,6 +78,7 @@ function App() {
         <Hero4FeatureCards />
 
         <SectionTitle
+          id="screening"
           eyebrow="외부 검사 연동"
           heading={['지원자 검토를 더욱 정밀하게']}
         />

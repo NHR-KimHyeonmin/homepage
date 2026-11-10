@@ -414,8 +414,8 @@ export function Hero00Screening() {
                 className={clsx(
                   'flex h-[400px] shrink-0 cursor-pointer flex-col overflow-hidden rounded-card p-7 text-left transition-[opacity,background-color,box-shadow] duration-300',
                   isOn(index)
-                    ? 'bg-brand-50 opacity-100 hover:bg-[#ecf6fc] hover:shadow-[inset_0_0_0_1px_rgba(13,156,235,0.45)]'
-                    : 'bg-brand-50 opacity-30 hover:opacity-60',
+                    ? 'bg-brand-50 opacity-100 hover:bg-[#ecf6fc] hover:shadow-[inset_0_0_0_1px_rgba(13,156,235,0.45)] active:bg-[#ecf6fc] active:shadow-[inset_0_0_0_1px_rgba(13,156,235,0.45)]'
+                    : 'bg-brand-50 opacity-30 hover:opacity-60 active:opacity-60',
                 )}
                 style={{ width: CARD_WIDTH }}
               >

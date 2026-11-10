@@ -367,7 +367,13 @@ export function Hero2FormBuilderMockup() {
             </div>
           </div>
 
-          <img loading="lazy" decoding="async" src={rightPanel} alt="" className="block w-[350px] shrink-0 self-start" />
+          {/* 오른쪽 설정 판은 그림이다. 제목 입력칸만 글자로 덮어, 왼쪽에서 고른 항목 이름이 따라 바뀌게 한다. */}
+          <div className="relative w-[350px] shrink-0 self-start">
+            <img loading="lazy" decoding="async" src={rightPanel} alt="" className="block w-full" />
+            <span className="absolute left-[26px] top-[58px] flex h-[37px] w-[296px] items-center rounded-[6px] bg-white pl-[13px] text-[15px] text-[#212121]">
+              {FORM_SECTIONS.find((section) => section.id === activeId)?.label}
+            </span>
+          </div>
         </div>
 
         {/* 데모가 끝난 뒤 한 번 지나가는 안내막. 늘 자리에 있고 투명도만

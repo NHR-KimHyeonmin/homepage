@@ -25,6 +25,7 @@ import {
   IconUser,
 } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
+import logoCareern from '../../assets/sections/hero00/logo-careern.png'
 
 /**
  * "일반 / 간편 전형" 두 화면을 DOM 으로 그린 것.
@@ -320,9 +321,7 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
         {/* 끌어 옮기는 손잡이는 뺐다 — 위 "서류전형" 줄에는 없어서, 이 줄만
             손잡이 폭만큼 안쪽으로 밀려 제목 왼쪽이 어긋나 보였다. */}
         <div className="flex items-center gap-3">
-          <span className="flex size-[36px] items-center justify-center rounded-[9px] bg-[#e8f0fe] text-[18px] font-bold text-[#0042b7]">
-            n
-          </span>
+          <img src={logoCareern} alt="" className="size-[36px] object-contain" />
           <p className="text-[24px] font-bold tracking-[-0.12px] text-ink">커리어앤</p>
         </div>
         <div className="flex items-center gap-2.5 text-[#6c737f]">

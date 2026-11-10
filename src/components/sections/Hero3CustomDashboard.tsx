@@ -197,8 +197,8 @@ export function Hero3CustomDashboard() {
                 className={clsx(
                   'flex cursor-pointer items-center justify-between gap-2 rounded-ui px-5 py-[13px] transition-all duration-200 ease-out',
                   showing
-                    ? 'bg-brand-100 text-brand-700 hover:bg-brand-200/60'
-                    : 'bg-[#f1f3f5] text-[#6c737f] hover:bg-[#e4e8ec] hover:text-ink',
+                    ? 'bg-brand-100 text-brand-700 hover:bg-brand-200/60 active:bg-brand-200/60'
+                    : 'bg-[#f1f3f5] text-[#6c737f] hover:bg-[#e4e8ec] hover:text-ink active:bg-[#e4e8ec] active:text-ink',
                   // 데모가 이 줄을 누르고 있는 동안. 사람 손가락이 닿은 것처럼
                   // 살짝 눌리고 색이 먼저 들어온다 — 손을 떼면 카드가 올라온다.
                   pressing === chart.id && 'scale-[0.97] bg-brand-100 text-brand-700',

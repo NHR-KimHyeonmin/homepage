@@ -16,11 +16,11 @@ import clsx from 'clsx'
  */
 const CHAPTERS: { id: string; label: string }[] = [
   { id: 'top', label: '홈' },
-  { id: 'hero2-highlight', label: '모집' },
-  { id: 'hero2-application-title', label: '접수' },
-  { id: 'dashboard', label: '운영' },
+  { id: 'hero2-highlight', label: '지원자 모집' },
+  { id: 'hero2-application-title', label: '서류 접수' },
+  { id: 'operations', label: '전형 운영' },
   { id: 'evaluation', label: '평가' },
-  { id: 'integrations', label: '검사' },
+  { id: 'screening', label: '외부 검사 연동' },
   { id: 'security', label: '보안' },
   { id: 'support', label: '서비스' },
   { id: 'testimonials', label: '후기' },
