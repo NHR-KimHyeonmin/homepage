@@ -47,14 +47,14 @@ const TALL_POPUPS = new Set(['수험표'])
 
 /**
  * 들어오자마자 한 번 도는 손가락 시늉.
- *   1 커서 나타남 → 2 전형안내로 이동 → 3 눌림 → 4 손 뗌 → 5 사라짐
+ *   1 커서 나타남 → 2 결과발표로 이동 → 3 눌림 → 4 손 뗌 → 5 사라짐
  *
  * 이 화면은 버튼이 눌리는 곳인데 가만히 두면 그냥 그림으로 보인다. 커서가
  * 한 번 다녀가면 "눌러 볼 수 있는 화면" 이라는 게 설명 없이 전달된다.
  *
  * 시간표(패널에 들어온 순간부터):
  *   0.30s  커서가 떠오른다
- *   0.56s  전형안내로 출발 — 0.72s 동안 날아가 1.28s 에 도착
+ *   0.56s  결과발표로 출발 — 0.72s 동안 날아가 1.28s 에 도착
  *   1.30s  테두리 깜빡임 시작 + 커서 눌림  ← 둘이 같이 간다
  *   1.58s  손 뗌
  *   2.20s  커서가 사라지고, 깜빡임도 같은 자리에서 끝난다
@@ -128,7 +128,7 @@ export function Hero3MypagePreview() {
   const [popup, setPopup] = useState<string | null>(null)
   const reduceMotion = useReducedMotion()
 
-  /** 커서가 날아갈 자리. 패널 가운데에서 "전형안내" 버튼 한가운데로 간다. */
+  /** 커서가 날아갈 자리. 패널 가운데에서 "결과발표" 버튼 한가운데로 간다. */
   const panelRef = useRef<HTMLDivElement>(null)
   const targetRef = useRef<HTMLButtonElement>(null)
   const [path, setPath] = useState<{ from: { x: number; y: number }; to: { x: number; y: number } } | null>(null)
@@ -202,7 +202,7 @@ export function Hero3MypagePreview() {
               {stage.actions.map((action) => (
                 <button
                   key={action.label}
-                  ref={action.label === '전형안내' ? targetRef : undefined}
+                  ref={action.label === '결과발표' ? targetRef : undefined}
                   type="button"
                   onClick={() => setPopup(action.label)}
                   /* 들어오자마자 테두리가 한 번 밝아졌다 돌아온다 — 눌러 볼 수
@@ -246,7 +246,7 @@ export function Hero3MypagePreview() {
         </div>
       </div>
 
-      {/* 손가락 시늉. 패널 가운데에서 떠올라 "전형안내" 로 날아가 한 번
+      {/* 손가락 시늉. 패널 가운데에서 떠올라 "결과발표" 로 날아가 한 번
           눌렀다 사라진다. 자리는 실측해 두었다가 x/y 로만 옮긴다 — 레이아웃을
           건드리지 않으니 버튼들이 밀리지 않는다. */}
       {path && !reduceMotion && (
