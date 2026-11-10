@@ -30,7 +30,7 @@ import { Hero2ThemeFrame117 } from './Hero2ThemeFrame117'
  * 색은 이 판 위에서만 쓰이는 게 아니라 getThemeShades 를 통해 목업 전체
  * 테마(네비게이션 바탕, 버튼)를 만든다.
  */
-const PALETTE = ['#0284C7', '#6E23D7', '#4EC214', '#424242', '#F43F5E']
+const PALETTE = ['#F43F5E', '#4EC214', '#0284C7', '#6E23D7', '#424242']
 /** 가운데 칸에서 시작해 양옆으로 도는 편이 줄 전체가 눈에 들어온다. */
 const DEFAULT_COLOR = PALETTE[0]
 
