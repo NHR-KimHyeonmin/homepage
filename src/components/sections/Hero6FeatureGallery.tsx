@@ -102,7 +102,9 @@ export function Hero6FeatureGallery() {
       <div
         ref={scrollRef}
         {...dragHandlers}
-        className={`w-full overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
+        // 휴대폰: 손으로 넘기면 한 장씩 멈춰 카드 왼쪽이 제목 줄에 붙는다.
+        style={{ scrollPaddingLeft: inset }}
+        className={`w-full snap-x snap-mandatory overflow-x-auto md:snap-none overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
       >
         {/* 넘길 때 카드가 하나씩 나타나지 않도록 줄 전체가 한 번에 들어온다.
             줄은 화면보다 몇 배 넓어서, "30% 가 보이면" 으로 잡으면 휴대폰에서는
@@ -116,7 +118,7 @@ export function Hero6FeatureGallery() {
           style={{ gap: CARD_GAP, paddingLeft: inset, paddingRight: inset }}
         >
           {CARDS.map(({ title, description, Icon }) => (
-            <div key={title} className="flex shrink-0 flex-col gap-6 rounded-card bg-brand-50 p-7" style={{ width: CARD_WIDTH }}>
+            <div key={title} className="flex shrink-0 snap-start snap-always flex-col gap-6 rounded-card bg-brand-50 p-7" style={{ width: CARD_WIDTH }}>
               <span className="flex size-11 items-center justify-center rounded-[10px] bg-white text-brand-700 shadow-soft">
                 <Icon size={22} stroke={1.8} />
               </span>

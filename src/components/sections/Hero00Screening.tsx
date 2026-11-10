@@ -247,14 +247,9 @@ export function Hero00Screening() {
   }, [activeTab])
 
   const settleAfterDrag = (scrolled: number) => {
+    // 휴대폰은 스크롤 스냅이 이미 한 장씩 가운데에 붙여 준다 — 가운데 카드를 켜기만 한다.
     if (isMobile) {
-      const nearestIndex = nearestCard()
-      if (nearestIndex !== focusCard) {
-        selectCard(nearestIndex)
-        return
-      }
-      const step = Math.abs(scrolled) >= STEP_THRESHOLD ? Math.sign(scrolled) : 0
-      selectCard(Math.min(CARDS.length - 1, Math.max(0, focusCard + step)))
+      selectCard(nearestCard())
       return
     }
 
@@ -275,14 +270,25 @@ export function Hero00Screening() {
   // 똑같이 가장 가까운(또는 넘긴 방향의) 그룹으로 붙이고 켠다.
   const settleRef = useRef(settleAfterDrag)
   settleRef.current = settleAfterDrag
+  // 휴대폰: 손으로 넘기는 동안 가운데에 온 카드를 바로 켠다 — 멈출 때까지 기다리면 늦게 반응하는 것처럼 보였다.
+  const liveFocusRef = useRef(() => {})
+  liveFocusRef.current = () => {
+    if (!isMobile) return
+    const index = nearestCard()
+    if (index === focusCard) return
+    setFocusCard(index)
+    setActiveTab(CARDS[index].group)
+  }
   useEffect(() => {
     const container = scrollRef.current
     if (!container) return
     let startLeft = 0
     let released = false
+    let touching = false
     let timer = 0
     const onStart = () => {
       released = false
+      touching = true
       window.clearTimeout(timer)
       startLeft = container.scrollLeft
     }
@@ -292,6 +298,7 @@ export function Hero00Screening() {
       timer = window.setTimeout(() => {
         if (!released) return
         released = false
+        touching = false
         settleRef.current(container.scrollLeft - startLeft)
       }, 120)
     }
@@ -300,6 +307,7 @@ export function Hero00Screening() {
       settleSoon()
     }
     const onScroll = () => {
+      if (touching) liveFocusRef.current()
       if (released) settleSoon()
     }
     container.addEventListener('touchstart', onStart, { passive: true })
@@ -389,7 +397,7 @@ export function Hero00Screening() {
           className={clsx(
             // scroll-smooth 를 쓰면 드래그 중 scrollLeft 대입까지 애니메이션돼
             // 손가락보다 늦게 따라온다. 자리 잡기는 scrollTo 가 behavior 를 준다.
-            'overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+            'snap-x snap-mandatory overflow-x-auto pb-2 md:snap-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
             isDragging ? 'cursor-grabbing [&_*]:cursor-grabbing' : 'cursor-grab',
           )}
         >
@@ -416,7 +424,7 @@ export function Hero00Screening() {
                 }}
                 aria-current={isOn(index) ? 'true' : undefined}
                 className={clsx(
-                  'flex shrink-0 md:h-[400px] cursor-pointer flex-col overflow-hidden rounded-card p-7 pb-10 text-left md:pb-7 transition-[opacity,background-color,box-shadow] duration-300',
+                  'flex shrink-0 md:h-[400px] cursor-pointer flex-col overflow-hidden rounded-card p-7 pb-14 text-left md:pb-7 snap-center snap-always transition-[opacity,background-color,box-shadow] duration-300',
                   isOn(index)
                     ? 'bg-brand-50 opacity-100 hover:bg-[#ecf6fc] hover:shadow-[inset_0_0_0_1px_rgba(13,156,235,0.45)] active:bg-[#ecf6fc] active:shadow-[inset_0_0_0_1px_rgba(13,156,235,0.45)]'
                     : 'bg-brand-50 opacity-30 hover:opacity-60 active:opacity-60',
