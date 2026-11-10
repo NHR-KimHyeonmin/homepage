@@ -126,7 +126,7 @@ export function Hero3ScreeningToggle() {
     <div ref={blockRef} className="w-full">
       {/* 휴대폰 전용 문장. 각 줄이 화면 가운데에 서도록 줄 흐름(inline)으로 놓는다 —
           스위치는 첫 줄 맨 앞, 둘째 줄은 그 아래 가운데. 글자는 다른 설명글(type-lead)과 같은 크기. */}
-      <div className="mb-5 px-2 text-center md:hidden">
+      <div className="mb-5 mt-6 px-2 text-center leading-[1.9] md:hidden">
         <span
           className="relative mr-2 inline-flex items-center rounded-full bg-white p-[3px] align-middle shadow-soft"
           role="group"
@@ -162,7 +162,7 @@ export function Hero3ScreeningToggle() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="type-lead align-middle"
+            className="type-lead align-middle leading-[1.9]!"
           >
             {splitNote(current.note)[0]}
             <span className="block">{splitNote(current.note)[1]}</span>

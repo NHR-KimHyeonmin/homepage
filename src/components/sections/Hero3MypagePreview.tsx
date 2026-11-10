@@ -103,7 +103,9 @@ function Separated({ items, className }: { items: string[]; className: string })
       {items.map((item, index) => (
         <span key={item}>
           {index > 0 && <span className="px-2.5 text-[#d2d6db]">|</span>}
-          {item}
+          {/* 항목 안에서는 줄을 바꾸지 않는다 — 좁은 화면에서 "제출완
+료" 처럼 낱말이 쪼개졌다. */}
+          <span className="whitespace-nowrap">{item}</span>
         </span>
       ))}
     </p>
@@ -281,7 +283,7 @@ export function Hero3MypagePreview() {
               role="dialog"
               aria-modal="true"
               aria-label={`${popup} 발송 내용`}
-              className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-black/45 p-6"
+              className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-black/45 p-4 md:p-6"
             >
               <motion.div
                 initial={{ opacity: 0, scale: 0.97, y: 10 }}
@@ -299,7 +301,7 @@ export function Hero3MypagePreview() {
                 <img
                   src={popup ? POPUPS[popup] : undefined}
                   alt={`${popup} 발송 내용`}
-                  className={`block h-auto w-auto max-w-[min(92vw,572px)] ${
+                  className={`block h-auto w-auto max-w-[min(calc(100vw-32px),572px)] ${
                     TALL_POPUPS.has(popup) ? 'max-h-[66vh]' : 'max-h-[82vh]'
                   }`}
                 />
