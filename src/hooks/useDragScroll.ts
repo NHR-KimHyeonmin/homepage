@@ -102,6 +102,10 @@ export function useDragScroll<T extends HTMLElement>(onDragEnd?: (scrolled: numb
   useEffect(() => () => springRef.current?.stop(), [])
 
   const onPointerDown = (event: PointerEvent<T>) => {
+    // 마우스만 직접 끈다. 터치·펜은 브라우저가 이미 가로 스크롤을 해 주는데, 여기서도
+    // scrollLeft 를 밀면 두 움직임이 겹쳐 손보다 빨리 움직이고, 브라우저가 제스처를
+    // 가져가며 pointerup 대신 pointercancel 이 와서 끝맺음(그룹에 붙기)도 안 불린다.
+    if (event.pointerType !== 'mouse') return
     const el = scrollRef.current
     if (!el) return
     stopGlide()

@@ -105,7 +105,7 @@ const DRAFT = {
  *  눌러서 입력하는 칸인지 그냥 네모 박스인지 구분되지 않는다. */
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="relative cursor-pointer rounded-chip border border-[#d2d6db] px-3.5 pb-2 pt-2.5 transition-colors hover:border-[#0042b7]">
+    <div className="relative flex h-[38px] cursor-pointer flex-col justify-center rounded-chip border border-[#d2d6db] px-3.5 transition-colors hover:border-[#0042b7]">
       <span className="absolute -top-[7px] left-[10px] bg-white px-1 text-[11px] leading-none text-[#6c737f]">{label}</span>
       {children}
     </div>
@@ -253,7 +253,7 @@ function DatePicker({ value, onChange }: { value: string; onChange: (next: strin
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label="면접 일자 (선택)"
-        className="flex w-full cursor-pointer items-center justify-between rounded-chip border border-[#d2d6db] px-3.5 py-2.5 text-left text-sm transition-colors hover:border-[#0042b7]"
+        className="flex w-full cursor-pointer items-center justify-between h-[38px] rounded-chip border border-[#d2d6db] px-3.5 text-left text-sm transition-colors hover:border-[#0042b7]"
       >
         <span className={value ? 'text-[#212121]' : 'text-[#9ca3af]'}>{value || '날짜 선택(선택)'}</span>
         <IconCalendar size={18} stroke={1.6} className="text-[#6c737f]" />
@@ -752,7 +752,7 @@ export function Hero3EvalGroups() {
 
           <DatePicker value={date} onChange={setDate} />
 
-          <div className="rounded-chip border border-[#d2d6db] px-3.5 py-2.5 transition-colors hover:border-[#0042b7]">
+          <div className="flex h-[38px] items-center rounded-chip border border-[#d2d6db] px-3.5 transition-colors hover:border-[#0042b7]">
             <input
               value={place}
               onChange={(event) => setPlace(event.target.value)}

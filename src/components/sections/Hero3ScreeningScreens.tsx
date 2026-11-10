@@ -490,10 +490,9 @@ const BASE_COLUMNS: { title: string; cards: Applicant[] }[] = [
 /**
  * 김준서가 어디에 있는지에 따른 칸 목록.
  *   before  1차면접에 있다
- *   lifting 아무 칸에도 없다 — 집어 올려져 격자 위를 날고 있다
  *   after   임원 면접에 있다. 지나온 1차 면접 띠는 떼고 선다
  */
-type Phase = 'before' | 'lifting' | 'after'
+type Phase = 'before' | 'after'
 
 function columnsFor(phase: Phase) {
   return BASE_COLUMNS.map((column) => {
@@ -612,7 +611,9 @@ export function SimpleScreen({ active = true }: { active?: boolean }) {
     }
   }, [active])
 
-  const columns = columnsFor(moved ? 'after' : flight ? 'lifting' : 'before')
+  // 들려 가는 동안에는 원래 자리를 비워 두기만 한다(보이지 않게). 카드가 내려앉은
+  // 다음에야 자리가 빠져, 아래 이다함 카드가 그때 올라온다.
+  const columns = columnsFor(moved ? 'after' : 'before')
 
   return (
     <div
@@ -705,7 +706,12 @@ export function SimpleScreen({ active = true }: { active?: boolean }) {
             <div className="flex flex-1 flex-col gap-3 rounded-[12px] bg-[#f7f8f9] p-3">
               {column.cards.map((card) => (
                 /* 카드가 빠지면 아래 카드들이 빈자리를 메우며 올라온다. */
-                <motion.div key={card.name} layout transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}>
+                <motion.div
+                  key={card.name}
+                  layout
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ visibility: flight && card.name === MOVER.name ? 'hidden' : undefined }}
+                >
                   <ApplicantCard card={card} ref={card.name === MOVER.name ? cardRef : undefined} />
                 </motion.div>
               ))}

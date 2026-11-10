@@ -72,7 +72,7 @@ const SOURCES: DbSource[] = [
  * 한 칸씩 넘어가는 연출의 단계. 두 열이 각자 처음부터 끝까지 도는 게 아니라,
  * **먼저 두 출처를 다 세우고 나서** 입력이 차례로 들어간다.
  *
- *   1 YBM 칩 → 2 YBM 점선 → 3 대학알리미 칩 → 4 대학알리미 점선
+ *   1 (쉼) → 2 YBM 점선 → 3 (쉼) → 4 대학알리미 점선 — 칩은 처음부터 보인다
  *   → 5 시험명 목록 → 6 시험명 선택 → 7 점수 입력 → 8 점수 완료
  *   → 9 학교명 목록 → 10 학교명 선택 → 11 주전공 입력 → 12 주전공 완료
  *
@@ -182,13 +182,9 @@ function Field({ field, busy, done }: { field: DbField; busy: boolean; done: boo
 function SourceColumn({ source, steps, step }: { source: DbSource; steps: ColumnSteps; step: number }) {
   return (
     <div className="flex w-full flex-col items-center md:max-w-[440px]">
-      {/* 출처 칩 — 어느 DB 가 이 칸을 채우는지 바로 위에 둔다. */}
-      <div
-        className={clsx(
-          'flex items-center gap-4 rounded-full border border-[#e5e7eb] bg-white py-2 pl-3.5 pr-4 shadow-[0_2px_8px_rgba(15,26,61,0.07)] transition-all duration-500',
-          step >= steps.chip ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0',
-        )}
-      >
+      {/* 출처 칩 — 어느 DB 가 이 칸을 채우는지 바로 위에 둔다. 처음부터 떠 있고,
+          연출은 아래로 점선을 잇는 데서 시작한다. */}
+      <div className="flex items-center gap-4 rounded-full border border-[#e5e7eb] bg-white py-2 pl-3.5 pr-4 shadow-[0_2px_8px_rgba(15,26,61,0.07)]">
         <img loading="lazy" decoding="async" src={source.logo} alt={source.alt} className="w-auto shrink-0" style={{ height: source.logoHeight }} />
         <span className="flex flex-col">
           <span className="text-[13px] font-semibold leading-[18px] text-[#212121]">{source.source}</span>

@@ -91,10 +91,13 @@ export function Hero3Dashboard() {
 
   return (
     <Section id="dashboard" className="flex flex-col section-pb items-center bg-white pt-1 md:pt-2">
+      {/* 이 묶음은 전형 화면부터 탭 설명까지 화면 몇 장 높이라, "30% 가 보이면" 으로
+          잡으면 키가 작은 화면(태블릿 등)에서는 그만큼이 한 번에 들어올 수 없어
+          한참 안 나타났다. 높이와 상관없이 윗변이 화면 아래 15% 지점을 넘으면 연다. */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
+        viewport={{ once: true, amount: 0, margin: '0px 0px -15% 0px' }}
         transition={{ duration: 0.7, ease: 'easeOut' }}
         className="flex w-full max-w-[1208px] flex-col items-center gap-5"
       >

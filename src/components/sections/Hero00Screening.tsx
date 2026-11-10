@@ -204,6 +204,49 @@ export function Hero00Screening() {
     selectTab(order[index])
   }
 
+  // 터치로 넘기면 마우스 끌기 대신 브라우저 기본 스크롤이 움직여, 그룹에 붙지도
+  // 포커스가 옮겨지지도 않았다. 손을 뗀 뒤 관성 스크롤이 멈추면 끌기를 끝낸 것과
+  // 똑같이 가장 가까운(또는 넘긴 방향의) 그룹으로 붙이고 켠다.
+  const settleRef = useRef(settleAfterDrag)
+  settleRef.current = settleAfterDrag
+  useEffect(() => {
+    const container = scrollRef.current
+    if (!container) return
+    let startLeft = 0
+    let released = false
+    let timer = 0
+    const onStart = () => {
+      released = false
+      window.clearTimeout(timer)
+      startLeft = container.scrollLeft
+    }
+    const settleSoon = () => {
+      window.clearTimeout(timer)
+      // 스크롤 이벤트가 120ms 동안 없으면 멈춘 것으로 본다.
+      timer = window.setTimeout(() => {
+        if (!released) return
+        released = false
+        settleRef.current(container.scrollLeft - startLeft)
+      }, 120)
+    }
+    const onEnd = () => {
+      released = true
+      settleSoon()
+    }
+    const onScroll = () => {
+      if (released) settleSoon()
+    }
+    container.addEventListener('touchstart', onStart, { passive: true })
+    container.addEventListener('touchend', onEnd, { passive: true })
+    container.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.clearTimeout(timer)
+      container.removeEventListener('touchstart', onStart)
+      container.removeEventListener('touchend', onEnd)
+      container.removeEventListener('scroll', onScroll)
+    }
+  }, [scrollRef])
+
   return (
     <Section id="integrations" className="flex flex-col items-center content-pt section-pb gap-10 bg-white">
       <motion.div

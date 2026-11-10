@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState, type PointerEvent } from 'react'
 import { motion } from 'framer-motion'
 import arrowNext from '../../assets/sections/hero7/arrow-next.svg'
 import arrowPrev from '../../assets/sections/hero7/arrow-prev.svg'
@@ -47,6 +47,8 @@ const REVIEWS: Review[] = [
 
 /** 다음 후기로 넘어가는 간격(ms). */
 const INTERVAL = 2000
+/** 이만큼 넘게 가로로 밀어야 다음 후기로 넘어간다(px). */
+const SWIPE_MIN = 50
 
 export function Hero7() {
   const [index, setIndex] = useState(0)
@@ -61,6 +63,19 @@ export function Hero7() {
   }, [paused, total, index])
 
   const go = (next: number) => setIndex(((next % total) + total) % total)
+
+  // 본문을 좌우로 밀어도 넘어간다(마우스 끌기·터치 모두). 세로로 더 움직였으면
+  // 페이지 스크롤로 보고 넘기지 않는다.
+  const swipeStart = useRef<{ x: number; y: number } | null>(null)
+  const onSwipeEnd = (event: PointerEvent<HTMLDivElement>) => {
+    const start = swipeStart.current
+    swipeStart.current = null
+    if (!start) return
+    const dx = event.clientX - start.x
+    const dy = event.clientY - start.y
+    if (Math.abs(dx) < SWIPE_MIN || Math.abs(dx) < Math.abs(dy)) return
+    go(dx < 0 ? index + 1 : index - 1)
+  }
 
   return (
     <Section id="testimonials" className="flex flex-col items-center section-pt section-pb bg-brand-50">
@@ -80,9 +95,17 @@ export function Hero7() {
             안 보이는 쪽은 지우지 않고 투명도만 0 으로 둔다 — 빼 버리면 칸이
             다시 줄어 같은 들썩임이 돌아온다. */}
         <div
-          className="mt-7 grid w-full max-w-[760px]"
+          // pan-y: 세로 스크롤은 브라우저에 맡기고, 가로 밀기만 여기서 받는다.
+          className="mt-7 grid w-full max-w-[760px] cursor-grab touch-pan-y select-none active:cursor-grabbing"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
+          onPointerDown={(event) => {
+            swipeStart.current = { x: event.clientX, y: event.clientY }
+          }}
+          onPointerUp={onSwipeEnd}
+          onPointerCancel={() => {
+            swipeStart.current = null
+          }}
         >
           {REVIEWS.map((review, i) => {
             const isCurrent = i === index

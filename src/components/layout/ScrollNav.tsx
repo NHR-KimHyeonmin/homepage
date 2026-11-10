@@ -63,7 +63,7 @@ export function ScrollNav() {
   }, [])
 
   return (
-    /* 화면 폭이 좁으면 본문 위에 겹친다 — 둘 다 보여 줄 자리가 없으면
+    /* 태블릿(768px)부터 보인다. 그보다 좁으면 본문 위에 겹친다 — 둘 다 보여 줄 자리가 없으면
        길잡이보다 본문이 먼저다.
 
        평소엔 반투명 흰 바탕이지만, 어두운 보안 구역 위에서는 흰 바탕이 회색으로
@@ -73,7 +73,7 @@ export function ScrollNav() {
     <nav
       aria-label="페이지 구역 바로가기"
       className={clsx(
-        'fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center rounded-full px-1 py-2 backdrop-blur-md transition-colors duration-300 xl:flex',
+        'fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center rounded-full px-1 py-2 backdrop-blur-md transition-colors duration-300 md:flex',
         onDark ? 'bg-white/10 ring-1 ring-white/15' : 'bg-white/80 shadow-soft',
       )}
     >
