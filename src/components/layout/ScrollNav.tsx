@@ -30,11 +30,14 @@ const CHAPTERS: { id: string; label: string }[] = [
 export function ScrollNav() {
   const [active, setActive] = useState(CHAPTERS[0].id)
   const reduceMotion = useReducedMotion()
+  // 스크롤하는 동안만 보인다. 멈추고 1초 뒤 천천히 사라진다.
+  const [scrolling, setScrolling] = useState(false)
   /** 어두운 배경 위에 떠 있는 챕터. */
   const onDark = active === 'security'
 
   useEffect(() => {
     let frame = 0
+    let hideTimer = 0
 
     const read = () => {
       frame = 0
@@ -51,13 +54,20 @@ export function ScrollNav() {
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(read)
     }
+    const onScroll = () => {
+      schedule()
+      setScrolling(true)
+      window.clearTimeout(hideTimer)
+      hideTimer = window.setTimeout(() => setScrolling(false), 1000)
+    }
 
     read()
-    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', schedule)
     return () => {
       cancelAnimationFrame(frame)
-      window.removeEventListener('scroll', schedule)
+      window.clearTimeout(hideTimer)
+      window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', schedule)
     }
   }, [])
@@ -69,11 +79,14 @@ export function ScrollNav() {
        평소엔 반투명 흰 바탕이지만, 어두운 보안 구역 위에서는 흰 바탕이 회색으로
        탁해지고 옅은 점이 묻힌다. 그 구역이 지금 챕터인 동안만 어두운 판으로 바꾼다 —
        챕터는 구역 위가 화면 한가운데(= 네비게이터 높이)를 지날 때 바뀌므로,
-       판 색이 바뀌는 순간과 네비게이터 뒤 배경이 바뀌는 순간이 같다. */
+       판 색이 바뀌는 순간과 네비게이터 뒤 배경이 바뀌는 순간이 같다.
+
+       멈춰 있을 땐 숨긴다. 마우스를 올리거나 키보드로 들어오면 다시 보인다. */
     <nav
       aria-label="페이지 구역 바로가기"
       className={clsx(
-        'fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center rounded-full px-1 py-2 backdrop-blur-md transition-colors duration-300 md:flex',
+        'fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center rounded-full px-1 py-2 backdrop-blur-md transition-[opacity,background-color,box-shadow] hover:opacity-100 focus-within:opacity-100 md:flex',
+        scrolling ? 'opacity-100 duration-300' : 'opacity-0 duration-700',
         onDark ? 'bg-white/10 ring-1 ring-white/15' : 'bg-white/80 shadow-soft',
       )}
     >
