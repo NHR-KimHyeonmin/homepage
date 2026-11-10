@@ -134,7 +134,7 @@ export function Hero2ThemeShowcase() {
           transition={{ duration: 0.7, ease: 'easeOut' }}
           ref={panelRef}
           // 안쪽 버튼이 기본 커서로 돌아가지 않게 전부 판의 커서를 물려받는다.
-          className="relative flex w-full flex-col items-center gap-10 overflow-hidden rounded-media px-6 pt-10 md:aspect-[5/3] md:px-[120px] md:pt-14 [&_*]:cursor-[inherit]"
+          className="relative flex w-full flex-col items-center gap-6 overflow-hidden rounded-media px-6 pt-6 md:aspect-[5/3] md:gap-10 md:px-[120px] md:pt-14 [&_*]:cursor-[inherit]"
           style={{ backgroundColor: panelBg(selectedColor), transition: 'background-color 400ms ease', cursor: BRAND_CURSOR }}
         >
           <BrandCursorFollower targetRef={panelRef} />
@@ -143,7 +143,7 @@ export function Hero2ThemeShowcase() {
               바꾸면 탁해지므로 색 대신 바탕을 중화했다. 흰색 55% 에서
               최소 대비가 1.61 → 2.19, 평균 2.42 → 3.30 으로 올라가면서도
               뒤 그라데이션이 비쳐 유리 느낌이 남는다. */}
-          <div className="flex items-center gap-[2px] rounded-full bg-white/55 px-2 py-1 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65),0_8px_24px_rgba(15,26,61,0.12)] backdrop-blur-md">
+          <div className="flex items-center gap-[2px] rounded-full bg-white/55 px-1.5 py-0.5 md:px-2 md:py-1 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65),0_8px_24px_rgba(15,26,61,0.12)] backdrop-blur-md">
             {PALETTE.map((hex) => {
               const isSelected = hex.toLowerCase() === selectedColor.toLowerCase()
               return (
@@ -153,14 +153,14 @@ export function Hero2ThemeShowcase() {
                   aria-label={`테마 색상 ${hex} 선택`}
                   aria-pressed={isSelected}
                   onClick={() => pickColor(hex)}
-                  className="flex size-[50px] items-center justify-center rounded-full"
+                  className="flex size-[34px] items-center justify-center rounded-full md:size-[50px]"
                 >
                   {/* 선택 표시는 테두리 대신 "집어 올린 칩" — 한 칸 커지고
                       그림자가 생기며 흰 체크가 들어온다. 테두리 링은 칩
                       색마다 대비가 달라져 어떤 색에서는 잘 안 보인다. */}
                   <span
                     className={clsx(
-                      'flex size-[44px] items-center justify-center rounded-full transition-all duration-300',
+                      'flex size-[30px] items-center md:size-[44px] justify-center rounded-full transition-all duration-300',
                       isSelected
                         ? 'scale-[1.06] shadow-[0_6px_18px_rgba(15,26,61,0.3)]'
                         : 'scale-90 opacity-75 hover:scale-95 hover:opacity-100',
@@ -171,7 +171,7 @@ export function Hero2ThemeShowcase() {
                       aria-hidden
                       viewBox="0 0 24 24"
                       className={clsx(
-                        'size-[22px] transition-opacity duration-200',
+                        'size-[16px] transition-opacity md:size-[22px] duration-200',
                         isSelected ? 'opacity-100' : 'opacity-0',
                       )}
                     >

@@ -253,7 +253,7 @@ export function Hero1() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 24 }}
             transition={REVEAL_TRANSITION}
-            className="text-2xl font-semibold tracking-[-0.12px]"
+            className="text-[18px] font-semibold tracking-[-0.12px] md:text-2xl"
           >
             채용 브랜딩부터 지원자 관리까지
           </motion.p>

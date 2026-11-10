@@ -156,7 +156,7 @@ const CARDS: {
 /** 카드의 세부 항목 목록(아이콘 + 제목 + 설명). */
 function Details({ card, className }: { card: (typeof CARDS)[number]; className?: string }) {
   return (
-    <div className={clsx('flex-col gap-5', className)}>
+    <div className={clsx('flex-col gap-7 md:gap-5', className)}>
       {card.details?.map((detail) => (
         <div key={detail.title}>
           <h5 className="flex items-center gap-2 text-[18px] font-semibold tracking-[-0.09px] text-title">

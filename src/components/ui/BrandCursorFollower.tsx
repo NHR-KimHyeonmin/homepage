@@ -12,6 +12,10 @@ const POINTER_URL = `data:image/svg+xml,${encodeURIComponent(POINTER_SVG)}`
 export const BRAND_CURSOR = `url("${POINTER_URL}") 12 12, auto`
 /** 커서 그림 안에서 화살표 끝이 놓인 자리(px). */
 const HOTSPOT = 12
+/** 터치에서 그리는 화살표·알약 배율. 휴대폰 화면에서는 데스크톱 커서 크기가 너무 컸다. */
+const TOUCH_SCALE = 0.68
+/** 터치일 때 알약이 쉬는 자리(화살표 끝 기준). */
+const TOUCH_OFFSET = { x: 15, y: 20 }
 
 /** 알약이 쉬는 자리: 화살표 끝에서 오른쪽 아래. */
 const OFFSET = { x: 22, y: 30 }
@@ -92,13 +96,14 @@ export function BrandCursorFollower({ targetRef }: { targetRef: RefObject<HTMLEl
     // 터치: 누른 자리에 화살표를 띄우고, 끄는 동안 따라오게 한다. 마우스처럼 알약은 살짝 늦게 온다.
     // 페이지 스크롤로 넘어가도 touchmove 는 계속 오므로 pointer 이벤트 대신 touch 이벤트를 쓴다.
     const placeArrow = (x: number, y: number) => {
-      if (arrowRef.current) arrowRef.current.style.transform = `translate3d(${x - HOTSPOT}px, ${y - HOTSPOT}px, 0)`
+      if (arrowRef.current)
+        arrowRef.current.style.transform = `translate3d(${x - HOTSPOT * TOUCH_SCALE}px, ${y - HOTSPOT * TOUCH_SCALE}px, 0)`
     }
     const onTouchStart = (event: TouchEvent) => {
       const t = event.touches[0]
       if (!t) return
-      goal.x = t.clientX + OFFSET.x
-      goal.y = t.clientY + OFFSET.y
+      goal.x = t.clientX + TOUCH_OFFSET.x
+      goal.y = t.clientY + TOUCH_OFFSET.y
       pos.x = goal.x
       pos.y = goal.y
       paint()
@@ -109,8 +114,8 @@ export function BrandCursorFollower({ targetRef }: { targetRef: RefObject<HTMLEl
     const onTouchMove = (event: TouchEvent) => {
       const t = event.touches[0]
       if (!t) return
-      goal.x = t.clientX + OFFSET.x
-      goal.y = t.clientY + OFFSET.y
+      goal.x = t.clientX + TOUCH_OFFSET.x
+      goal.y = t.clientY + TOUCH_OFFSET.y
       placeArrow(t.clientX, t.clientY)
       if (reduceMotion) {
         pos.x = goal.x
@@ -152,10 +157,11 @@ export function BrandCursorFollower({ targetRef }: { targetRef: RefObject<HTMLEl
       src={POINTER_URL}
       alt=""
       aria-hidden
-      className={`pointer-events-none fixed left-0 top-0 z-40 size-[50px] max-w-none will-change-transform ${touching ? 'block' : 'hidden'}`}
+      className={`pointer-events-none fixed left-0 top-0 z-40 size-[34px] max-w-none will-change-transform ${touching ? 'block' : 'hidden'}`}
     />
     <div ref={pillRef} aria-hidden className="pointer-events-none fixed left-0 top-0 z-40 will-change-transform">
       <div
+        style={touching ? { transform: `scale(${TOUCH_SCALE})`, transformOrigin: 'top left' } : undefined}
         className={`flex h-[22px] items-center rounded-full bg-[#0041b7] px-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.25)] transition-opacity duration-200 ${visible ? 'opacity-100' : 'opacity-0'}`}
       >
         <img src={logoWhite} alt="" className="h-[11px] w-auto max-w-none" />

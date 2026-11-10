@@ -80,6 +80,9 @@ const SWAP = { duration: 0.55, ease: [0.45, 0, 0.2, 1] as const }
 const CARD_SWAP = { ...SWAP, opacity: { duration: 0.2, ease: 'easeOut' as const } }
 
 /** 저절로 바뀌는 간격. */
+/** 휴대폰 스위치 한 칸 폭. */
+const MOBILE_CELL = 66
+
 const AUTOPLAY_MS = 4000
 
 type ScreeningId = (typeof SCREENINGS)[number]['id']
@@ -90,15 +93,10 @@ type ScreeningId = (typeof SCREENINGS)[number]['id']
  * full opacity and sends the other one back to 30%, swapping places.
  */
 /** 설명 한 줄. 좁은 화면에서는 "~로," 뒤에서 줄을 바꾼다 — 줄인 무대 안이라 한 줄이면 너무 길다. */
-function Note({ text }: { text: string }) {
+/** 설명을 "," 앞뒤 두 토막으로 나눈다. */
+function splitNote(text: string): [string, string] {
   const at = text.indexOf(', ')
-  if (at < 0) return text
-  return (
-    <>
-      {text.slice(0, at + 1)}
-      <br className="md:hidden" /> {text.slice(at + 2)}
-    </>
-  )
+  return at < 0 ? [text, ''] : [text.slice(0, at + 1), text.slice(at + 2)]
 }
 
 export function Hero3ScreeningToggle() {
@@ -126,6 +124,52 @@ export function Hero3ScreeningToggle() {
        보여 줄 전부라, 그걸 담는 상자는 그림을 가두기만 했다. 구역 바탕 위에
        그림자만으로 떠 있는 편이 교차가 더 잘 보인다. */
     <div ref={blockRef} className="w-full">
+      {/* 휴대폰 전용 문장. 각 줄이 화면 가운데에 서도록 줄 흐름(inline)으로 놓는다 —
+          스위치는 첫 줄 맨 앞, 둘째 줄은 그 아래 가운데. 글자는 다른 설명글(type-lead)과 같은 크기. */}
+      <div className="mb-5 px-2 text-center md:hidden">
+        <span
+          className="relative mr-2 inline-flex items-center rounded-full bg-white p-[3px] align-middle shadow-soft"
+          role="group"
+          aria-label="전형 방식 선택(모바일)"
+        >
+          <motion.span
+            aria-hidden
+            initial={false}
+            animate={{ x: SCREENINGS.findIndex((item) => item.id === selected) * MOBILE_CELL }}
+            transition={SWAP}
+            className="absolute left-[3px] top-[3px] h-[calc(100%-6px)] rounded-full bg-[#eceff3]"
+            style={{ width: MOBILE_CELL }}
+          />
+          {SCREENINGS.map((screening) => (
+            <button
+              key={screening.id}
+              type="button"
+              onClick={() => pick(screening.id)}
+              aria-pressed={screening.id === selected}
+              style={{ width: MOBILE_CELL }}
+              className={`relative z-10 cursor-pointer whitespace-nowrap rounded-full py-1 text-[13px] font-semibold transition-colors duration-200 ${
+                screening.id === selected ? 'text-title' : 'text-sub'
+              }`}
+            >
+              {screening.label}
+            </button>
+          ))}
+        </span>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.span
+            key={selected}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="type-lead align-middle"
+          >
+            {splitNote(current.note)[0]}
+            <span className="block">{splitNote(current.note)[1]}</span>
+          </motion.span>
+        </AnimatePresence>
+      </div>
+
       <div ref={ref} className="w-full overflow-hidden" style={{ height: DESIGN_HEIGHT * scale }}>
         {/* 가운데 맞춤. useFitScale 은 배율을 1 로 묶어 두므로, 무대(1142)가
             담는 칸(1208)보다 좁은 넓은 화면에서는 왼쪽에 붙어 33px 쯤 왼쪽으로
@@ -183,7 +227,7 @@ export function Hero3ScreeningToggle() {
               높이를 34 로 못박아 두는 이유는, 문구가 바뀔 때 줄 수가 달라지면
               아래 그림이 들썩이기 때문이다. */}
           {/* 위를 맞춘다 — 설명이 두 줄로 접히면 가운데 맞춤일 때 스위치가 두 줄 사이에 떠 있었다. 스위치는 첫 줄 옆에 선다. */}
-          <div className="absolute left-0 top-[12px] z-10 flex w-full items-start justify-center gap-2 px-10">
+          <div className="absolute left-0 top-[12px] z-10 hidden w-full items-start justify-center gap-2 px-10 md:flex">
             {/* 문장 왼쪽에 서는 작은 스위치. 홈은 구역 바탕(#f6fafc)에서 한
                 톤만 내려, 조작기가 글줄 옆에서 튀지 않게 한다. 고른 칸은
                 아래 전형 운영 탭과 같은 회색(#f1f0ee)이다 — 한 구역 안에서
@@ -238,7 +282,7 @@ export function Hero3ScreeningToggle() {
                   aria-hidden
                   className="invisible col-start-1 row-start-1 text-left text-[20px] font-medium leading-[1.5] tracking-[-0.1px]"
                 >
-                  <Note text={screening.note} />
+                  {screening.note}
                 </p>
               ))}
               <div className="relative col-start-1 row-start-1 overflow-hidden">
@@ -251,7 +295,7 @@ export function Hero3ScreeningToggle() {
                     transition={SWAP}
                     className="absolute inset-x-0 top-0 text-left text-[20px] font-medium leading-[1.5] tracking-[-0.1px] text-body"
                   >
-                    <Note text={current.note} />
+                    {current.note}
                   </motion.p>
                 </AnimatePresence>
               </div>

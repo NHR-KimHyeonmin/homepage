@@ -181,10 +181,10 @@ export function Hero3MypagePreview() {
       <div className="flex flex-col gap-3 rounded-card border border-[#eceef2] px-6 py-4">
         <Separated items={META} className="text-[14px] text-[#9aa3af]" />
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3">
           {/* 공고명이 들어가는 자리다. */}
-          <p className="text-[23px] font-bold tracking-[-0.12px] text-ink">커리어링크 경력 채용</p>
-          <span className="flex items-center gap-2 rounded-ui border border-[#e1e4e8] px-4 py-2.5 text-[15px] text-text">
+          <p className="min-w-0 text-[19px] font-bold tracking-[-0.12px] text-ink md:text-[23px]">커리어링크 경력 채용</p>
+          <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-ui border border-[#e1e4e8] px-2.5 py-1.5 text-[13px] text-text md:gap-2 md:px-4 md:py-2.5 md:text-[15px]">
             <DocumentIcon />
             지원서 보기
           </span>

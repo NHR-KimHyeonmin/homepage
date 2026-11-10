@@ -226,6 +226,7 @@ export function Hero8Gallery() {
                         rel="noopener noreferrer"
                         tabIndex={isActive ? 0 : -1}
                         className={clsx(
+                          vertical && 'hidden',
                           '-ml-2.5 mt-1 flex w-fit items-center gap-1 rounded-[8px] px-2.5 py-1.5 text-[14px] font-bold tracking-[-0.28px] text-white transition-colors hover:bg-white/15',
                           isActive && 'pointer-events-auto',
                         )}
@@ -234,6 +235,25 @@ export function Hero8Gallery() {
                         <IconChevronRight size={16} stroke={2} />
                       </a>
                     </motion.div>
+                    {/* 휴대폰: 펼친 장이 낮아 글 아래에 두면 설명과 붙어 답답했다 — 오른쪽 위 모서리로 뺀다. */}
+                    {vertical && (
+                      <motion.a
+                        href={card.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        tabIndex={isActive ? 0 : -1}
+                        initial={false}
+                        animate={{ opacity: isActive ? 1 : 0 }}
+                        transition={{ duration: isActive ? 0.4 : 0.15, delay: isActive ? 0.2 : 0 }}
+                        className={clsx(
+                          'absolute right-3 top-3 flex items-center gap-0.5 rounded-full bg-black/35 py-1.5 pl-3 pr-2 text-[13px] font-bold text-white backdrop-blur-sm transition-colors hover:bg-black/50',
+                          isActive ? 'pointer-events-auto' : 'pointer-events-none',
+                        )}
+                      >
+                        자세히 보기
+                        <IconChevronRight size={15} stroke={2} />
+                      </motion.a>
+                    )}
                   </motion.div>
                 )
               })}
