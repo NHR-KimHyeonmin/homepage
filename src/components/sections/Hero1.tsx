@@ -92,6 +92,7 @@ const STAGE_MASK = `${STAGE_ARCH}, ${STAGE_FOOT}`
  */
 /** 머리글에 입히는 기울기. 레퍼런스에서 뽑은 두 끝값 그대로다. */
 const HEADLINE_GRADIENT = 'linear-gradient(100deg, #10263a 0%, #15304a 45%, #1d3d58 100%)'
+const BRAND_GRADIENT = 'linear-gradient(90deg, #0d9ceb 0%, #2f6ff0 55%, #7a4ff0 100%)'
 
 const GRID_SIZE = 28
 const GRID_LINE = 'rgba(255, 255, 255, 0.18)'
@@ -271,7 +272,14 @@ export function Hero1() {
             <span className="block">채용의 모든 것을</span>
             {/* 휴대폰에서는 "해결하세요." 가 한 글자만 다음 줄로 밀려 떨어졌다 — 좁은 화면에서는 세 줄로 끊는다. */}
             <span className="block">
-              <span className="block md:inline">커리어링크에서</span> 해결하세요.
+              {/* 서비스 이름만 브랜드 하늘색 → 파랑 → 보라로 흐르게 해 눈에 걸리게 한다. */}
+              <span className="block md:inline">
+                <span className="bg-clip-text text-transparent" style={{ backgroundImage: BRAND_GRADIENT }}>
+                  커리어링크
+                </span>
+                에서
+              </span>{' '}
+              해결하세요.
             </span>
           </motion.h2>
         </div>
