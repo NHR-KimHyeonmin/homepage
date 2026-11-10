@@ -31,8 +31,8 @@ import { Hero2ThemeFrame117 } from './Hero2ThemeFrame117'
  * 테마(네비게이션 바탕, 버튼)를 만든다.
  */
 const PALETTE = ['#F43F5E', '#4EC214', '#0284C7', '#6E23D7', '#424242']
-/** 가운데 칸에서 시작해 양옆으로 도는 편이 줄 전체가 눈에 들어온다. */
-const DEFAULT_COLOR = PALETTE[0]
+/** 섹션에 들어오면 초록부터 시작해 파랑·보라·회색·빨강 순으로 돈다. */
+const DEFAULT_COLOR = PALETTE[1]
 
 /**
  * 색상 피커와 목업을 담는 패널 배경. tana.inc 의 FeatureVisuals_panel 처럼

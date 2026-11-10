@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 import iconDocTabInactive from '../../assets/sections/hero00/icon-doc-tab-inactive.svg'
 import iconInterviewTabInactive from '../../assets/sections/hero00/icon-interview-tab.svg'
 import iconReferenceTabInactive from '../../assets/sections/hero00/icon-reference-tab.svg'
@@ -80,6 +81,9 @@ const CARDS: PartnerCard[] = [
 ]
 
 const CARD_WIDTH = 300
+
+const ARROW =
+  'flex size-10 cursor-pointer items-center justify-center rounded-full bg-white text-sub shadow-soft transition-opacity disabled:cursor-default disabled:opacity-40'
 
 /** 이만큼만 끌어도 다음 그룹으로 넘어간다 — 카드 한 장을 다 끌어야
  *  넘어가면 "안 움직인다"로 읽힌다. */
@@ -412,7 +416,7 @@ export function Hero00Screening() {
                 }}
                 aria-current={isOn(index) ? 'true' : undefined}
                 className={clsx(
-                  'flex h-[400px] shrink-0 cursor-pointer flex-col overflow-hidden rounded-card p-7 text-left transition-[opacity,background-color,box-shadow] duration-300',
+                  'flex shrink-0 md:h-[400px] cursor-pointer flex-col overflow-hidden rounded-card p-7 text-left transition-[opacity,background-color,box-shadow] duration-300',
                   isOn(index)
                     ? 'bg-brand-50 opacity-100 hover:bg-[#ecf6fc] hover:shadow-[inset_0_0_0_1px_rgba(13,156,235,0.45)] active:bg-[#ecf6fc] active:shadow-[inset_0_0_0_1px_rgba(13,156,235,0.45)]'
                     : 'bg-brand-50 opacity-30 hover:opacity-60 active:opacity-60',
@@ -438,6 +442,16 @@ export function Hero00Screening() {
           </div>
         </Container>
       </motion.div>
+
+      {/* 휴대폰: 카드 아래 양 끝에 넘김 버튼. 카드 폭에 맞춰 선다. */}
+      <div className="-mt-6 flex justify-between md:hidden" style={{ width: CARD_WIDTH }}>
+        <button type="button" onClick={() => selectCard(focusCard - 1)} disabled={focusCard === 0} aria-label="이전 카드 보기" className={ARROW}>
+          <IconChevronLeft size={22} stroke={1.8} />
+        </button>
+        <button type="button" onClick={() => selectCard(focusCard + 1)} disabled={focusCard === CARDS.length - 1} aria-label="다음 카드 보기" className={ARROW}>
+          <IconChevronRight size={22} stroke={1.8} />
+        </button>
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 24 }}

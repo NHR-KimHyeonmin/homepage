@@ -137,7 +137,7 @@ export function Testimonials() {
           whileInView="shown"
           viewport={{ amount: 0.25 }}
           transition={{ staggerChildren: 0.1 }}
-          className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3"
+          className="grid w-full grid-cols-1 gap-5 px-3 md:px-0 sm:grid-cols-2 md:grid-cols-3"
         >
           {CARDS.map((card) => (
             <motion.div

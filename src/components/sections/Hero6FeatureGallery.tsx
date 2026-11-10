@@ -128,8 +128,8 @@ export function Hero6FeatureGallery() {
           ))}
         </motion.div>
       </div>
-      {/* 넘김 화살표는 카드 줄 바로 아래, 콘텐츠 폭의 오른쪽 끝에 둔다. */}
-      <Container className="mt-8 hidden justify-end gap-3 md:flex">
+      {/* 넘김 화살표는 카드 줄 바로 아래. 휴대폰은 양 끝, 넓은 화면은 콘텐츠 폭의 오른쪽 끝에 모은다. */}
+      <Container className="mt-6 flex justify-between gap-3 md:mt-8 md:justify-end">
         <button type="button" onClick={() => move(-1)} disabled={edge.start} aria-label="이전 카드 보기" className={arrow}>
           <IconChevronLeft size={22} stroke={1.8} />
         </button>
