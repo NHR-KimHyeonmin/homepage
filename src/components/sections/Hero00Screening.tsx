@@ -416,7 +416,7 @@ export function Hero00Screening() {
                 }}
                 aria-current={isOn(index) ? 'true' : undefined}
                 className={clsx(
-                  'flex shrink-0 md:h-[400px] cursor-pointer flex-col overflow-hidden rounded-card p-7 text-left transition-[opacity,background-color,box-shadow] duration-300',
+                  'flex shrink-0 md:h-[400px] cursor-pointer flex-col overflow-hidden rounded-card p-7 pb-10 text-left md:pb-7 transition-[opacity,background-color,box-shadow] duration-300',
                   isOn(index)
                     ? 'bg-brand-50 opacity-100 hover:bg-[#ecf6fc] hover:shadow-[inset_0_0_0_1px_rgba(13,156,235,0.45)] active:bg-[#ecf6fc] active:shadow-[inset_0_0_0_1px_rgba(13,156,235,0.45)]'
                     : 'bg-brand-50 opacity-30 hover:opacity-60 active:opacity-60',
@@ -443,8 +443,8 @@ export function Hero00Screening() {
         </Container>
       </motion.div>
 
-      {/* 휴대폰: 카드 아래 양 끝에 넘김 버튼. 카드 폭에 맞춰 선다. */}
-      <div className="-mt-6 flex justify-between md:hidden" style={{ width: CARD_WIDTH }}>
+      {/* 휴대폰: 카드 아래, 화면 양 끝에 넘김 버튼. */}
+      <div className="-mt-6 flex w-full justify-between px-5 md:hidden">
         <button type="button" onClick={() => selectCard(focusCard - 1)} disabled={focusCard === 0} aria-label="이전 카드 보기" className={ARROW}>
           <IconChevronLeft size={22} stroke={1.8} />
         </button>
