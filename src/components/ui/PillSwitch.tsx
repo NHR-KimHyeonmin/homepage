@@ -79,7 +79,7 @@ export function PillSwitch<T extends string>({
       )}
       {items.map((item, index) => {
         const isActive = item.id === value
-        // 두 칸씩 접을 때 홀수로 남는 마지막 칸은 한 줄을 다 쓰고 가운데에 선다.
+        // 두 칸씩 접을 때 홀수로 남는 마지막 칸은 한 줄을 통째로 쓴다.
         const lone = wrap && items.length % 2 === 1 && index === items.length - 1
         return (
           <button
@@ -91,7 +91,7 @@ export function PillSwitch<T extends string>({
             className={clsx(
               'relative z-10 flex cursor-pointer items-center justify-center gap-1.5 rounded-full px-2 py-2 text-center text-[13px] leading-[1.3] md:whitespace-nowrap font-semibold tracking-[-0.09px] transition-colors duration-200 md:gap-2 md:px-4 md:text-[16px] md:leading-normal',
               isActive ? 'text-title' : 'text-sub hover:text-body',
-              lone && 'col-span-2 justify-self-center px-6',
+              lone && 'col-span-2',
             )}
           >
             {item.icon && (

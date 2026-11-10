@@ -281,7 +281,7 @@ export function Hero1() {
           animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 24 }}
           transition={{ ...REVEAL_TRANSITION, delay: revealed ? CTA_DELAY_S : 0 }}
         >
-          <Button variant="dark" className="px-7 py-3.5 text-[19px]">
+          <Button variant="dark" className="px-5 py-2.5 text-[16px] md:px-7 md:py-3.5 md:text-[19px]">
             도입 문의하기
           </Button>
         </motion.div>

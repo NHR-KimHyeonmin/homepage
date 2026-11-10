@@ -32,7 +32,7 @@ export function CtaBanner() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="text-[28px] font-semibold leading-[1.2] tracking-[-0.72px] text-white md:text-[36px]"
+        className="text-[22px] font-semibold leading-[1.3] tracking-[-0.5px] text-white md:text-[36px] md:leading-[1.2] md:tracking-[-0.72px]"
       >
         커리어링크로 성공적인 채용을 만들어보세요.
       </motion.h2>
@@ -45,7 +45,7 @@ export function CtaBanner() {
         className="flex flex-wrap items-center justify-center gap-4"
       >
         {/* 어둡게 덮은 사진 위라 기본 남색 버튼은 묻힌다 — 더 짙은 검정으로 띄운다. */}
-        <Button variant="dark" className="bg-[#05080c]! px-7 py-3.5 text-[19px] hover:bg-[#1a2129]!">
+        <Button variant="dark" className="bg-[#05080c]! px-5 py-2.5 text-[16px] md:px-7 md:py-3.5 md:text-[19px] hover:bg-[#1a2129]!">
           도입 문의하기
         </Button>
       </motion.div>

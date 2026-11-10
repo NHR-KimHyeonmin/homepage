@@ -212,7 +212,10 @@
   html {
     scroll-behavior: smooth;
     /* 고정 헤더(약 72px)에 섹션 머리가 가리지 않게 앵커 이동을 그만큼 덜 내린다. */
-    scroll-padding-top: 72px;
+    scroll-padding-top: 60px;
+    @media (width >= 48rem) {
+      scroll-padding-top: 72px;
+    }
   }
 
   body {

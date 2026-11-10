@@ -22,7 +22,7 @@ function InquiryButton() {
   return (
     <button
       type="button"
-      className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-cta px-4 py-2 text-[15px] font-semibold tracking-[-0.08px] text-white transition-colors hover:bg-cta-hover"
+      className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-cta px-3.5 py-1.5 text-[14px] md:px-4 md:py-2 md:text-[15px] font-semibold tracking-[-0.08px] text-white transition-colors hover:bg-cta-hover"
     >
       도입문의
     </button>
@@ -45,9 +45,9 @@ export function Header() {
   return (
     /* 스크롤해도 늘 위에 붙어 있다. 흰 바탕 아래 옅은 그림자로 본문과 구분한다. */
     <header className="fixed inset-x-0 top-0 z-50 bg-white shadow-[0_2px_14px_rgba(16,38,58,0.07)]">
-      <div className="flex items-center justify-between gap-4 px-5 py-4 md:px-8">
+      <div className="flex items-center justify-between gap-4 px-5 py-2.5 md:px-8 md:py-4">
         <a href="/#top" aria-label="커리어링크 홈" className="shrink-0">
-          <img src={logoMark} alt="커리어링크" className="h-[23px] w-auto" />
+          <img src={logoMark} alt="커리어링크" className="h-[20px] w-auto md:h-[23px]" />
         </a>
 
         {/* 태블릿·PC: 링크를 한 줄에 */}
@@ -69,7 +69,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? '메뉴 닫기' : '메뉴 열기'}
-            className="flex size-10 cursor-pointer items-center justify-center rounded-full text-title transition-colors hover:bg-black/5"
+            className="flex size-9 cursor-pointer items-center justify-center rounded-full text-title transition-colors hover:bg-black/5"
           >
             {open ? <IconX size={24} stroke={1.8} /> : <IconMenu2 size={24} stroke={1.8} />}
           </button>
