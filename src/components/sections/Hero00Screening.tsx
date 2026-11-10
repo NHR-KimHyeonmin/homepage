@@ -324,14 +324,14 @@ export function Hero00Screening() {
               칸이 통째로 칠해지면 멀리서도 걸린다. 칸 폭이 저마다 달라
               미끄러질 거리는 실측해 둔다. */}
           {/* 휴대폰에서는 세 칸이 한 줄에 다 안 들어가 잘렸다 — 같은 폭 세 칸으로 나누고 글이 두 줄로 접히게 한다. */}
-          <nav ref={navRef} className="relative mx-auto grid w-full grid-cols-3 items-stretch gap-0.5 rounded-[24px] bg-white p-1.5 shadow-soft md:flex md:w-fit md:items-center md:gap-1 md:rounded-full">
+          <nav ref={navRef} className="relative mx-auto grid w-full grid-cols-3 items-stretch gap-0.5 rounded-[16px] bg-white p-1.5 shadow-soft md:flex md:w-fit md:items-center md:gap-1 md:rounded-full">
             {thumb && (
               <motion.span
                 aria-hidden
                 initial={false}
                 animate={{ x: thumb.x, width: thumb.w }}
                 transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                className="absolute left-1.5 top-1.5 h-[calc(100%-12px)] rounded-full bg-[#eceff3]"
+                className="absolute left-1.5 top-1.5 h-[calc(100%-12px)] rounded-[10px] bg-[#eceff3] md:rounded-full"
               />
             )}
             {NAV_TABS.map((tab) => {
@@ -344,7 +344,7 @@ export function Hero00Screening() {
                   onClick={() => selectTab(tab.id)}
                   aria-pressed={isActive}
                   className={clsx(
-                    'relative z-10 flex cursor-pointer items-center justify-center gap-1 rounded-[18px] px-1.5 py-2 text-center text-[13px] font-semibold leading-[1.3] tracking-[-0.09px] transition-colors duration-200 md:gap-2 md:whitespace-nowrap md:rounded-full md:px-4 md:text-[16px]',
+                    'relative z-10 flex cursor-pointer items-center justify-center gap-1 rounded-[10px] px-1.5 py-2 text-center text-[13px] font-semibold leading-[1.3] tracking-[-0.09px] transition-colors duration-200 md:gap-2 md:whitespace-nowrap md:rounded-full md:px-4 md:text-[16px]',
                     isActive ? 'text-title' : 'text-sub hover:text-body',
                   )}
                 >

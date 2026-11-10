@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
 import { useFitScale } from '../../hooks/useFitScale'
 import { SCREEN_HEIGHT, SCREEN_WIDTH, SimpleScreen, StandardScreen } from './Hero3ScreeningScreens'
@@ -163,7 +163,12 @@ export function Hero3ScreeningToggle() {
         </AnimatePresence>
       </div>
 
-      <div ref={ref} className="w-full overflow-hidden" style={{ height: DESIGN_HEIGHT * scale }}>
+      {/* 휴대폰에서는 무대 안 문장 자리(위쪽 100)가 비므로, 그만큼 무대를 끌어올려 문장 바로 아래에 그림이 오게 한다. */}
+      <div
+        ref={ref}
+        className="mt-[var(--lift)] w-full overflow-hidden md:mt-0"
+        style={{ height: DESIGN_HEIGHT * scale, '--lift': `${-100 * scale}px` } as CSSProperties}
+      >
         {/* 가운데 맞춤. useFitScale 은 배율을 1 로 묶어 두므로, 무대(1142)가
             담는 칸(1208)보다 좁은 넓은 화면에서는 왼쪽에 붙어 33px 쯤 왼쪽으로
             치우쳐 보였다. 좌우 여백을 반반씩 나눠 갖게 한다 — translateX(-50%)

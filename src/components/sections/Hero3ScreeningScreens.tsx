@@ -681,13 +681,25 @@ export function SimpleScreen({ active = true }: { active?: boolean }) {
             className="pointer-events-none absolute z-30 rounded-[12px]"
             style={{ left: flight.left, top: flight.top, width: flight.width }}
             initial={{ x: 0, y: 0, scale: 1, boxShadow: '0 2px 6px rgba(32,40,45,0.08)' }}
+            // 그림자는 들어 올릴 때 짙어졌다가 내려앉으며 칸 안 카드와 같은 옅은 그림자로
+            // 돌아간다 — 짙은 채로 끝나면 칸에 붙는 순간 그림자가 툭 사라져 끊겨 보였다.
             animate={{
               x: flight.dx,
               y: flight.dy,
               scale: [1.04, 1.04, 1],
-              boxShadow: '0 22px 44px rgba(32,40,45,0.26)',
+              boxShadow: [
+                '0 2px 6px rgba(32,40,45,0.08)',
+                '0 22px 44px rgba(32,40,45,0.26)',
+                '0 22px 44px rgba(32,40,45,0.26)',
+                '0 2px 6px rgba(32,40,45,0.08)',
+              ],
             }}
-            transition={{ duration: 0.85, ease: [0.32, 0, 0.2, 1], scale: { times: [0, 0.8, 1] } }}
+            transition={{
+              duration: 0.85,
+              ease: [0.32, 0, 0.2, 1],
+              scale: { times: [0, 0.8, 1] },
+              boxShadow: { duration: 0.85, times: [0, 0.2, 0.7, 1], ease: 'easeInOut' },
+            }}
             onAnimationComplete={() => {
               setFlight(null)
               setMoved(true)

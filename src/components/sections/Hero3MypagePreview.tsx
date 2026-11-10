@@ -194,9 +194,10 @@ export function Hero3MypagePreview() {
 
         {/* 칸마다 높이가 다른 건 전형마다 눌러 볼 게 다르기 때문이다 —
             억지로 맞추지 않고 내용만큼만 차지하게 둔다. */}
-        <div className="grid grid-cols-2 items-start gap-3 md:grid-cols-4 md:gap-4">
+        {/* 휴대폰: 한 줄로 늘어놓고 가로로 넘긴다. 카드를 넓게 둬 1.5장 정도가 보이게 해 옆에 더 있다는 걸 알린다. */}
+        <div className="flex snap-x snap-mandatory items-start gap-3 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] md:grid md:snap-none md:grid-cols-4 md:gap-4 md:overflow-visible [&::-webkit-scrollbar]:hidden">
           {STAGES.map((stage) => (
-            <div key={stage.title} className="flex flex-col gap-2 rounded-card bg-[#f7f8f9] p-4">
+            <div key={stage.title} className="flex w-[64%] shrink-0 snap-start flex-col gap-2 rounded-card bg-[#f7f8f9] p-4 md:w-auto">
               <p className="pb-0.5 text-center text-[16px] font-semibold text-ink">{stage.title}</p>
               {stage.actions.map((action) => (
                 <button
