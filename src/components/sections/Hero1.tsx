@@ -274,7 +274,12 @@ export function Hero1() {
             <span className="block">
               {/* 서비스 이름만 브랜드 하늘색 → 파랑 → 보라로 흐르게 해 눈에 걸리게 한다. */}
               <span className="block md:inline">
-                <span className="bg-clip-text text-transparent" style={{ backgroundImage: BRAND_GRADIENT }}>
+                {/* 밝은 배경에 살짝 묻혀 아주 옅고 얇은 그림자를 깐다. 글자가 투명이라 text-shadow 는
+                    그라데이션을 덮어 버린다 — 그려진 결과에 그림자를 거는 drop-shadow 를 쓴다. */}
+                <span
+                  className="inline-block bg-clip-text text-transparent [filter:drop-shadow(0_1px_1.5px_rgba(16,38,58,0.14))]"
+                  style={{ backgroundImage: BRAND_GRADIENT }}
+                >
                   커리어링크
                 </span>
                 에서
