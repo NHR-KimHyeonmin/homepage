@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import { motion } from 'framer-motion'
 import {
   IconBook2,
@@ -113,8 +113,9 @@ export function Hero6FeatureGallery() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0, margin: '0px 0px -10% 0px' }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="flex w-max items-stretch"
-          style={{ gap: CARD_GAP, paddingLeft: inset, paddingRight: inset }}
+          // 휴대폰은 첫·마지막 카드도 화면 가운데까지 올 수 있게 양 끝 여백을 (화면 - 카드)/2 로 넓힌다.
+          className="flex w-max items-stretch px-[max(var(--inset),calc((100%-340px)/2))] md:px-[var(--inset)]"
+          style={{ gap: CARD_GAP, '--inset': `${inset}px` } as CSSProperties}
         >
           {CARDS.map(({ title, description, Icon }) => (
             <div key={title} className="flex shrink-0 snap-center snap-always flex-col gap-6 rounded-card bg-brand-50 p-7" style={{ width: CARD_WIDTH }}>
