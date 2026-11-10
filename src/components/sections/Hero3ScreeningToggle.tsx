@@ -5,7 +5,7 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH, SimpleScreen, StandardScreen } from './Her
 
 // Figma node 2320:25550 — "전형운영>일반/간편전형", laid out at this size.
 const DESIGN_WIDTH = 1142
-const DESIGN_HEIGHT = 854
+const DESIGN_HEIGHT = 878
 
 /**
  * 그림 한 장의 폭. 받치던 흰 카드를 걷어내면서 820 → 1040 까지 키웠다.
@@ -41,8 +41,8 @@ const SHOT_WIDTH = 1040
  * 그림자 몫을 더해 둔다.
  */
 const SLOTS = {
-  front: { left: 78, top: 88, zIndex: 2, opacity: 1 },
-  back: { left: 24, top: 198, zIndex: 1, opacity: 0.3 },
+  front: { left: 78, top: 112, zIndex: 2, opacity: 1 },
+  back: { left: 24, top: 222, zIndex: 1, opacity: 0.3 },
 } as const
 
 const SCREENINGS = [
@@ -93,12 +93,6 @@ type ScreeningId = (typeof SCREENINGS)[number]['id']
  * full opacity and sends the other one back to 30%, swapping places.
  */
 /** 설명 한 줄. 좁은 화면에서는 "~로," 뒤에서 줄을 바꾼다 — 줄인 무대 안이라 한 줄이면 너무 길다. */
-/** 설명을 "," 앞뒤 두 토막으로 나눈다. */
-function splitNote(text: string): [string, string] {
-  const at = text.indexOf(', ')
-  return at < 0 ? [text, ''] : [text.slice(0, at + 1), text.slice(at + 2)]
-}
-
 export function Hero3ScreeningToggle() {
   const { ref, scale } = useFitScale(DESIGN_WIDTH)
   const [selected, setSelected] = useState<ScreeningId>('standard')
@@ -126,9 +120,9 @@ export function Hero3ScreeningToggle() {
     <div ref={blockRef} className="w-full">
       {/* 휴대폰 전용 문장. 각 줄이 화면 가운데에 서도록 줄 흐름(inline)으로 놓는다 —
           스위치는 첫 줄 맨 앞, 둘째 줄은 그 아래 가운데. 글자는 다른 설명글(type-lead)과 같은 크기. */}
-      <div className="mb-5 mt-6 px-2 text-center leading-[1.9] md:hidden">
+      <div className="mb-5 mt-6 px-2 text-center md:hidden">
         <span
-          className="relative mr-2 inline-flex items-center rounded-full bg-white p-[3px] align-middle shadow-soft"
+          className="relative mb-2.5 inline-flex items-center rounded-full bg-white p-[3px] shadow-soft"
           role="group"
           aria-label="전형 방식 선택(모바일)"
         >
@@ -162,10 +156,9 @@ export function Hero3ScreeningToggle() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="type-lead align-middle leading-[1.9]!"
+            className="type-lead block leading-[1.6]!"
           >
-            {splitNote(current.note)[0]}
-            <span className="block">{splitNote(current.note)[1]}</span>
+            {current.note}
           </motion.span>
         </AnimatePresence>
       </div>
@@ -227,7 +220,7 @@ export function Hero3ScreeningToggle() {
               높이를 34 로 못박아 두는 이유는, 문구가 바뀔 때 줄 수가 달라지면
               아래 그림이 들썩이기 때문이다. */}
           {/* 위를 맞춘다 — 설명이 두 줄로 접히면 가운데 맞춤일 때 스위치가 두 줄 사이에 떠 있었다. 스위치는 첫 줄 옆에 선다. */}
-          <div className="absolute left-0 top-[12px] z-10 hidden w-full items-start justify-center gap-2 px-10 md:flex">
+          <div className="absolute left-0 top-[12px] z-10 hidden w-full flex-col items-center gap-2.5 px-10 md:flex">
             {/* 문장 왼쪽에 서는 작은 스위치. 홈은 구역 바탕(#f6fafc)에서 한
                 톤만 내려, 조작기가 글줄 옆에서 튀지 않게 한다. 고른 칸은
                 아래 전형 운영 탭과 같은 회색(#f1f0ee)이다 — 한 구역 안에서
@@ -275,12 +268,12 @@ export function Hero3ScreeningToggle() {
                 문장이 아래에서 올라온다. 두 장이 같은 시각에 움직여야 한 줄이
                 감겨 올라가는 것으로 보이므로 mode 를 주지 않는다(동시 진행).
                 110% 는 글자 아랫단(디센더)까지 창 밖으로 내보내는 거리다. */}
-            <div className="mt-[2px] grid shrink-0">
+            <div className="grid shrink-0">
               {SCREENINGS.map((screening) => (
                 <p
                   key={screening.id}
                   aria-hidden
-                  className="invisible col-start-1 row-start-1 text-left text-[20px] font-medium leading-[1.5] tracking-[-0.1px]"
+                  className="invisible col-start-1 row-start-1 text-center text-[20px] font-medium leading-[1.5] tracking-[-0.1px]"
                 >
                   {screening.note}
                 </p>
@@ -293,7 +286,7 @@ export function Hero3ScreeningToggle() {
                     animate={{ y: '0%' }}
                     exit={{ y: '-110%' }}
                     transition={SWAP}
-                    className="absolute inset-x-0 top-0 text-left text-[20px] font-medium leading-[1.5] tracking-[-0.1px] text-body"
+                    className="absolute inset-x-0 top-0 text-center text-[20px] font-medium leading-[1.5] tracking-[-0.1px] text-body"
                   >
                     {current.note}
                   </motion.p>

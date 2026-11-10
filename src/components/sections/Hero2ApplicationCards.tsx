@@ -20,9 +20,8 @@ import { Hero2JobPromoMockup } from './Hero2JobPromoMockup'
  * 2337:13527).
  */
 const SHARE_URL = 'https://careers.nhr.kr/jobs/RC202610101234'
-const MS_PER_CHAR = 38
-/** 다 치고 나서 전송 버튼을 누르기까지의 뜸. */
-const SEND_DELAY_MS = 300
+/** 카드가 보이고 나서 전송 버튼을 누르기까지의 뜸. 주소는 처음부터 입력돼 있다. */
+const SEND_DELAY_MS = 800
 /** 버튼이 눌려 있는 시간. 손을 떼는 순간 말풍선이 올라온다. */
 const PRESS_MS = 170
 
@@ -31,23 +30,17 @@ export function Hero2ApplicationCards() {
   const promoSkin = cardSkin('promo')
   const reduceMotion = useReducedMotion()
   const [started, setStarted] = useState(false)
-  const [count, setCount] = useState(0)
   const [pressed, setPressed] = useState(false)
   const [showOg, setShowOg] = useState(false)
 
-  // 움직임을 끈 환경에서는 과정을 건너뛰고 완성된 화면을 바로 둔다.
-  const typedUrl = reduceMotion ? SHARE_URL : SHARE_URL.slice(0, count)
-  const doneTyping = reduceMotion || count >= SHARE_URL.length
-
+  // 주소는 이미 입력된 상태로 시작한다. 카드가 보이면 → 전송 버튼이 눌렸다 떨어지고
+  // → 그 순간 말풍선이 올라온다. 움직임을 끈 환경에서는 완성된 화면을 바로 둔다.
   useEffect(() => {
-    if (!started || reduceMotion || count >= SHARE_URL.length) return
-    const timer = setTimeout(() => setCount((c) => c + 1), MS_PER_CHAR)
-    return () => clearTimeout(timer)
-  }, [started, count, reduceMotion])
-
-  // 다 치면 → 전송 버튼이 눌렸다 떨어지고 → 그 순간 말풍선이 올라온다.
-  useEffect(() => {
-    if (!doneTyping) return
+    if (reduceMotion) {
+      setShowOg(true)
+      return
+    }
+    if (!started) return
     const press = setTimeout(() => setPressed(true), SEND_DELAY_MS)
     const release = setTimeout(() => {
       setPressed(false)
@@ -57,7 +50,7 @@ export function Hero2ApplicationCards() {
       clearTimeout(press)
       clearTimeout(release)
     }
-  }, [doneTyping])
+  }, [started, reduceMotion])
 
   return (
     <Section className="bg-white pt-5">
@@ -72,7 +65,6 @@ export function Hero2ApplicationCards() {
               // 화면 밖으로 나가면 처음 상태로 되돌려, 다시 들어올 때
               // 링크 입력부터 다시 보여준다.
               setStarted(false)
-              setCount(0)
               setPressed(false)
               setShowOg(false)
             }}
@@ -139,19 +131,10 @@ export function Hero2ApplicationCards() {
                     350.6px 이 되어, 오른쪽에 폰 배경색이 0.6px 새어 나와
                     세로 선처럼 보였다 — 양 끝에 붙여 항상 꽉 차게 한다. */}
                 <div className="absolute inset-x-0 bottom-0 flex flex-col gap-3 bg-white px-[9px] pb-2 pt-[13px]">
-                  {/* 입력 중인 링크. 한 글자도 안 쳤을 때도 줄 높이를 차지해야
-                      아래 버튼 줄이 들썩이지 않으므로 빈 문자열 대신 영폭
-                      공백을 깔아 둔다. */}
+                  {/* 보낼 링크. 처음부터 입력돼 있고, 전송을 누르는 데서 연출이 시작된다. */}
                   <p className="truncate text-[16px] font-light tracking-[-0.08px] text-ink">
-                    {typedUrl || '​'}
-                    {started && !doneTyping && (
-                      <span
-                        aria-hidden
-                        className="ml-px inline-block h-[15px] w-px translate-y-[2px] bg-ink align-baseline"
-                      />
-                    )}
+                    {SHARE_URL}
                   </p>
-                  <span className="sr-only">{SHARE_URL}</span>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <img loading="lazy" decoding="async" src={iconPlus} alt="" className="size-6" />
