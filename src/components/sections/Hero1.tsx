@@ -269,7 +269,10 @@ export function Hero1() {
             style={{ backgroundImage: HEADLINE_GRADIENT }}
           >
             <span className="block">채용의 모든 것을</span>
-            <span className="block">커리어링크에서 해결하세요.</span>
+            {/* 휴대폰에서는 "해결하세요." 가 한 글자만 다음 줄로 밀려 떨어졌다 — 좁은 화면에서는 세 줄로 끊는다. */}
+            <span className="block">
+              <span className="block md:inline">커리어링크에서</span> 해결하세요.
+            </span>
           </motion.h2>
         </div>
 

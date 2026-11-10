@@ -13,6 +13,7 @@ import {
   IconPlusMinus,
   IconPrinterOff,
 } from '@tabler/icons-react'
+import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Hero4AiQuestionMock } from './Hero4AiQuestionMock'
 import { Hero4AutoEvalMock } from './Hero4AutoEvalMock'
@@ -39,7 +40,7 @@ const CARDS: {
     label: '자동평가',
     title: '자동평가',
     description:
-      '채용에 필요한 항목을 기준과 배점으로 설정해\n지원자를 정량적으로 평가합니다.',
+      '채용에 필요한 항목을|기준과 배점으로 설정해\n지원자를 정량적으로 평가합니다.',
     details: [
       {
         title: '필터형',
@@ -152,6 +153,23 @@ const CARDS: {
  *
  * 오른쪽 칸은 탭마다 움직이는 목업이 들어간다.
  */
+/** 카드의 세부 항목 목록(아이콘 + 제목 + 설명). */
+function Details({ card, className }: { card: (typeof CARDS)[number]; className?: string }) {
+  return (
+    <div className={clsx('flex-col gap-5', className)}>
+      {card.details?.map((detail) => (
+        <div key={detail.title}>
+          <h5 className="flex items-center gap-2 text-[18px] font-semibold tracking-[-0.09px] text-title">
+            <detail.Icon size={18} stroke={1.8} className="shrink-0" />
+            {detail.title}
+          </h5>
+          <p className="type-card-body pt-1.5">{detail.body}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export function Hero4FeatureCards() {
   const [active, setActive] = useState<CardId>('autoEval')
   const card = CARDS.find((item) => item.id === active) ?? CARDS[0]
@@ -188,29 +206,24 @@ export function Hero4FeatureCards() {
               >
                 <div>
                   <h4 className="text-[15px] font-bold leading-[1.5] tracking-[-0.09px] text-brand-700">{card.title}</h4>
-                  <p className="whitespace-pre-line pt-2 text-[24px] font-semibold leading-[1.55] tracking-[-0.12px] text-title">{card.description}</p>
+                  <p className="whitespace-pre-line pt-2 text-[24px] font-semibold leading-[1.55] tracking-[-0.12px] text-title">
+                    {/* "|" 는 휴대폰에서만 줄을 바꾸는 자리, "\n" 은 늘 바꾸는 자리. */}
+                    {card.description.split('|').map((part, i) => (
+                      <span key={i}>
+                        {i > 0 && <br className="md:hidden" />}
+                        {i > 0 && <span className="hidden md:inline"> </span>}
+                        {part}
+                      </span>
+                    ))}
+                  </p>
                 </div>
 
-                {card.details && (
-                  <div className="flex flex-col gap-5 pt-[60px]">
-                    {card.details.map((detail) => (
-                      <div key={detail.title}>
-                        <h5 className="flex items-center gap-2 text-[18px] font-semibold tracking-[-0.09px] text-title">
-                          <detail.Icon size={18} stroke={1.8} className="shrink-0" />
-                          {detail.title}
-                        </h5>
-                        <p className="type-card-body pt-1.5">
-                          {detail.body}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                {card.details && <Details card={card} className="hidden pt-[60px] md:flex" />}
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="relative aspect-square w-full overflow-hidden rounded-media shadow-float md:aspect-[716/544] md:w-[59%] md:shrink-0"
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-media shadow-float md:aspect-[716/544] md:w-[59%] md:shrink-0"
             style={{
               // 흰 판 위에 흰 목업을 올리면 경계가 사라져 그림이 아니라 글의
               // 일부처럼 보인다. 구역 색(#f4f8ff)과 같은 계열로 옅게 깔아
@@ -226,6 +239,9 @@ export function Hero4FeatureCards() {
               {active === 'aiQuestion' && <Hero4AiQuestionMock />}
             </div>
           </div>
+
+          {/* 휴대폰에서는 설명을 읽고 그림을 본 뒤 세부 항목을 읽도록, 세부 항목을 그림 아래로 둔다. */}
+          {card.details && <Details card={card} className="pt-2 md:hidden" />}
         </div>
       </Container>
     </Section>

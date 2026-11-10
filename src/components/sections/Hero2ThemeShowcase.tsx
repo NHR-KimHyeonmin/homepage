@@ -190,9 +190,10 @@ export function Hero2ThemeShowcase() {
           </div>
 
           {/* 데스크톱에서는 판이 5:3 으로 고정되므로 카드가 남은 높이를 그대로
-              가져간다. 모바일은 같은 비율을 쓰면 카드가 남는 높이 없이
-              사라지므로 기존 고정 높이를 유지한다. */}
-          <div className="relative h-[720px] w-full max-w-[1280px] rounded-t-media bg-white md:h-auto md:min-h-0 md:flex-1">
+              가져간다. 모바일은 고정 높이(720)였더니 줄어든 목업 아래로 빈 흰 판이
+              길게 남았다 — 데스크톱에서 보이는 만큼(가로:세로 약 1.7:1)만 남기고
+              아래를 자른다. */}
+          <div className="relative aspect-[17/10] w-full max-w-[1280px] rounded-t-media bg-white md:aspect-auto md:min-h-0 md:flex-1">
             <div ref={fitRef} className="size-full overflow-hidden rounded-t-media">
               <div style={{ width: MOCKUP_WIDTH, transform: `scale(${scale})`, transformOrigin: 'top left' }}>
                 <Hero2ThemeFrame117 color={selectedColor} />

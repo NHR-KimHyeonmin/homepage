@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { cardSkin, type CardId } from '../../lib/cardTheme'
 import { Container } from '../ui/Container'
+import { FitZoom } from '../ui/FitZoom'
 import { Section } from '../ui/Section'
 import { Hero2AnalyticsMockup } from './Hero2AnalyticsMockup'
 import { Hero2SeoBrowserMockup } from './Hero2SeoBrowserMockup'
@@ -58,9 +59,9 @@ export function Hero2SeoAnalyticsGrid() {
                 </h3>
                 <p className="type-card-body">{card.description}</p>
               </div>
-              <div className="flex w-full flex-1 items-start justify-center overflow-hidden">
+              <FitZoom width={480} className="flex-1 items-start overflow-hidden">
                 {card.visual}
-              </div>
+              </FitZoom>
             </motion.div>
             )
           })}

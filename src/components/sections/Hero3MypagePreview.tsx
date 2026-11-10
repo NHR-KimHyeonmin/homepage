@@ -192,7 +192,7 @@ export function Hero3MypagePreview() {
 
         {/* 칸마다 높이가 다른 건 전형마다 눌러 볼 게 다르기 때문이다 —
             억지로 맞추지 않고 내용만큼만 차지하게 둔다. */}
-        <div className="grid grid-cols-4 items-start gap-4">
+        <div className="grid grid-cols-2 items-start gap-3 md:grid-cols-4 md:gap-4">
           {STAGES.map((stage) => (
             <div key={stage.title} className="flex flex-col gap-2 rounded-card bg-[#f7f8f9] p-4">
               <p className="pb-0.5 text-center text-[16px] font-semibold text-ink">{stage.title}</p>

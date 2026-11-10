@@ -18,7 +18,6 @@ import iconNavEvaluation from '../../../assets/sections/hero1/icons/icon-nav-eva
 import iconNavInquiry from '../../../assets/sections/hero1/icons/icon-nav-inquiry.svg?raw'
 import iconNavPrivacyLog from '../../../assets/sections/hero1/icons/icon-nav-privacy-log.svg?raw'
 import iconNavSiteShortcut from '../../../assets/sections/hero1/icons/icon-nav-site-shortcut.svg?raw'
-import chatbotButton from '../../../assets/sections/hero1/chatbot-button.webp'
 import logoCareerlink from '../../../assets/sections/hero1/icons/logo-careerlink.png'
 import {
   ApplicantsIcon,
@@ -279,8 +278,6 @@ export function AdminFrame({
       {crumbs && <BreadcrumbBar crumbs={crumbs} />}
       <TopBar />
       <Sidebar active={active} onSelect={onSelect} />
-      {/* 오른쪽 아래에 떠 있는 상담 버튼 — 로고 그림이라 캡처에서 잘라 쓴다. */}
-      <img src={chatbotButton} alt="" className="absolute left-[1843px] top-[1002px] size-[55px] rounded-[17px]" />
     </div>
   )
 }

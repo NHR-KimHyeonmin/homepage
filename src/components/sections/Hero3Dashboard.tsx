@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState, type ReactNode } from 'react'
+import { useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { BRAND_CURSOR, BrandCursorFollower } from '../ui/BrandCursorFollower'
 import { PillSwitch } from '../ui/PillSwitch'
@@ -125,7 +125,7 @@ export function Hero3Dashboard() {
           value={activeTab}
           onChange={setActiveTab}
           label="전형 운영 기능 선택"
-          className="mb-5 md:mb-9"
+          className="mb-5 w-[calc(100%-40px)] md:mb-9 md:w-fit"
         />
 
         {/* 세로로 늘어나는 사슬: 래퍼(min-height) → 전환 상자 → 패널.
@@ -135,8 +135,10 @@ export function Hero3Dashboard() {
         {/* 내 포인터는 세 탭 모두 브랜드 커서다. 연출 속 회색 동그라미 커서는 따로 그려지는 요소라 그대로 남는다. */}
         <div
           ref={panelRef}
-          className="flex w-full flex-col [&_*]:cursor-[inherit]"
-          style={{ minHeight: panelHeight, cursor: BRAND_CURSOR }}
+          // 탭마다 높이를 맞추는 건 데스크톱만. 휴대폰에서는 줄어든 그림 아래로
+          // 처음 잰 큰 높이가 그대로 남아 빈 여백이 길게 생겼다.
+          className="flex w-full flex-col md:min-h-[var(--panel-h)] [&_*]:cursor-[inherit]"
+          style={{ '--panel-h': panelHeight ? `${panelHeight}px` : undefined, cursor: BRAND_CURSOR } as CSSProperties}
         >
         <BrandCursorFollower targetRef={panelRef} />
         <AnimatePresence mode="wait" initial={false}>

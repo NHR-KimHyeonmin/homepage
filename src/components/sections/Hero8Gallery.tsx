@@ -85,8 +85,20 @@ const RATIO = 0.44
  * 그림의 것인지 한 번 더 짚어 봐야 한다. 대신 그림이 밝으면 흰 글씨가 묻히니
  * 아래쪽에 검정 그라데이션을 깔아 글이 설 바닥을 만든다.
  */
+/** 휴대폰: 접힌 띠의 높이와 펼친 장의 높이(폭 대비). */
+const COLLAPSED_M = 56
+const RATIO_M = 0.72
+
 export function Hero8Gallery() {
   const stageRef = useRef<HTMLDivElement>(null)
+  // 휴대폰 폭에서는 띠 여섯 장을 가로로 세울 자리가 없어, 세로로 쌓고 고른 장만 아래로 펼친다.
+  const [vertical, setVertical] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches)
+  useEffect(() => {
+    const list = window.matchMedia('(max-width: 767px)')
+    const onChange = () => setVertical(list.matches)
+    list.addEventListener('change', onChange)
+    return () => list.removeEventListener('change', onChange)
+  }, [])
   const [width, setWidth] = useState(0)
   const [active, setActive] = useState(0)
   /** 읽는 중에 장이 넘어가지 않도록 마우스를 올린 동안은 멈춘다. */
@@ -120,11 +132,11 @@ export function Hero8Gallery() {
         <div
           ref={stageRef}
           className="w-full"
-          style={{ height: width * RATIO }}
+          style={{ height: vertical ? undefined : width * RATIO }}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-            <div className="flex h-full" style={{ gap: GAP }}>
+            <div className={vertical ? 'flex flex-col' : 'flex h-full'} style={{ gap: vertical ? 10 : GAP }}>
               {CARDS.map((card, index) => {
                 const isActive = index === active
                 return (
@@ -133,9 +145,13 @@ export function Hero8Gallery() {
                   <motion.div
                     key={card.name}
                     initial={false}
-                    animate={{ width: isActive ? expanded : COLLAPSED }}
+                    animate={
+                      vertical
+                        ? { height: isActive ? width * RATIO_M : COLLAPSED_M }
+                        : { width: isActive ? expanded : COLLAPSED }
+                    }
                     transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                    style={{ height: '100%' }}
+                    style={vertical ? { width: '100%' } : { height: '100%' }}
                     className="relative shrink-0 overflow-hidden rounded-media bg-[#111]"
                   >
                   <button
@@ -179,9 +195,14 @@ export function Hero8Gallery() {
                       initial={false}
                       animate={{ opacity: isActive ? 0 : 1 }}
                       transition={{ duration: isActive ? 0.15 : 0.4, delay: isActive ? 0 : 0.2 }}
-                      className="absolute inset-x-0 bottom-5 flex justify-center"
+                      className={vertical ? 'absolute inset-0 flex items-center px-5' : 'absolute inset-x-0 bottom-5 flex justify-center'}
                     >
-                      <span className="rotate-180 whitespace-nowrap text-[18px] font-bold leading-none tracking-[-0.36px] text-white [text-orientation:sideways] [writing-mode:vertical-rl]">
+                      <span
+                        className={clsx(
+                          'whitespace-nowrap font-bold leading-none tracking-[-0.36px] text-white',
+                          vertical ? 'text-[16px]' : 'rotate-180 text-[18px] [text-orientation:sideways] [writing-mode:vertical-rl]',
+                        )}
+                      >
                         {card.name}
                       </span>
                     </motion.div>
@@ -192,13 +213,13 @@ export function Hero8Gallery() {
                       initial={false}
                       animate={{ opacity: isActive ? 1 : 0 }}
                       transition={{ duration: isActive ? 0.4 : 0.15, delay: isActive ? 0.2 : 0 }}
-                      style={{ width: expanded }}
-                      className="pointer-events-none absolute bottom-0 left-0 flex flex-col gap-2 p-7"
+                      style={{ width: vertical ? '100%' : expanded }}
+                      className="pointer-events-none absolute bottom-0 left-0 flex flex-col gap-1.5 p-5 md:gap-2 md:p-7"
                     >
-                      <h5 className="text-[22px] font-bold leading-[1.25] tracking-[-0.44px] text-white">
+                      <h5 className="text-[19px] font-bold leading-[1.25] tracking-[-0.44px] text-white md:text-[22px]">
                         {card.name}
                       </h5>
-                      <p className="text-[16px] leading-[1.5] tracking-[-0.08px] text-white/75">{card.description}</p>
+                      <p className="text-[14px] leading-[1.5] tracking-[-0.08px] text-white/75 md:text-[16px]">{card.description}</p>
                       <a
                         href={card.href}
                         target="_blank"

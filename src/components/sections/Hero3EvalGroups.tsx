@@ -12,6 +12,16 @@ const DESIGN_WIDTH = 1208
 /** 다른 탭(커스텀 대시보드·마이페이지)과 같은 박스 높이. 640 으로 두면
  *  흰 상자 아래가 54px 비어 패널만 짧아 보였다. */
 const DESIGN_HEIGHT = 694
+
+/**
+ * 휴대폰 배치. 두 칸을 나란히 두면 줄였을 때 글자가 읽히지 않을 만큼 작아져서,
+ * 설정 칸을 위에, 만든 그룹 목록을 그 아래에 한 줄로 쌓는다. 설정 칸(660)을
+ * 그대로 쓰므로 폭은 좌우 여백까지 724, 높이는 목록만큼 늘어난다.
+ */
+const MOBILE_WIDTH = 724
+const MOBILE_HEIGHT = 1080
+/** 휴대폰에서 설정 칸이 왼쪽으로 옮겨 가는 거리(516 → 32). */
+const MOBILE_SHIFT = 484
 const MAX_GROUPS = 6
 const TOAST_MS = 2500
 
@@ -546,7 +556,18 @@ function GroupCard({
  * outgrow the panel.
  */
 export function Hero3EvalGroups() {
-  const { ref, scale } = useFitScale(DESIGN_WIDTH)
+  const [stacked, setStacked] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches)
+  useEffect(() => {
+    const list = window.matchMedia('(max-width: 767px)')
+    const onChange = () => setStacked(list.matches)
+    list.addEventListener('change', onChange)
+    return () => list.removeEventListener('change', onChange)
+  }, [])
+  const W = stacked ? MOBILE_WIDTH : DESIGN_WIDTH
+  const H = stacked ? MOBILE_HEIGHT : DESIGN_HEIGHT
+  /** 설정 칸의 왼쪽 위치. */
+  const formLeft = stacked ? 516 - MOBILE_SHIFT : 516
+  const { ref, scale } = useFitScale(W)
   const [groups, setGroups] = useState<EvalGroup[]>(SEED_GROUPS)
   const [name, setName] = useState(DRAFT.name)
   const [evaluators, setEvaluators] = useState<string[]>(DRAFT.evaluators)
@@ -579,7 +600,7 @@ export function Hero3EvalGroups() {
     const stage = stageRef.current
     if (!stage || reduceMotion || demoOff) return
     const base = stage.getBoundingClientRect()
-    const k = DESIGN_WIDTH / base.width
+    const k = W / base.width
     const at = (el: Element | null | undefined) => {
       if (!el) return null
       const r = el.getBoundingClientRect()
@@ -588,7 +609,7 @@ export function Hero3EvalGroups() {
     const menu = [...stage.querySelectorAll('[data-demo-menu] button')]
     const next =
       step < 2
-        ? { x: DESIGN_WIDTH - 86, y: DESIGN_HEIGHT / 2 }
+        ? { x: W - 86, y: H / 2 }
         : step < 5
           ? at(stage.querySelector('[data-demo-create]'))
           : step < 7
@@ -691,7 +712,7 @@ export function Hero3EvalGroups() {
 
   return (
     <div className="w-full overflow-hidden rounded-card bg-white shadow-card">
-      <div ref={ref} className="w-full overflow-hidden" style={{ height: DESIGN_HEIGHT * scale }}>
+      <div ref={ref} className="w-full overflow-hidden" style={{ height: H * scale }}>
       <div
         ref={stageRef}
         onPointerDown={() => setDemoOff(true)}
@@ -699,14 +720,17 @@ export function Hero3EvalGroups() {
         // 판 위에서만 모양이 갈린다. 버튼은 판의 모양을 물려받게 한다.
         className="relative [&_button]:cursor-[inherit]!"
         style={{
-          width: DESIGN_WIDTH,
-          height: DESIGN_HEIGHT,
+          width: W,
+          height: H,
           transform: `scale(${scale})`,
           transformOrigin: 'top left',
         }}
       >
         {/* Created groups (node 2320:25780) */}
-        <div className="absolute left-8 top-9 flex h-[622px] w-[460px] flex-col rounded-card bg-[#f9fafb] px-5 pb-[33px] pt-[18px]">
+        <div
+          className="absolute left-8 flex flex-col rounded-card bg-[#f9fafb] px-5 pb-[33px] pt-[18px]"
+          style={stacked ? { top: 690, width: 660, height: 360 } : { top: 36, width: 460, height: 622 }}
+        >
           {/* 목록이 스크롤되면 아래 몇 장이 더 있는지 보이지 않는다 — 수를
               먼저 적어 두면 만들고 지울 때마다 눈으로 확인된다. */}
           <p className="pb-3 pl-1.5 text-[13px] text-[#6c737f]">{groups.length}개 그룹</p>
@@ -735,9 +759,9 @@ export function Hero3EvalGroups() {
         {/* Create form (node 2320:25727) */}
         {/* 오른쪽 칸이 무엇을 하는 자리인지 짚어 준다 — 왼쪽은 이미 만든
             그룹 목록이라, 이름이 없으면 두 칸의 역할이 구분되지 않는다. */}
-        <p className="absolute left-[516px] top-9 text-[18px] font-bold tracking-[-0.09px] text-[#212121]">평가 그룹 설정</p>
+        <p style={{ left: formLeft }} className="absolute top-9 text-[18px] font-bold tracking-[-0.09px] text-[#212121]">평가 그룹 설정</p>
 
-        <div className="absolute left-[516px] top-[78px] grid w-[660px] grid-cols-2 gap-4">
+        <div style={{ left: formLeft }} className="absolute top-[78px] grid w-[660px] grid-cols-2 gap-4">
           <Field label="그룹명">
             <input
               value={name}
@@ -782,13 +806,13 @@ export function Hero3EvalGroups() {
 
         {/* 위에서 만든 그룹이 아래 시트에서 쓰인다 — 두 칸이 따로 노는
             것처럼 보이지 않게 흐름을 한 번 짚어 준다. */}
-        <div aria-hidden className="absolute left-[516px] top-[258px] flex w-[660px] justify-center text-[#c4c7ca]">
+        <div aria-hidden style={{ left: formLeft }} className="absolute top-[258px] flex w-[660px] justify-center text-[#c4c7ca]">
           <svg viewBox="0 0 24 24" fill="none" className="size-6">
             <path d="M12 4v15M6 13.5l6 6 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
 
-        <div className="absolute left-[516px] top-[306px] w-[660px]">
+        <div style={{ left: formLeft }} className="absolute top-[306px] w-[660px]">
           <ApplicantSheet
             groups={groups}
             assigned={assigned}

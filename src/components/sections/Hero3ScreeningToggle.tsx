@@ -89,6 +89,18 @@ type ScreeningId = (typeof SCREENINGS)[number]['id']
  * real markup; picking a type brings that screenshot to the front slot at
  * full opacity and sends the other one back to 30%, swapping places.
  */
+/** 설명 한 줄. 좁은 화면에서는 "~로," 뒤에서 줄을 바꾼다 — 줄인 무대 안이라 한 줄이면 너무 길다. */
+function Note({ text }: { text: string }) {
+  const at = text.indexOf(', ')
+  if (at < 0) return text
+  return (
+    <>
+      {text.slice(0, at + 1)}
+      <br className="md:hidden" /> {text.slice(at + 2)}
+    </>
+  )
+}
+
 export function Hero3ScreeningToggle() {
   const { ref, scale } = useFitScale(DESIGN_WIDTH)
   const [selected, setSelected] = useState<ScreeningId>('standard')
@@ -225,7 +237,7 @@ export function Hero3ScreeningToggle() {
                   aria-hidden
                   className="invisible col-start-1 row-start-1 text-left text-[20px] font-medium leading-[1.5] tracking-[-0.1px]"
                 >
-                  {screening.note}
+                  <Note text={screening.note} />
                 </p>
               ))}
               <div className="relative col-start-1 row-start-1 overflow-hidden">
@@ -238,7 +250,7 @@ export function Hero3ScreeningToggle() {
                     transition={SWAP}
                     className="absolute inset-x-0 top-0 text-left text-[20px] font-medium leading-[1.5] tracking-[-0.1px] text-body"
                   >
-                    {current.note}
+                    <Note text={current.note} />
                   </motion.p>
                 </AnimatePresence>
               </div>

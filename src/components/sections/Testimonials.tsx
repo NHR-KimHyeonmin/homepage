@@ -84,7 +84,7 @@ export function Testimonials() {
       as={motion.section}
       ref={sectionRef}
       style={{ minHeight }}
-      className="section-pt section-pb flex flex-col items-center justify-center gap-[80px] overflow-hidden"
+      className="section-pt flex flex-col items-center justify-center gap-[80px] overflow-hidden pb-14 md:pb-[160px]"
     >
       {/* 어두운 배경은 화면 끝까지 깔지 않고, 좌우에 흰 여백을 둔 둥근 박스로 띄운다. */}
       <div aria-hidden className="absolute inset-y-0 inset-x-3 -z-10 isolate overflow-hidden rounded-[24px] bg-black md:inset-x-5 md:rounded-[32px]">

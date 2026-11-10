@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import es from '../../assets/sections/hero2-showcase/es.webp'
 import hyundai from '../../assets/sections/hero2-showcase/hyundai.webp'
@@ -88,6 +88,8 @@ export function Hero2ClientShowcase() {
    *  흘러가면 읽히지 않는다. 떼면 다시 흐른다(한 번 만지면 끝나는
    *  색상 스위처와 달리, 여기는 쭉 도는 띠라 멈춰 둘 이유가 없다). */
   const [hovering, setHovering] = useState(false)
+  const [touching, setTouching] = useState(false)
+  const resumeTimer = useRef(0)
 
   useEffect(() => {
     const container = scrollRef.current
@@ -123,7 +125,7 @@ export function Hero2ClientShowcase() {
       : ({
           '--marquee-loop': `${loopWidth}px`,
           animation: `client-marquee ${loopWidth / AUTO_SCROLL_PX_PER_SEC}s linear infinite`,
-          animationPlayState: isDragging || hovering ? 'paused' : 'running',
+          animationPlayState: isDragging || hovering || touching ? 'paused' : 'running',
         } as CSSProperties)
 
   return (
@@ -149,6 +151,15 @@ export function Hero2ClientShowcase() {
         {...dragHandlers}
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
+        // 손가락으로 미는 동안에도 띠가 저 혼자 흐르면, 미는 만큼에 흐름이 더해져
+        // 손보다 빨리 넘어간다. 닿아 있는 동안과 손을 뗀 뒤 관성이 끝날 때까지 멈춘다.
+        onTouchStart={() => {
+          window.clearTimeout(resumeTimer.current)
+          setTouching(true)
+        }}
+        onTouchEnd={() => {
+          resumeTimer.current = window.setTimeout(() => setTouching(false), 1500)
+        }}
         className={`mt-16 w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
       >
         {/* 카드를 두 벌 깐다. 한 벌 길이만큼 흘렀을 때 그만큼 되돌리면 같은

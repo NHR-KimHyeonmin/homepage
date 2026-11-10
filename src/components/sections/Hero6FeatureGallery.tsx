@@ -104,11 +104,13 @@ export function Hero6FeatureGallery() {
         {...dragHandlers}
         className={`w-full overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
       >
-        {/* 넘길 때 카드가 하나씩 나타나지 않도록 줄 전체가 한 번에 들어온다. */}
+        {/* 넘길 때 카드가 하나씩 나타나지 않도록 줄 전체가 한 번에 들어온다.
+            줄은 화면보다 몇 배 넓어서, "30% 가 보이면" 으로 잡으면 휴대폰에서는
+            영영 그만큼 안 보여 카드가 나타나지 않았다 — 윗변이 들어오면 연다. */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0, margin: '0px 0px -10% 0px' }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="flex w-max items-stretch"
           style={{ gap: CARD_GAP, paddingLeft: inset, paddingRight: inset }}

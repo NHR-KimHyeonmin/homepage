@@ -1,7 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
-import { IconPlus } from '@tabler/icons-react'
 import iconDocTabInactive from '../../assets/sections/hero00/icon-doc-tab-inactive.svg'
 import iconInterviewTabInactive from '../../assets/sections/hero00/icon-interview-tab.svg'
 import iconReferenceTabInactive from '../../assets/sections/hero00/icon-reference-tab.svg'
@@ -86,8 +85,29 @@ const CARD_WIDTH = 300
  *  넘어가면 "안 움직인다"로 읽힌다. */
 const STEP_THRESHOLD = 24
 
+/** 휴대폰 폭이면 true. 좁은 화면에서는 그룹 대신 카드 한 장씩 넘긴다. */
+function useIsMobile() {
+  const query = '(max-width: 767px)'
+  const [mobile, setMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia(query).matches)
+  useEffect(() => {
+    const list = window.matchMedia(query)
+    const onChange = () => setMobile(list.matches)
+    list.addEventListener('change', onChange)
+    return () => list.removeEventListener('change', onChange)
+  }, [])
+  return mobile
+}
+
+/** 그룹에 속한 카드 번호들. */
+const indicesOf = (tab: ScreeningTab) =>
+  CARDS.reduce<number[]>((acc, card, i) => (card.group === tab ? [...acc, i] : acc), [])
+
 export function Hero00Screening() {
   const [activeTab, setActiveTab] = useState<ScreeningTab>('doc')
+  // 휴대폰에서 켜진 카드 한 장. 데스크톱에서는 쓰지 않는다(그룹 전체가 켜진다).
+  const [focusCard, setFocusCard] = useState(0)
+  const isMobile = useIsMobile()
+  const isOn = (index: number) => (isMobile ? index === focusCard : CARDS[index].group === activeTab)
   // 끌어서 옮길 수 있게 하되, 손을 떼면 관성으로 미끄러지는 대신 탭
   // 그룹에 붙는다 — 움직임은 탭을 눌렀을 때와 같다.
   const { scrollRef, isDragging, overscrollX, dragHandlers } = useDragScroll<HTMLDivElement>((scrolled) =>
@@ -100,9 +120,10 @@ export function Hero00Screening() {
   // far as the edge, not all the way to center.
   const [spacerWidth, setSpacerWidth] = useState(0)
 
-  const centerGroup = (tab: ScreeningTab, behavior: ScrollBehavior) => {
+  const centerGroup = (tab: ScreeningTab, behavior: ScrollBehavior) => centerCards(indicesOf(tab), behavior)
+
+  const centerCards = (indices: number[], behavior: ScrollBehavior) => {
     const container = scrollRef.current
-    const indices = CARDS.reduce<number[]>((acc, card, i) => (card.group === tab ? [...acc, i] : acc), [])
     const firstEl = cardRefs.current[indices[0]]
     const lastEl = cardRefs.current[indices[indices.length - 1]]
     if (!container || !firstEl || !lastEl) return
@@ -133,14 +154,44 @@ export function Hero00Screening() {
   useEffect(() => {
     // Snap the initial tab's group to center once the spacers have their
     // real size — no animated scroll on first paint, just settle in place.
-    centerGroup(activeTab, 'auto')
+    if (isMobile) centerCards([focusCard], 'auto')
+    else centerGroup(activeTab, 'auto')
     // Only re-run when the spacer size (re)settles, not on every tab switch.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [spacerWidth])
+  }, [spacerWidth, isMobile])
 
   const selectTab = (tab: ScreeningTab) => {
     setActiveTab(tab)
-    centerGroup(tab, 'smooth')
+    const first = indicesOf(tab)[0]
+    setFocusCard(first)
+    if (isMobile) centerCards([first], 'smooth')
+    else centerGroup(tab, 'smooth')
+  }
+
+  /** 휴대폰: 카드 한 장을 켠다. 그 카드의 그룹 탭도 함께 켠다. */
+  const selectCard = (index: number) => {
+    setFocusCard(index)
+    setActiveTab(CARDS[index].group)
+    centerCards([index], 'smooth')
+  }
+
+  /** 휴대폰: 화면 한가운데에 가장 가까운 카드. */
+  const nearestCard = () => {
+    const container = scrollRef.current
+    if (!container) return focusCard
+    const centerX = container.getBoundingClientRect().left + container.clientWidth / 2
+    let nearest = focusCard
+    let shortest = Infinity
+    cardRefs.current.forEach((el, i) => {
+      if (!el) return
+      const r = el.getBoundingClientRect()
+      const distance = Math.abs(r.left + r.width / 2 - centerX)
+      if (distance < shortest) {
+        shortest = distance
+        nearest = i
+      }
+    })
+    return nearest
   }
 
   /** 지금 화면 한가운데에 가장 가까운 그룹. */
@@ -192,6 +243,17 @@ export function Hero00Screening() {
   }, [activeTab])
 
   const settleAfterDrag = (scrolled: number) => {
+    if (isMobile) {
+      const nearestIndex = nearestCard()
+      if (nearestIndex !== focusCard) {
+        selectCard(nearestIndex)
+        return
+      }
+      const step = Math.abs(scrolled) >= STEP_THRESHOLD ? Math.sign(scrolled) : 0
+      selectCard(Math.min(CARDS.length - 1, Math.max(0, focusCard + step)))
+      return
+    }
+
     const nearest = nearestGroup()
     if (nearest !== activeTab) {
       selectTab(nearest)
@@ -261,7 +323,8 @@ export function Hero00Screening() {
               길이가 제각각인 세 칸에서 어디가 켜졌는지 훑다 놓치기 쉬웠다.
               칸이 통째로 칠해지면 멀리서도 걸린다. 칸 폭이 저마다 달라
               미끄러질 거리는 실측해 둔다. */}
-          <nav ref={navRef} className="relative mx-auto flex w-fit items-center gap-1 rounded-full bg-white p-1.5 shadow-soft">
+          {/* 휴대폰에서는 세 칸이 한 줄에 다 안 들어가 잘렸다 — 같은 폭 세 칸으로 나누고 글이 두 줄로 접히게 한다. */}
+          <nav ref={navRef} className="relative mx-auto grid w-full grid-cols-3 items-stretch gap-0.5 rounded-[24px] bg-white p-1.5 shadow-soft md:flex md:w-fit md:items-center md:gap-1 md:rounded-full">
             {thumb && (
               <motion.span
                 aria-hidden
@@ -281,12 +344,12 @@ export function Hero00Screening() {
                   onClick={() => selectTab(tab.id)}
                   aria-pressed={isActive}
                   className={clsx(
-                    'relative z-10 flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-[16px] font-semibold tracking-[-0.09px] transition-colors duration-200',
+                    'relative z-10 flex cursor-pointer items-center justify-center gap-1 rounded-[18px] px-1.5 py-2 text-center text-[13px] font-semibold leading-[1.3] tracking-[-0.09px] transition-colors duration-200 md:gap-2 md:whitespace-nowrap md:rounded-full md:px-4 md:text-[16px]',
                     isActive ? 'text-title' : 'text-sub hover:text-body',
                   )}
                 >
                   {/* 켜진 탭의 파란 아이콘 대신 회색 아이콘을 짙게 눌러 글자색과 맞춘다. */}
-                  <img loading="lazy" decoding="async" src={tab.iconInactive} alt="" className={clsx('size-[18px] shrink-0 transition-[filter]', isActive && 'brightness-0 opacity-85')} />
+                  <img loading="lazy" decoding="async" src={tab.iconInactive} alt="" className={clsx('hidden size-[18px] shrink-0 transition-[filter] md:block', isActive && 'brightness-0 opacity-85')} />
                   {tab.label}
                 </button>
               )
@@ -339,29 +402,24 @@ export function Hero00Screening() {
                 ref={(el) => {
                   cardRefs.current[index] = el
                 }}
-                // 흐린 카드를 누르면 그 그룹으로 옮기기만 한다. 사이트는 켜진 카드에서만 열린다.
+                // 흐린 카드를 누르면 그 카드(데스크톱은 그룹)로 옮기기만 한다. 사이트는 켜진 카드에서만 열린다.
                 onClick={(event) => {
-                  if (card.group !== activeTab) {
+                  if (!isOn(index)) {
                     event.preventDefault()
-                    selectTab(card.group)
+                    if (isMobile) selectCard(index)
+                    else selectTab(card.group)
                   }
                 }}
-                aria-current={card.group === activeTab ? 'true' : undefined}
+                aria-current={isOn(index) ? 'true' : undefined}
                 className={clsx(
-                  'group relative flex h-[400px] shrink-0 cursor-pointer flex-col overflow-hidden rounded-card p-7 text-left transition-[opacity,background-color,box-shadow] duration-300',
-                  card.group === activeTab
+                  'flex h-[400px] shrink-0 cursor-pointer flex-col overflow-hidden rounded-card p-7 text-left transition-[opacity,background-color,box-shadow] duration-300',
+                  isOn(index)
                     ? 'bg-brand-50 opacity-100 hover:bg-[#ecf6fc] hover:shadow-[inset_0_0_0_1px_rgba(13,156,235,0.45)]'
                     : 'bg-brand-50 opacity-30 hover:opacity-60',
                 )}
                 style={{ width: CARD_WIDTH }}
               >
-                {/* 켜진 카드에 올리면 내용을 흐리고 "더 알아보기" 를 띄워, 눌렀을 때 어디로 가는지 알린다. */}
-                <div
-                  className={clsx(
-                    'flex flex-col gap-4 transition-[filter] duration-300',
-                    card.group === activeTab && 'group-hover:blur-[7px] group-focus-visible:blur-[7px]',
-                  )}
-                >
+                <div className="flex flex-col gap-4">
                   <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-ui border border-gray-150 bg-white">
                     {/* 로고 파일은 여백 없이 잘라 두고, 칸 안쪽 여백으로 가운데에 앉힌다. */}
                     <img loading="lazy" decoding="async" src={card.logo} alt={`${card.name} 로고`} className="size-full object-contain p-1.5" />
@@ -374,17 +432,6 @@ export function Hero00Screening() {
                     <p className="type-card-body">{card.description}</p>
                   </div>
                 </div>
-                {card.group === activeTab && (
-                  <span className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 text-title opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
-                    <IconPlus
-                      size={28}
-                      stroke={1.8}
-                      aria-hidden
-                      className="group-hover:[animation:plus-spin_0.4s_ease-out] group-focus-visible:[animation:plus-spin_0.4s_ease-out]"
-                    />
-                    <span className="text-[16px] font-semibold">더 알아보기</span>
-                  </span>
-                )}
               </a>
             ))}
             <div aria-hidden className="shrink-0" style={{ width: spacerWidth }} />

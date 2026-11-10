@@ -39,14 +39,16 @@ export function PillSwitch<T extends string>({
   className,
 }: PillSwitchProps<T>) {
   const navRef = useRef<HTMLElement>(null)
-  const [thumb, setThumb] = useState<{ x: number; w: number } | null>(null)
+  const [thumb, setThumb] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
+  // 항목이 넷 이상이면 휴대폰에서는 한 줄에 다 안 들어가 가로로 밀렸다 — 두 칸씩 접는다.
+  const wrap = items.length > 3
 
   useLayoutEffect(() => {
     const nav = navRef.current
     if (!nav) return
     const measure = () => {
       const el = nav.querySelector<HTMLElement>(`[data-pill="${value}"]`)
-      if (el) setThumb({ x: el.offsetLeft - 6, w: el.offsetWidth })
+      if (el) setThumb({ x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight })
     }
     measure()
     // 글꼴이 늦게 바뀌면 칸 폭도 바뀐다 — 그때 다시 잰다.
@@ -60,7 +62,9 @@ export function PillSwitch<T extends string>({
       ref={navRef}
       aria-label={label}
       className={clsx(
-        'relative mx-auto flex w-fit max-w-full items-center gap-1 overflow-x-auto rounded-full bg-white p-1.5 shadow-soft',
+        'relative mx-auto max-w-full bg-white p-1.5 shadow-soft md:flex md:w-fit md:items-center md:gap-1 md:rounded-full',
+        // 셋 이하는 같은 폭 칸으로 나눠 한 줄에 둔다. 좁은 폰(360)에서 마지막 칸이 화면 밖으로 밀렸다.
+        wrap ? 'grid w-full grid-cols-2 gap-0.5 rounded-[24px] sm:max-w-[400px] md:max-w-full' : 'grid w-full auto-cols-fr grid-flow-col gap-0.5 rounded-[24px]',
         className,
       )}
     >
@@ -68,13 +72,15 @@ export function PillSwitch<T extends string>({
         <motion.span
           aria-hidden
           initial={false}
-          animate={{ x: thumb.x, width: thumb.w }}
+          animate={{ x: thumb.x, y: thumb.y, width: thumb.w, height: thumb.h }}
           transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-          className="absolute left-1.5 top-1.5 h-[calc(100%-12px)] rounded-full bg-[#eceff3]"
+          className="absolute left-0 top-0 rounded-full bg-[#eceff3]"
         />
       )}
-      {items.map((item) => {
+      {items.map((item, index) => {
         const isActive = item.id === value
+        // 두 칸씩 접을 때 홀수로 남는 마지막 칸은 한 줄을 다 쓰고 가운데에 선다.
+        const lone = wrap && items.length % 2 === 1 && index === items.length - 1
         return (
           <button
             key={item.id}
@@ -83,8 +89,9 @@ export function PillSwitch<T extends string>({
             aria-pressed={isActive}
             data-pill={item.id}
             className={clsx(
-              'relative z-10 flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-[16px] font-semibold tracking-[-0.09px] transition-colors duration-200',
+              'relative z-10 flex cursor-pointer items-center justify-center gap-1.5 rounded-full px-2 py-2 text-center text-[13px] leading-[1.3] md:whitespace-nowrap font-semibold tracking-[-0.09px] transition-colors duration-200 md:gap-2 md:px-4 md:text-[16px] md:leading-normal',
               isActive ? 'text-title' : 'text-sub hover:text-body',
+              lone && 'col-span-2 justify-self-center px-6',
             )}
           >
             {item.icon && (
@@ -96,7 +103,7 @@ export function PillSwitch<T extends string>({
                 strokeWidth="1.8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="size-[18px] shrink-0"
+                className="hidden size-4 shrink-0 min-[400px]:block md:size-[18px]"
               >
                 {item.icon}
               </svg>

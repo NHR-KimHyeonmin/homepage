@@ -90,16 +90,6 @@
   }
 }
 
-/* 카드의 + 아이콘. 나타날 때 시계 방향으로 한 바퀴 돌며 멈춘다. */
-@keyframes plus-spin {
-  from {
-    rotate: -360deg;
-  }
-  to {
-    rotate: 0deg;
-  }
-}
-
 /* 채용 사이트 띠. 한 벌 길이(--marquee-loop)만큼 흐르면 처음으로 — 둘째 벌이
    같은 그림이라 이음매가 보이지 않는다. 앞뒤 여백 때문에 -50% 로는 맞지 않는다. */
 @keyframes client-marquee {
@@ -162,7 +152,10 @@
   }
 }
 @utility type-lead {
-  font-size: 20px;
+  font-size: 16px;
+  @media (width >= 48rem) {
+    font-size: 20px;
+  }
   font-weight: 500;
   line-height: 1.45;
   letter-spacing: -0.1px;
@@ -176,7 +169,10 @@
   color: var(--color-title);
 }
 @utility type-card-body {
-  font-size: 16px;
+  font-size: 15px;
+  @media (width >= 48rem) {
+    font-size: 16px;
+  }
   font-weight: 400;
   line-height: 1.55;
   letter-spacing: -0.08px;
@@ -200,6 +196,15 @@
   padding-top: 40px;
   @media (width >= 48rem) {
     padding-top: 56px;
+  }
+}
+
+/* 휴대폰에서는 카드·그림 모서리를 작게, 한 값으로 맞춘다. 화면을 통째로 줄여 보여 주는
+   목업이 많아, 큰 둥근 모서리가 그림 귀퉁이를 잘라 먹었다. */
+@media (width < 48rem) {
+  :root {
+    --radius-card: 8px;
+    --radius-media: 8px;
   }
 }
 
