@@ -114,7 +114,7 @@ export function Hero3ScreeningToggle() {
     /* 받치던 흰 카드를 뺐다 — 두 장이 서로 앞뒤로 교차하는 게 이 블록이
        보여 줄 전부라, 그걸 담는 상자는 그림을 가두기만 했다. 구역 바탕 위에
        그림자만으로 떠 있는 편이 교차가 더 잘 보인다. */
-    <div ref={blockRef} className="w-full pt-8 md:pt-7">
+    <div ref={blockRef} className="w-full pt-11 md:pt-10">
       {/* 아래 "반복되는 채용업무" 묶음과 같은 스위치·설명 — 크기·여백·글자를 그대로 맞춘다.
           무대(scale) 바깥에 두므로 PillSwitch 실측이 어긋나지 않는다. */}
       <PillSwitch
@@ -124,7 +124,7 @@ export function Hero3ScreeningToggle() {
         label="전형 방식 선택"
         className="mb-5 w-full md:mb-9 md:w-fit"
       />
-      <p className="mx-auto w-full pt-5 max-w-[1100px] px-8 pb-8 text-center type-lead md:pb-10" style={{ lineHeight: 1.6 }}>
+      <p className="mx-auto w-full max-w-[1100px] px-8 pb-2 text-center type-lead md:pb-3" style={{ lineHeight: 1.6 }}>
         {current.note}
       </p>
 
