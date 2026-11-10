@@ -101,8 +101,14 @@ export function ScrollNav() {
                   : clsx('h-1.5', onDark ? 'bg-white/40 group-hover:bg-white/80' : 'bg-[#d3d9df] group-hover:bg-[#9aa5b1]'),
               )}
             />
-            {/* 이름표는 마우스를 올리거나 키보드로 고른 동안에만 나온다. 지금 구역은 막대가 알려 준다. */}
-            <span className="pointer-events-none absolute right-full mr-2.5 whitespace-nowrap rounded-[6px] bg-title px-2 py-1 text-[12px] font-semibold leading-none text-white opacity-0 shadow-[0_2px_8px_rgba(32,40,45,0.25)] transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
+            {/* 이름표는 마우스를 올리거나 키보드로 고른 동안에만 나온다. 지금 구역은 막대가 알려 준다.
+                태블릿처럼 마우스가 없는 기기는 올려 볼 수가 없어, 지금 구역 이름을 늘 띄워 둔다. */}
+            <span
+              className={clsx(
+                'pointer-events-none absolute right-full mr-2.5 whitespace-nowrap rounded-[6px] bg-title px-2 py-1 text-[12px] font-semibold leading-none text-white opacity-0 shadow-[0_2px_8px_rgba(32,40,45,0.25)] transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100',
+                isActive && '[@media(hover:none)]:opacity-100',
+              )}
+            >
               {chapter.label}
             </span>
           </button>
