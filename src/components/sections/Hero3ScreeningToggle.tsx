@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { PillSwitch } from '../ui/PillSwitch'
 import { useFitScale } from '../../hooks/useFitScale'
 import { SCREEN_HEIGHT, SCREEN_WIDTH, SimpleScreen, StandardScreen } from './Hero3ScreeningScreens'
 
@@ -66,9 +67,8 @@ const SCREENINGS = [
 const SHOT_SCALE = SHOT_WIDTH / SCREEN_WIDTH
 const SHOT_HEIGHT = Math.round(SCREEN_HEIGHT * SHOT_SCALE)
 
-/** 작은 스위치 한 칸의 폭. 무대에 scale 이 걸려 있어 실측이 어긋나므로
- *  (PillSwitch 를 못 쓰는 이유) 폭을 못박고 미끄러질 거리를 직접 센다. */
-const PILL_CELL_WIDTH = 72
+/** 스위치·문장을 무대 밖으로 뺀 만큼 무대 윗부분을 잘라 낸다(앞장 top 112 → 24). */
+const LIFT = 88
 
 /** 두 장이 자리를 바꾸는 움직임. 천천히 출발해 천천히 멈추게 해 급하게
  *  튀지 않게 한다. 장·스위치 알약·설명 문장이 같은 박자로 움직인다. */
@@ -80,8 +80,6 @@ const SWAP = { duration: 0.55, ease: [0.45, 0, 0.2, 1] as const }
 const CARD_SWAP = { ...SWAP, opacity: { duration: 0.2, ease: 'easeOut' as const } }
 
 /** 저절로 바뀌는 간격. */
-/** 휴대폰 스위치 한 칸 폭. */
-const MOBILE_CELL = 66
 
 const AUTOPLAY_MS = 4000
 
@@ -92,7 +90,6 @@ type ScreeningId = (typeof SCREENINGS)[number]['id']
  * real markup; picking a type brings that screenshot to the front slot at
  * full opacity and sends the other one back to 30%, swapping places.
  */
-/** 설명 한 줄. 좁은 화면에서는 "~로," 뒤에서 줄을 바꾼다 — 줄인 무대 안이라 한 줄이면 너무 길다. */
 export function Hero3ScreeningToggle() {
   const { ref, scale } = useFitScale(DESIGN_WIDTH)
   const [selected, setSelected] = useState<ScreeningId>('standard')
@@ -117,57 +114,25 @@ export function Hero3ScreeningToggle() {
     /* 받치던 흰 카드를 뺐다 — 두 장이 서로 앞뒤로 교차하는 게 이 블록이
        보여 줄 전부라, 그걸 담는 상자는 그림을 가두기만 했다. 구역 바탕 위에
        그림자만으로 떠 있는 편이 교차가 더 잘 보인다. */
-    <div ref={blockRef} className="w-full">
-      {/* 휴대폰 전용 문장. 각 줄이 화면 가운데에 서도록 줄 흐름(inline)으로 놓는다 —
-          스위치는 첫 줄 맨 앞, 둘째 줄은 그 아래 가운데. 글자는 다른 설명글(type-lead)과 같은 크기. */}
-      <div className="mb-5 mt-6 px-2 text-center md:hidden">
-        <span
-          className="relative mb-2.5 inline-flex items-center rounded-full bg-white p-[3px] shadow-soft"
-          role="group"
-          aria-label="전형 방식 선택(모바일)"
-        >
-          <motion.span
-            aria-hidden
-            initial={false}
-            animate={{ x: SCREENINGS.findIndex((item) => item.id === selected) * MOBILE_CELL }}
-            transition={SWAP}
-            className="absolute left-[3px] top-[3px] h-[calc(100%-6px)] rounded-full bg-[#eceff3]"
-            style={{ width: MOBILE_CELL }}
-          />
-          {SCREENINGS.map((screening) => (
-            <button
-              key={screening.id}
-              type="button"
-              onClick={() => pick(screening.id)}
-              aria-pressed={screening.id === selected}
-              style={{ width: MOBILE_CELL }}
-              className={`relative z-10 cursor-pointer whitespace-nowrap rounded-full py-1 text-[13px] font-semibold transition-colors duration-200 ${
-                screening.id === selected ? 'text-title' : 'text-sub'
-              }`}
-            >
-              {screening.label}
-            </button>
-          ))}
-        </span>
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.span
-            key={selected}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="type-lead block leading-[1.6]!"
-          >
-            {current.note}
-          </motion.span>
-        </AnimatePresence>
-      </div>
+    <div ref={blockRef} className="w-full pt-8 md:pt-7">
+      {/* 아래 "반복되는 채용업무" 묶음과 같은 스위치·설명 — 크기·여백·글자를 그대로 맞춘다.
+          무대(scale) 바깥에 두므로 PillSwitch 실측이 어긋나지 않는다. */}
+      <PillSwitch
+        items={SCREENINGS}
+        value={selected}
+        onChange={pick}
+        label="전형 방식 선택"
+        className="mb-5 w-full md:mb-9 md:w-fit"
+      />
+      <p className="mx-auto w-full pt-5 max-w-[1100px] px-8 pb-8 text-center type-lead md:pb-10" style={{ lineHeight: 1.6 }}>
+        {current.note}
+      </p>
 
-      {/* 휴대폰에서는 무대 안 문장 자리(위쪽 100)가 비므로, 그만큼 무대를 끌어올려 문장 바로 아래에 그림이 오게 한다. */}
+      {/* 무대 위쪽은 예전에 스위치·문장이 서던 자리다. 앞장 그림자 몫(24)만 남기고 끌어올린다. */}
       <div
         ref={ref}
-        className="mt-[var(--lift)] w-full overflow-hidden md:mt-0"
-        style={{ height: DESIGN_HEIGHT * scale, '--lift': `${-100 * scale}px` } as CSSProperties}
+        className="w-full overflow-hidden"
+        style={{ height: (DESIGN_HEIGHT - LIFT) * scale }}
       >
         {/* 가운데 맞춤. useFitScale 은 배율을 1 로 묶어 두므로, 무대(1142)가
             담는 칸(1208)보다 좁은 넓은 화면에서는 왼쪽에 붙어 33px 쯤 왼쪽으로
@@ -180,7 +145,7 @@ export function Hero3ScreeningToggle() {
             width: DESIGN_WIDTH,
             height: DESIGN_HEIGHT,
             marginLeft: '50%',
-            transform: `translateX(-50%) scale(${scale})`,
+            transform: `translateX(-50%) scale(${scale}) translateY(${-LIFT}px)`,
             transformOrigin: 'top center',
           }}
         >
@@ -216,89 +181,6 @@ export function Hero3ScreeningToggle() {
             )
           })}
 
-
-          {/* 조작기를 따로 두지 않고 문장 안의 이름이 곧 스위치다. 아래
-              묶음들이 알약 탭이라 여기까지 탭이면 한 화면에 고르는 줄이
-              셋인데, 고를 것은 둘뿐이고 그 둘의 차이는 결국 이 한 문장이다 —
-              이름을 누르면 문장과 그림이 같이 반대쪽으로 넘어간다.
-
-              높이를 34 로 못박아 두는 이유는, 문구가 바뀔 때 줄 수가 달라지면
-              아래 그림이 들썩이기 때문이다. */}
-          {/* 위를 맞춘다 — 설명이 두 줄로 접히면 가운데 맞춤일 때 스위치가 두 줄 사이에 떠 있었다. 스위치는 첫 줄 옆에 선다. */}
-          <div className="absolute left-0 top-[12px] z-10 hidden w-full flex-col items-center gap-2.5 px-10 md:flex">
-            {/* 문장 왼쪽에 서는 작은 스위치. 홈은 구역 바탕(#f6fafc)에서 한
-                톤만 내려, 조작기가 글줄 옆에서 튀지 않게 한다. 고른 칸은
-                아래 전형 운영 탭과 같은 회색(#f1f0ee)이다 — 한 구역 안에서
-                "고른 것" 의 색이 둘이면 신호가 흐려진다. */}
-            <div
-              className="relative flex shrink-0 items-center rounded-full bg-white p-[3px] shadow-soft"
-              role="group"
-              aria-label="전형 방식 선택"
-            >
-              <motion.span
-                aria-hidden
-                initial={false}
-                animate={{ x: SCREENINGS.findIndex((item) => item.id === selected) * PILL_CELL_WIDTH }}
-                transition={SWAP}
-                className="absolute left-[3px] top-[3px] h-[calc(100%-6px)] rounded-full bg-[#eceff3]"
-                style={{ width: PILL_CELL_WIDTH }}
-              />
-              {SCREENINGS.map((screening) => {
-                const isSelected = screening.id === selected
-                return (
-                  <button
-                    key={screening.id}
-                    type="button"
-                    onClick={() => pick(screening.id)}
-                    aria-pressed={isSelected}
-                    style={{ width: PILL_CELL_WIDTH }}
-                    className={`relative z-10 cursor-pointer whitespace-nowrap rounded-full py-[3px] text-[14px] font-semibold tracking-[-0.07px] transition-colors duration-200 ${
-                      isSelected ? 'text-title' : 'text-sub hover:text-body'
-                    }`}
-                  >
-                    {screening.label}
-                  </button>
-                )
-              })}
-            </div>
-
-            {/* 칸 하나에 "자" 와 "창" 을 포갠다.
-
-                자: 두 문장을 모두 그려 두되 보이지 않게 둔다. 칸이 둘 중
-                넓은 쪽에 맞춰지므로 묶음 전체 폭이 고정되고, 가운데 정렬이어도
-                스위치가 제자리에 선다 — 전에는 문장이 17px 짧아지면 스위치가
-                그 절반만큼(8.5px) 오른쪽으로 밀렸다.
-
-                창: overflow-hidden 한 칸 안에서 옛 문장이 위로 빠져나가고 새
-                문장이 아래에서 올라온다. 두 장이 같은 시각에 움직여야 한 줄이
-                감겨 올라가는 것으로 보이므로 mode 를 주지 않는다(동시 진행).
-                110% 는 글자 아랫단(디센더)까지 창 밖으로 내보내는 거리다. */}
-            <div className="grid shrink-0">
-              {SCREENINGS.map((screening) => (
-                <p
-                  key={screening.id}
-                  aria-hidden
-                  className="invisible col-start-1 row-start-1 text-center text-[20px] font-medium leading-[1.5] tracking-[-0.1px]"
-                >
-                  {screening.note}
-                </p>
-              ))}
-              <div className="relative col-start-1 row-start-1 overflow-hidden">
-                <AnimatePresence initial={false}>
-                  <motion.p
-                    key={selected}
-                    initial={{ y: '110%' }}
-                    animate={{ y: '0%' }}
-                    exit={{ y: '-110%' }}
-                    transition={SWAP}
-                    className="absolute inset-x-0 top-0 text-center text-[20px] font-medium leading-[1.5] tracking-[-0.1px] text-body"
-                  >
-                    {current.note}
-                  </motion.p>
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
 
         </div>
       </div>

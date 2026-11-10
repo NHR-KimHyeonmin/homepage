@@ -28,8 +28,7 @@ interface PillSwitchProps<T extends string> {
  * 고정값으로는 맞출 수 없다.
  *
  * 주의: scale() 이 걸린 무대 안에서는 쓸 수 없다 — 실측값이 그 배율까지
- * 끌어안아 어긋난다. 그런 자리(Hero3ScreeningToggle)는 칸 폭을 고정해 두고
- * 거리를 직접 계산한다.
+ * 끌어안아 어긋난다. 무대 바깥에 둔다.
  */
 export function PillSwitch<T extends string>({
   items,
