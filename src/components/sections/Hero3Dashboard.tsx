@@ -90,7 +90,7 @@ export function Hero3Dashboard() {
   }, [activeTab])
 
   return (
-    <Section id="dashboard" className="flex flex-col section-pb items-center bg-white pt-1 md:pt-2">
+    <Section id="dashboard" className="flex flex-col section-pb items-center bg-white px-5 pt-1 md:px-8 md:pt-2">
       {/* 이 묶음은 전형 화면부터 탭 설명까지 화면 몇 장 높이라, "30% 가 보이면" 으로
           잡으면 키가 작은 화면(태블릿 등)에서는 그만큼이 한 번에 들어올 수 없어
           한참 안 나타났다. 높이와 상관없이 윗변이 화면 아래 15% 지점을 넘으면 연다. */}
@@ -125,7 +125,7 @@ export function Hero3Dashboard() {
           value={activeTab}
           onChange={setActiveTab}
           label="전형 운영 기능 선택"
-          className="mb-5 w-[calc(100%-40px)] md:mb-9 md:w-fit"
+          className="mb-5 w-full md:mb-9 md:w-fit"
         />
 
         {/* 세로로 늘어나는 사슬: 래퍼(min-height) → 전환 상자 → 패널.

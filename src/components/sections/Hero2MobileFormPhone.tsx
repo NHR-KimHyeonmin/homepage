@@ -98,7 +98,8 @@ function PhoneField({ label, required, value = '', placeholder, busy = false, do
 }
 
 export function Hero2MobileFormPhone() {
-  const { ref: fitRef, scale } = useFitScale(PHONE_WIDTH)
+  // 양옆에 64px 씩 여백을 남기고 줄인다 — 카드 폭에 꽉 채우면 휴대폰에서 너무 크게 보였다(OG 휴대폰과 같은 크기).
+  const { ref: fitRef, scale } = useFitScale(PHONE_WIDTH + 128)
   const stageRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const addressRef = useRef<HTMLDivElement>(null)

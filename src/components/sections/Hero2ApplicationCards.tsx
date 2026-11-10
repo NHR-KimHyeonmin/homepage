@@ -90,7 +90,7 @@ export function Hero2ApplicationCards() {
             </div>
 
             {/* 휴대폰 틀(370px)이 좁은 화면에서 카드 밖으로 잘리지 않게 줄인다. */}
-            <FitZoom width={370}>
+            <FitZoom width={370} gutter={64}>
               <div className="relative h-[409px] w-[370px] shrink-0 rounded-t-[40px] border-x-[10px] border-t-[10px] border-white bg-[#cfe2f0]">
                 {/* status bar. 와이파이·배터리는 아이콘 상자 안쪽 여백이 커서
                     16px 로 두면 블루투스보다 한참 작아 보인다 — 원본 치수대로

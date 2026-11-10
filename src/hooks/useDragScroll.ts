@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type MouseEvent, type PointerEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type DragEvent, type MouseEvent, type PointerEvent } from 'react'
 import { animate, useMotionValue, type AnimationPlaybackControls } from 'framer-motion'
 
 /** 관성 감속 계수 — 매 프레임 속도에 곱한다. 1에 가까울수록 멀리 미끄러진다. */
@@ -187,6 +187,8 @@ export function useDragScroll<T extends HTMLElement>(onDragEnd?: (scrolled: numb
       onPointerUp: endDrag,
       onPointerLeave: endDrag,
       onClickCapture,
+      // 카드 안 그림·링크를 마우스로 끌면 브라우저가 그림 끌기를 시작해 가로 스크롤이 멈췄다.
+      onDragStart: (event: DragEvent) => event.preventDefault(),
     },
   }
 }

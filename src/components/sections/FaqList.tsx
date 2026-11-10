@@ -68,7 +68,7 @@ export function FaqList() {
                     aria-expanded={isOpen}
                     className="group flex w-full cursor-pointer items-center gap-3 px-6 py-[18px] text-left"
                   >
-                    <h5 className={`flex-1 text-[22px] font-medium leading-[1.4] tracking-[-0.4px] ${isActive ? 'text-title' : 'text-body group-hover:text-title'}`}>
+                    <h5 className={`flex-1 text-[17px] font-medium md:text-[22px] leading-[1.4] tracking-[-0.4px] ${isActive ? 'text-title' : 'text-body group-hover:text-title'}`}>
                       <span className="mr-2 text-brand-700">Q.</span>{item.question}
                     </h5>
                     <motion.img
@@ -90,7 +90,7 @@ export function FaqList() {
                         transition={{ duration: 0.25, ease: 'easeInOut' }}
                         className="overflow-hidden"
                       >
-                        <p className="whitespace-pre-line px-6 pb-[18px] text-[18px] leading-[1.58] tracking-[-0.32px] text-body">{item.answer}</p>
+                        <p className="whitespace-pre-line px-6 pb-[18px] text-[15px] md:text-[18px] leading-[1.58] tracking-[-0.32px] text-body">{item.answer}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>

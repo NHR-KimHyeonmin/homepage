@@ -50,7 +50,8 @@ export function Hero2SeoAnalyticsGrid() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ amount: 0.3 }}
               transition={{ duration: 0.6, ease: 'easeOut', delay: i * 0.1 }}
-              className="flex h-[335px] flex-col items-center overflow-hidden rounded-card"
+              // 휴대폰에서는 그림이 줄어 고정 높이(335) 아래로 빈칸이 남았다 — 높이를 내용에 맡겨 그림이 바닥에 붙게 한다.
+              className="flex flex-col items-center overflow-hidden rounded-card md:h-[335px]"
               style={skin.style}
             >
               <div className="flex w-full flex-col gap-3 p-8">

@@ -30,7 +30,7 @@ import { Hero2ThemeFrame117 } from './Hero2ThemeFrame117'
  * 색은 이 판 위에서만 쓰이는 게 아니라 getThemeShades 를 통해 목업 전체
  * 테마(네비게이션 바탕, 버튼)를 만든다.
  */
-const PALETTE = ['#0284C7', '#6E23D7', '#A855F7', '#DB2777', '#F43F5E']
+const PALETTE = ['#0284C7', '#6E23D7', '#4EC214', '#424242', '#F43F5E']
 /** 가운데 칸에서 시작해 양옆으로 도는 편이 줄 전체가 눈에 들어온다. */
 const DEFAULT_COLOR = PALETTE[0]
 
@@ -55,8 +55,9 @@ const PANEL_SATURATION = 34
 const PANEL_LIGHTNESS = 86
 
 function panelBg(themeColor: string) {
-  const [h] = hexToHsl(themeColor)
-  return hslToHex(h, PANEL_SATURATION, PANEL_LIGHTNESS)
+  const [h, s] = hexToHsl(themeColor)
+  // 무채색(#424242 등)은 색상각이 없어 0(빨강)으로 읽힌다 — 판도 채도 없이 회색으로 물들인다.
+  return hslToHex(h, s < 5 ? 0 : PANEL_SATURATION, PANEL_LIGHTNESS)
 }
 
 /** 목업(Frame 117)이 설계된 폭. 카드가 이보다 좁으면 통째로 축소된다. */
@@ -192,8 +193,8 @@ export function Hero2ThemeShowcase() {
           {/* 데스크톱에서는 판이 5:3 으로 고정되므로 카드가 남은 높이를 그대로
               가져간다. 모바일은 고정 높이(720)였더니 줄어든 목업 아래로 빈 흰 판이
               길게 남았다 — 데스크톱에서 보이는 만큼(가로:세로 약 1.7:1)만 남기고
-              아래를 자른다. */}
-          <div className="relative aspect-[17/10] w-full max-w-[1280px] rounded-t-media bg-white md:aspect-auto md:min-h-0 md:flex-1">
+              아래를 자른다. aspect-ratio 는 내용이 더 크면 무시되므로(최소 높이가 내용 높이) overflow-hidden 으로 잘라 낸다. */}
+          <div className="relative aspect-[17/10] w-full max-w-[1280px] overflow-hidden rounded-t-media bg-white md:aspect-auto md:min-h-0 md:flex-1">
             <div ref={fitRef} className="size-full overflow-hidden rounded-t-media">
               <div style={{ width: MOCKUP_WIDTH, transform: `scale(${scale})`, transformOrigin: 'top left' }}>
                 <Hero2ThemeFrame117 color={selectedColor} />

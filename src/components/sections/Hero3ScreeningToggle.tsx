@@ -182,7 +182,8 @@ export function Hero3ScreeningToggle() {
 
               높이를 34 로 못박아 두는 이유는, 문구가 바뀔 때 줄 수가 달라지면
               아래 그림이 들썩이기 때문이다. */}
-          <div className="absolute left-0 top-[12px] z-10 flex h-[34px] w-full items-center justify-center gap-2 px-10">
+          {/* 위를 맞춘다 — 설명이 두 줄로 접히면 가운데 맞춤일 때 스위치가 두 줄 사이에 떠 있었다. 스위치는 첫 줄 옆에 선다. */}
+          <div className="absolute left-0 top-[12px] z-10 flex w-full items-start justify-center gap-2 px-10">
             {/* 문장 왼쪽에 서는 작은 스위치. 홈은 구역 바탕(#f6fafc)에서 한
                 톤만 내려, 조작기가 글줄 옆에서 튀지 않게 한다. 고른 칸은
                 아래 전형 운영 탭과 같은 회색(#f1f0ee)이다 — 한 구역 안에서
@@ -230,7 +231,7 @@ export function Hero3ScreeningToggle() {
                 문장이 아래에서 올라온다. 두 장이 같은 시각에 움직여야 한 줄이
                 감겨 올라가는 것으로 보이므로 mode 를 주지 않는다(동시 진행).
                 110% 는 글자 아랫단(디센더)까지 창 밖으로 내보내는 거리다. */}
-            <div className="grid shrink-0">
+            <div className="mt-[2px] grid shrink-0">
               {SCREENINGS.map((screening) => (
                 <p
                   key={screening.id}

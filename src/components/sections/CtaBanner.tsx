@@ -32,7 +32,7 @@ export function CtaBanner() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="text-[28px] font-bold leading-[1.2] tracking-[-0.72px] text-white md:text-[36px]"
+        className="text-[28px] font-semibold leading-[1.2] tracking-[-0.72px] text-white md:text-[36px]"
       >
         커리어링크로 성공적인 채용을 만들어보세요.
       </motion.h2>
