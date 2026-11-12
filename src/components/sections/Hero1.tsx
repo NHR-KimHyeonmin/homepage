@@ -305,7 +305,7 @@ export function Hero1() {
         initial={{ opacity: 0, y: 48 }}
         animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 48 }}
         transition={{ ...REVEAL_TRANSITION, delay: revealed ? IMAGE_DELAY_S : 0 }}
-        className={`relative w-full overflow-hidden rounded-media bg-white lg:w-[80vw] ${revealed ? '' : 'pointer-events-none'}`}
+        className={`relative w-full overflow-hidden rounded-media bg-white lg:w-[min(80vw,1280px)] ${revealed ? '' : 'pointer-events-none'}`}
         style={{ boxShadow: DASHBOARD_SHADOW }}
       >
         <div

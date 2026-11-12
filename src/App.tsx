@@ -40,6 +40,22 @@ function App() {
     return () => cancelAnimationFrame(frame)
   }, [])
 
+  // 고르는 버튼 묶음([data-hint])이 처음 화면에 들어올 때 한 번만 버튼을 깜빡여 눌러 볼 수 있다는 걸 알린다.
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+          entry.target.classList.add('hint-on')
+          observer.unobserve(entry.target)
+        }
+      },
+      { threshold: 1, rootMargin: '0px 0px -15% 0px' },
+    )
+    document.querySelectorAll('[data-hint]').forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-white">
       <Header />

@@ -69,23 +69,16 @@ const SOURCES: DbSource[] = [
 ]
 
 /**
- * 한 칸씩 넘어가는 연출의 단계. 두 열이 각자 처음부터 끝까지 도는 게 아니라,
- * **먼저 두 출처를 다 세우고 나서** 입력이 차례로 들어간다.
+ * 한 칸씩 넘어가는 연출의 단계. 출처 칩과 점선은 처음부터 이어져 있고,
+ * 연출은 시험명 목록이 내려오는 데서 시작한다.
  *
- *   1 (쉼) → 2 YBM 점선 → 3 (쉼) → 4 대학알리미 점선 — 칩은 처음부터 보인다
- *   → 5 시험명 목록 → 6 시험명 선택 → 7 점수 입력 → 8 점수 완료
- *   → 9 학교명 목록 → 10 학교명 선택 → 11 주전공 입력 → 12 주전공 완료
- *
- * 출처 둘을 먼저 깔아 두는 편이 "어느 DB 가 무엇을 채우는가" 라는 구도를
- * 먼저 보여 준다. 한 열씩 끝내고 넘어가면 오른쪽 열은 한참 비어 있어서,
- * 왼쪽이 다 끝날 때까지 그 자리가 무엇인지 알 수 없다.
+ *   1 시험명 목록 → 2 시험명 선택 → 3 점수 입력 → 4 점수 완료
+ *   → 5 학교명 목록 → 6 학교명 선택 → 7 주전공 입력 → 8 주전공 완료
  */
-const STEP_DELAYS = [260, 420, 300, 420, 520, 1100, 520, 1100, 520, 1100, 520, 1100]
+const STEP_DELAYS = [500, 1100, 520, 1100, 520, 1100, 520, 1100]
 
 /** 각 열이 쓰는 단계 번호. 위 주석의 순서를 그대로 옮긴 것이다. */
 interface ColumnSteps {
-  chip: number
-  line: number
   /** [목록 열림, 고르기 완료] */
   first: [number, number]
   /** [입력 시작, 입력 완료] */
@@ -93,8 +86,8 @@ interface ColumnSteps {
 }
 
 const COLUMN_STEPS: ColumnSteps[] = [
-  { chip: 1, line: 2, first: [5, 6], second: [7, 8] },
-  { chip: 3, line: 4, first: [9, 10], second: [11, 12] },
+  { first: [1, 2], second: [3, 4] },
+  { first: [5, 6], second: [7, 8] },
 ]
 
 function Field({ field, busy, done }: { field: DbField; busy: boolean; done: boolean }) {
@@ -183,7 +176,7 @@ function SourceColumn({ source, steps, step }: { source: DbSource; steps: Column
   return (
     <div className="flex w-full flex-col items-center md:max-w-[440px]">
       {/* 출처 칩 — 어느 DB 가 이 칸을 채우는지 바로 위에 둔다. 처음부터 떠 있고,
-          연출은 아래로 점선을 잇는 데서 시작한다. */}
+          점선도 처음부터 이어져 있다. */}
       <div className="flex items-center gap-4 rounded-full border border-[#e5e7eb] bg-white py-2 pl-3.5 pr-4 shadow-[0_2px_8px_rgba(15,26,61,0.07)]">
         <img loading="lazy" decoding="async" src={source.logo} alt={source.alt} className="w-auto shrink-0" style={{ height: source.logoHeight }} />
         <span className="flex flex-col">
@@ -192,12 +185,9 @@ function SourceColumn({ source, steps, step }: { source: DbSource; steps: Column
         </span>
       </div>
 
-      {/* 점선 연결. 위에서 아래로 그어지며 출처와 입력칸을 한 덩어리로 묶는다. */}
+      {/* 점선 연결. 처음부터 이어져 출처와 입력칸을 한 덩어리로 묶는다. */}
       <span
-        className={clsx(
-          'h-6 w-px origin-top transition-transform duration-500',
-          step >= steps.line ? 'scale-y-100' : 'scale-y-0',
-        )}
+        className="h-6 w-px"
         style={{ backgroundImage: 'linear-gradient(to bottom, #3379f3 50%, transparent 50%)', backgroundSize: '1px 6px' }}
       />
 
@@ -228,7 +218,7 @@ export function Hero2VerifiedDbCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="flex w-full flex-col gap-8 rounded-card p-8"
+      className="flex w-full flex-col gap-8 rounded-card p-8 pb-16"
       style={skin.style}
     >
       <div className="flex flex-col gap-3">

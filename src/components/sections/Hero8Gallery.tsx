@@ -18,7 +18,8 @@ interface ServiceCard {
   description: string
 }
 
-const CARDS: ServiceCard[] = [
+/** 헤더의 "관련 상품" 메뉴도 이 목록을 그대로 쓴다. */
+export const CARDS: ServiceCard[] = [
   {
     name: '커리어톡',
     href: 'https://www.careertalk.kr/home',

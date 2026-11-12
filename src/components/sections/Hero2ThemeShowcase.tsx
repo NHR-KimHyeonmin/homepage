@@ -143,7 +143,7 @@ export function Hero2ThemeShowcase() {
               바꾸면 탁해지므로 색 대신 바탕을 중화했다. 흰색 55% 에서
               최소 대비가 1.61 → 2.19, 평균 2.42 → 3.30 으로 올라가면서도
               뒤 그라데이션이 비쳐 유리 느낌이 남는다. */}
-          <div className="flex items-center gap-[2px] rounded-full bg-white/55 px-1.5 py-0.5 md:px-2 md:py-1 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65),0_8px_24px_rgba(15,26,61,0.12)] backdrop-blur-md">
+          <div data-hint className="flex items-center gap-[2px] rounded-full bg-white/55 px-1.5 py-0.5 md:px-2 md:py-1 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65),0_8px_24px_rgba(15,26,61,0.12)] backdrop-blur-md">
             {PALETTE.map((hex) => {
               const isSelected = hex.toLowerCase() === selectedColor.toLowerCase()
               return (
