@@ -1,6 +1,9 @@
 import { useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
-import { IconArrowLeft, IconChevronDown, IconCircleCheck, IconMail, IconPhone } from '@tabler/icons-react'
+import { IconArrowLeft, IconCircleCheck, IconMail, IconPhone } from '@tabler/icons-react'
+import { Footer } from '../components/layout/Footer'
+import { Header } from '../components/layout/Header'
+import { Dropdown } from '../components/ui/Dropdown'
 import { SectionEyebrow } from '../components/ui/SectionEyebrow'
 
 /**
@@ -45,8 +48,11 @@ export function InquiryPage() {
   }
 
   return (
+    <>
+    <Header />
+    {/* 헤더가 위에 떠 있으므로(fixed) 그 높이만큼 위를 더 띄운다. */}
     <main className="min-h-screen w-full bg-[linear-gradient(160deg,#f3f6ff_0%,#eaf3fd_45%,#e3f4f8_100%)]">
-      <div className="mx-auto grid max-w-[1280px] gap-10 px-5 py-14 md:px-8 md:py-24 lg:grid-cols-[1fr_500px] lg:gap-16 lg:py-32">
+      <div className="mx-auto grid max-w-[1280px] gap-10 px-5 pb-14 pt-28 md:px-8 md:pb-24 md:pt-36 lg:grid-cols-[1fr_500px] lg:gap-16 lg:pb-32 lg:pt-40">
         {/* 왼쪽: 안내 */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -126,24 +132,14 @@ export function InquiryPage() {
                 <input aria-label="이름" required placeholder="이름" autoComplete="name" value={form.name} onChange={(e) => set('name')(e.target.value)} className={`${FIELD} h-12`} />
                 <input aria-label="이메일" required type="email" placeholder="이메일" autoComplete="email" value={form.email} onChange={(e) => set('email')(e.target.value)} className={`${FIELD} h-12`} />
                 <input aria-label="연락처" required type="tel" placeholder="연락처" autoComplete="tel" value={form.phone} onChange={(e) => set('phone')(e.target.value)} className={`${FIELD} h-12`} />
-                <div className="relative">
-                  <select
-                    aria-label="어떻게 알게 되셨나요?"
-                    value={form.source}
-                    onChange={(e) => set('source')(e.target.value)}
-                    className={`${FIELD} h-12 cursor-pointer appearance-none pr-10 ${form.source ? '' : 'text-[#9aa5b1]!'}`}
-                  >
-                    <option value="" disabled>
-                      어떻게 알게 되셨나요?
-                    </option>
-                    {SOURCES.map((source) => (
-                      <option key={source} value={source} className="text-title">
-                        {source}
-                      </option>
-                    ))}
-                  </select>
-                  <IconChevronDown size={18} stroke={1.8} className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-sub" />
-                </div>
+                <Dropdown
+                  options={SOURCES}
+                  value={form.source}
+                  onChange={set('source')}
+                  label="어떻게 알게 되셨나요?"
+                  placeholder="어떻게 알게 되셨나요?"
+                  buttonClassName={`${FIELD} h-12`}
+                />
                 <textarea
                   aria-label="문의하실 내용"
                   placeholder="문의하실 내용"
@@ -180,5 +176,7 @@ export function InquiryPage() {
         </motion.div>
       </div>
     </main>
+    <Footer />
+    </>
   )
 }

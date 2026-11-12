@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { IconChevronDown } from '@tabler/icons-react'
+import { PrivacyPolicyModal } from './PrivacyPolicyModal'
 
 const NAV_LINKS = [
   { label: '개인정보처리방침', href: '#', strong: true },
@@ -102,6 +103,7 @@ function FamilySitePicker() {
 }
 
 export function Footer() {
+  const [privacyOpen, setPrivacyOpen] = useState(false)
   return (
     <footer className="bg-[#1e272c] px-5 py-12 text-white/70 md:px-8">
       <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-8">
@@ -113,16 +115,25 @@ export function Footer() {
                 {/* 칸막이는 항목 사이에만. 첫 항목 앞에 세우면 목록이
                     잘려 나온 것처럼 보인다. */}
                 {index > 0 && <span aria-hidden className="h-3 w-px bg-white/20" />}
-                <a
-                  href={link.href}
-                  // 바깥 사이트는 새 탭으로 연다 — 보던 홈페이지 자리를 잃지 않게.
-                  {...(link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  className={`whitespace-nowrap transition-colors hover:text-white ${
-                    link.strong ? 'font-bold text-white' : 'text-white/60'
-                  }`}
-                >
-                  {link.label}
-                </a>
+                {link.strong ? (
+                  // 개인정보처리방침은 페이지를 옮기지 않고 창으로 띄운다.
+                  <button
+                    type="button"
+                    onClick={() => setPrivacyOpen(true)}
+                    className="cursor-pointer whitespace-nowrap font-bold text-white transition-colors hover:text-white/80"
+                  >
+                    {link.label}
+                  </button>
+                ) : (
+                  <a
+                    href={link.href}
+                    // 바깥 사이트는 새 탭으로 연다 — 보던 홈페이지 자리를 잃지 않게.
+                    {...(link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    className="whitespace-nowrap text-white/60 transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </a>
+                )}
               </div>
             ))}
           </nav>
@@ -139,6 +150,7 @@ export function Footer() {
 
         <p className="text-[15px] tracking-[-0.08px] text-white/60">© 2026 NHR. All Rights Reserved</p>
       </div>
+      {privacyOpen && <PrivacyPolicyModal onClose={() => setPrivacyOpen(false)} />}
     </footer>
   )
 }

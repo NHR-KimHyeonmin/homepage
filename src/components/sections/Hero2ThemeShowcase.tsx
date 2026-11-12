@@ -34,6 +34,10 @@ const PALETTE = ['#F43F5E', '#4EC214', '#0284C7', '#6E23D7', '#424242']
 /** 섹션에 들어오면 초록부터 시작해 파랑·보라·회색·빨강 순으로 돈다. */
 const DEFAULT_COLOR = PALETTE[1]
 
+/** 섹션에 들어온 뒤 칩 테두리를 짚기까지, 그리고 테두리 연출(0.9초)이 끝나기까지. */
+const HINT_DELAY_MS = 700
+const HINT_MS = 1000
+
 /**
  * 색상 피커와 목업을 담는 패널 배경. tana.inc 의 FeatureVisuals_panel 처럼
  * 그라데이션 판 위에 흰 카드를 얹어 목업을 페이지 배경에서 떼어 놓는다.
@@ -101,16 +105,32 @@ export function Hero2ThemeShowcase() {
     if (inView && !takenOver) setSelectedColor(DEFAULT_COLOR)
   }, [inView, takenOver])
 
+  // 들어오고 한 박자 뒤에 칩들을 짚고(0.7초), 테두리가 다 사라진 뒤에야 색을 넘기기 시작한다.
+  // 들어오자마자 짚으면 아직 스크롤 중이라 놓친다.
+  const [hinting, setHinting] = useState(false)
+  const [cycling, setCycling] = useState(false)
   useEffect(() => {
-    if (takenOver || reduceMotion || !inView) return
-    const timer = setInterval(() => {
-      setSelectedColor((current) => {
-        const next = (PALETTE.indexOf(current) + 1) % PALETTE.length
-        return PALETTE[next]
-      })
-    }, AUTOPLAY_MS)
-    return () => clearInterval(timer)
+    if (takenOver || reduceMotion || !inView) {
+      setHinting(false)
+      setCycling(false)
+      return
+    }
+    const timers = [
+      window.setTimeout(() => setHinting(true), HINT_DELAY_MS),
+      window.setTimeout(() => setCycling(true), HINT_DELAY_MS + HINT_MS),
+    ]
+    return () => timers.forEach((timer) => window.clearTimeout(timer))
   }, [takenOver, reduceMotion, inView])
+
+  useEffect(() => {
+    if (!cycling) return
+    const advance = () =>
+      setSelectedColor((current) => PALETTE[(PALETTE.indexOf(current) + 1) % PALETTE.length])
+    // 테두리가 사라지는 즉시 다음 색으로 한 번 넘기고, 그 뒤로는 일정한 간격으로 돈다.
+    advance()
+    const timer = setInterval(advance, AUTOPLAY_MS)
+    return () => clearInterval(timer)
+  }, [cycling])
 
   const pickColor = (hex: string) => {
     setTakenOver(true)
@@ -144,7 +164,7 @@ export function Hero2ThemeShowcase() {
               최소 대비가 1.61 → 2.19, 평균 2.42 → 3.30 으로 올라가면서도
               뒤 그라데이션이 비쳐 유리 느낌이 남는다. */}
           {/* 섹션에 들어오면 칩들을 한 번 짚어 눌러 볼 수 있다는 걸 알린다. */}
-          <div className={clsx('flex items-center gap-[2px] rounded-full bg-white/55 px-1.5 py-0.5 md:px-2 md:py-1 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65),0_8px_24px_rgba(15,26,61,0.12)] backdrop-blur-md', inView && !takenOver && 'hint-outline-on')}>
+          <div className={clsx('flex items-center gap-[2px] rounded-full bg-white/55 px-1.5 py-0.5 md:px-2 md:py-1 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65),0_8px_24px_rgba(15,26,61,0.12)] backdrop-blur-md', hinting && 'hint-outline-on')}>
             {PALETTE.map((hex) => {
               const isSelected = hex.toLowerCase() === selectedColor.toLowerCase()
               return (

@@ -247,7 +247,8 @@ const DEMO_START = 200
  *  넣었더니 누르기 직전에 1.5초씩 멈췄다가, 누른 뒤에는 바로 떠났다.
  *  useSequence 는 모듈 상수 배열을 받아야 한다 — 렌더마다 새로 만들면
  *  타이머가 다시 깔려 연출이 처음으로 되감긴다. */
-const DEMO_DELAYS = [DEMO_START, ...DEMO.slice(0, -1).map((frame) => frame.hold)]
+// 마지막 칸의 hold 도 넣어, 맨 끝에 한 칸(= 연출 끝)이 더 생긴다 — 지원자 평가를 누른 뒤 그만큼 쉬고 테두리를 짚는다.
+const DEMO_DELAYS = [DEMO_START, ...DEMO.map((frame) => frame.hold)]
 
 const FITS = ['우수', '보통', '미흡']
 
@@ -688,7 +689,7 @@ export function Hero4EvalScreen() {
   const frame = step > 0 && step <= DEMO.length ? DEMO[step - 1] : null
   const demoLive = !held && step > 0 && step < DEMO.length
   /** 연출이 끝났다 — 눌러 볼 수 있는 탭들을 한 번 짚는다. */
-  const demoDone = !held && !reduceMotion && step === DEMO.length
+  const demoDone = !held && !reduceMotion && step === DEMO.length + 1
   const [spot, setSpot] = useState<{ x: number; y: number } | null>(null)
 
   /** 섹션을 벗어나면 손을 뗀 기록도 지운다 — 다시 들어왔을 때 연출이

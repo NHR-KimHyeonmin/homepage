@@ -92,12 +92,6 @@
 
 /* 채용 사이트 띠. 한 벌 길이(--marquee-loop)만큼 흐르면 처음으로 — 둘째 벌이
    같은 그림이라 이음매가 보이지 않는다. 앞뒤 여백 때문에 -50% 로는 맞지 않는다. */
-@keyframes client-marquee {
-  to {
-    transform: translate3d(calc(var(--marquee-loop) * -1), 0, 0);
-  }
-}
-
 /* "비회원 = 빠르다" 를 말 대신 몸짓으로 — 번개가 살짝 지나치게 커졌다가
    제자리로 돌아온다. 늘어났다 멈추는 탄성이 속도감을 만든다. */
 @keyframes badge-bolt-pop {

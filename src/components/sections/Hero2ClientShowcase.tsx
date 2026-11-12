@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import apr from '../../assets/sections/hero2-showcase/apr.webp'
 import dongjin from '../../assets/sections/hero2-showcase/dongjin.webp'
-import hankookilbo from '../../assets/sections/hero2-showcase/hankookilbo.webp'
 import kbam from '../../assets/sections/hero2-showcase/kbam.webp'
 import semes from '../../assets/sections/hero2-showcase/semes.webp'
 import sirloin from '../../assets/sections/hero2-showcase/sirloin.webp'
@@ -15,7 +14,6 @@ import samsungMedicine from '../../assets/sections/hero2-showcase/samsung-medici
 import sbs from '../../assets/sections/hero2-showcase/sbs.webp'
 import skEcoplant from '../../assets/sections/hero2-showcase/sk-ecoplant.webp'
 import { useContentInsetLeft } from '../../hooks/useContentInsetLeft'
-import { useDragScroll } from '../../hooks/useDragScroll'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
 
@@ -37,7 +35,6 @@ const CARDS: ShowcaseCard[] = [
   { name: 'sirloin', label: '설로인', image: sirloin, href: 'https://sirloin.careerlink.kr/' },
   { name: 'kbam', label: 'KB자산운용', image: kbam, href: 'https://kbam.careerlink.kr/' },
   { name: 'mbc', label: 'iMBC', image: mbc, href: 'https://imbc.careerlink.kr/' },
-  { name: 'hankookilbo', label: '한국일보', image: hankookilbo, href: 'https://hankookilbo.careerlink.kr/' },
   { name: 'semes', label: '세메스', image: semes, href: 'https://semes.careerlink.kr/' },
   { name: 'sbs', label: 'SBS', image: sbs, href: 'https://sbs.careerlink.kr/' },
   { name: 'samsung-medicine', label: '삼성메디슨', image: samsungMedicine, href: 'https://samsungmedison.careerlink.kr/' },
@@ -97,17 +94,19 @@ function ShowcaseCardItem({ card }: { card: ShowcaseCard }) {
  * edge of the screen, so 3.5 cards sit in view at desktop width.
  */
 export function Hero2ClientShowcase() {
-  const { scrollRef, isDragging, dragHandlers } = useDragScroll<HTMLDivElement>()
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
   const { probeRef, inset } = useContentInsetLeft<HTMLDivElement, HTMLDivElement>(scrollRef)
   const [cardWidth, setCardWidth] = useState(320)
-  /** 흘러온 거리. effect 가 다시 돌아도 이어서 가도록 ref 에 담아 둔다. */
   const reduceMotion = useReducedMotion()
-  /** 포인터가 올라가 있는 동안은 세운다 — 보려고 멈춘 사람 앞에서 계속
-   *  흘러가면 읽히지 않는다. 떼면 다시 흐른다(한 번 만지면 끝나는
-   *  색상 스위처와 달리, 여기는 쭉 도는 띠라 멈춰 둘 이유가 없다). */
-  const [hovering, setHovering] = useState(false)
-  const [touching, setTouching] = useState(false)
-  const resumeTimer = useRef(0)
+  /** 흘러온 거리(px). 늘 [0, 한 벌 길이) 안으로 접어 둔다 — 그래서 어느 쪽으로 끌어도 끝이 없다. */
+  const offset = useRef(0)
+  const loopRef = useRef(0)
+  /** 끄는 중: 누른 자리, 그때의 offset, 지금까지 움직인 최대 거리. */
+  const drag = useRef<{ x: number; start: number; moved: number } | null>(null)
+  /** 끌기가 끝난 직후의 click 은 링크를 열지 않는다. */
+  const swallowClick = useRef(false)
+  const [isDragging, setIsDragging] = useState(false)
 
   useEffect(() => {
     const container = scrollRef.current
@@ -127,24 +126,56 @@ export function Hero2ClientShowcase() {
     return () => observer.disconnect()
   }, [inset, scrollRef])
 
-  // 띠가 저 혼자 천천히 흐른다. 드래그 중이거나 포인터가 올라가 있으면
-  // 멈춘다 — 사용자가 돌리는 중에 같이 밀면 손이 미끄러진 것처럼 느껴진다.
-  //
-  // requestAnimationFrame 으로 매 프레임 transform 을 고치면, 다른 구역의
-  // 연출이 메인 스레드를 잡는 순간마다 프레임이 밀려 미세하게 끊긴다. CSS
-  // 애니메이션은 합성 스레드에서 돌아 그런 영향을 받지 않는다. 멈출 때는
-  // 지우지 않고 일시정지만 해서, 다시 흐를 때 멈췄던 자리에서 이어진다.
-  // 드래그는 scrollLeft 를 쓰므로 transform 과 간섭하지 않고 더해진다.
   // 카드 한 벌 길이 — 첫 벌의 첫 카드에서 둘째 벌의 첫 카드까지.
-  const loopWidth = CARDS.length * (cardWidth + GAP)
-  const marqueeStyle =
-    reduceMotion || loopWidth <= 0
-      ? undefined
-      : ({
-          '--marquee-loop': `${loopWidth}px`,
-          animation: `client-marquee ${loopWidth / AUTO_SCROLL_PX_PER_SEC}s linear infinite`,
-          animationPlayState: isDragging || hovering || touching ? 'paused' : 'running',
-        } as CSSProperties)
+  loopRef.current = CARDS.length * (cardWidth + GAP)
+
+  // 띠는 늘 흐른다(마우스를 올려도 멈추지 않는다). 끄는 동안만 손을 따라가고,
+  // 손을 떼면 그 자리에서 다시 흐른다. 흐름과 끌기가 같은 offset 하나를 움직이고
+  // 매 프레임 한 벌 길이로 접으므로, 두 벌을 깔아 둔 띠가 이음매 없이 끝없이 돈다.
+  // ponytail: 매 프레임 transform 을 쓴다 — 다른 연출이 메인 스레드를 잡으면 드물게 끊길 수 있다.
+  useEffect(() => {
+    let frame = 0
+    let last = performance.now()
+    const tick = (now: number) => {
+      const dt = Math.min(now - last, 100) / 1000
+      last = now
+      if (!drag.current && !reduceMotion) offset.current += AUTO_SCROLL_PX_PER_SEC * dt
+      const loop = loopRef.current
+      if (loop > 0) offset.current = ((offset.current % loop) + loop) % loop
+      if (trackRef.current) trackRef.current.style.transform = `translate3d(${-offset.current}px, 0, 0)`
+      frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [reduceMotion])
+
+  // 끌기. 손가락도 같은 길로 받는다(가로는 우리가, 세로는 페이지 스크롤이 — touch-action: pan-y).
+  // 포인터를 붙잡지(capture) 않는다 — 붙잡으면 click 대상이 띠로 바뀌어 카드 링크가 안 눌린다.
+  useEffect(() => {
+    const onMove = (event: PointerEvent) => {
+      const d = drag.current
+      if (!d) return
+      const dx = event.clientX - d.x
+      d.moved = Math.max(d.moved, Math.abs(dx))
+      if (d.moved > 4) setIsDragging(true)
+      offset.current = d.start - dx
+    }
+    const onUp = () => {
+      const d = drag.current
+      if (!d) return
+      swallowClick.current = d.moved > 4
+      drag.current = null
+      setIsDragging(false)
+    }
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+    window.addEventListener('pointercancel', onUp)
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onUp)
+      window.removeEventListener('pointercancel', onUp)
+    }
+  }, [])
 
   return (
     <Section id="hero2-client-showcase" className="section-pt section-pb flex flex-col bg-white">
@@ -166,26 +197,27 @@ export function Hero2ClientShowcase() {
 
       <div
         ref={scrollRef}
-        {...dragHandlers}
-        onMouseEnter={() => setHovering(true)}
-        onMouseLeave={() => setHovering(false)}
-        // 손가락으로 미는 동안에도 띠가 저 혼자 흐르면, 미는 만큼에 흐름이 더해져
-        // 손보다 빨리 넘어간다. 닿아 있는 동안과 손을 뗀 뒤 관성이 끝날 때까지 멈춘다.
-        onTouchStart={() => {
-          window.clearTimeout(resumeTimer.current)
-          setTouching(true)
+        onPointerDown={(event) => {
+          if (event.button !== 0) return
+          swallowClick.current = false
+          drag.current = { x: event.clientX, start: offset.current, moved: 0 }
         }}
-        onTouchEnd={() => {
-          resumeTimer.current = window.setTimeout(() => setTouching(false), 1500)
+        onClickCapture={(event) => {
+          if (!swallowClick.current) return
+          swallowClick.current = false
+          event.preventDefault()
+          event.stopPropagation()
         }}
-        className={`mt-16 w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
+        onDragStart={(event) => event.preventDefault()}
+        className={`mt-16 w-full touch-pan-y overflow-hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
       >
         {/* 카드를 두 벌 깐다. 한 벌 길이만큼 흘렀을 때 그만큼 되돌리면 같은
             그림이라 이음매가 보이지 않는다 — 끝에서 0 으로 튀는 것과 다르다.
             둘째 벌은 같은 내용의 복제라 보조기기에서는 뺀다. */}
         <div
-          className="flex items-stretch will-change-transform"
-          style={{ gap: GAP, paddingLeft: inset, paddingRight: 24, ...marqueeStyle }}
+          ref={trackRef}
+          className="flex w-max items-stretch will-change-transform"
+          style={{ gap: GAP, paddingLeft: inset, paddingRight: 24 }}
         >
           {[0, 1].map((copy) =>
             CARDS.map((card) => (
