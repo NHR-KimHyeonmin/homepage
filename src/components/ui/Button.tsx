@@ -5,6 +5,8 @@ type ButtonVariant = 'sky' | 'primary' | 'outline' | 'dark'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
+  /** 주면 같은 모양의 링크(<a>)로 그린다. */
+  href?: string
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
@@ -14,14 +16,21 @@ const variantClasses: Record<ButtonVariant, string> = {
   dark: 'bg-cta text-white hover:bg-cta-hover',
 }
 
-export function Button({ variant = 'primary', className, children, ...props }: ButtonProps) {
+export function Button({ variant = 'primary', className, children, href, ...props }: ButtonProps) {
+  const classes = clsx(
+    'inline-flex cursor-pointer items-center justify-center rounded-full px-5 py-3 text-[18px] font-semibold tracking-[-0.09px] transition-colors',
+    variantClasses[variant],
+    className,
+  )
+  if (href)
+    return (
+      <a href={href} className={classes}>
+        {children}
+      </a>
+    )
   return (
     <button
-      className={clsx(
-        'inline-flex cursor-pointer items-center justify-center rounded-full px-5 py-3 text-[18px] font-semibold tracking-[-0.09px] transition-colors',
-        variantClasses[variant],
-        className,
-      )}
+      className={classes}
       {...props}
     >
       {children}

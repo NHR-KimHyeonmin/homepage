@@ -45,7 +45,7 @@ export function CtaBanner() {
         className="flex flex-wrap items-center justify-center gap-4"
       >
         {/* 어둡게 덮은 사진 위라 기본 남색 버튼은 묻힌다 — 더 짙은 검정으로 띄운다. */}
-        <Button variant="dark" className="bg-[#05080c]! px-5 py-2.5 text-[16px] md:px-7 md:py-3.5 md:text-[19px] hover:bg-[#1a2129]!">
+        <Button href="/inquiry" variant="dark" className="bg-[#05080c]! px-5 py-2.5 text-[16px] md:px-7 md:py-3.5 md:text-[19px] hover:bg-[#1a2129]!">
           도입 문의하기
         </Button>
       </motion.div>

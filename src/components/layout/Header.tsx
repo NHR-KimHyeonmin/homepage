@@ -28,16 +28,15 @@ function OutLink({ name, href, className }: { name: string; href: string; classN
 /**
  * 도입문의만 성격이 다르다 — 둘러보는 링크가 아니라 전환 지점이라 나머지와 같은
  * 무게로 두지 않고 버튼으로 뺀다. 휴대폰에서도 메뉴 속에 숨기지 않고 늘 보인다.
- * 연결할 곳이 정해지면 링크로 바꾼다.
  */
 function InquiryButton() {
   return (
-    <button
-      type="button"
+    <a
+      href="/inquiry"
       className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-cta px-3.5 py-1.5 text-[14px] md:px-4 md:py-2 md:text-[15px] font-semibold tracking-[-0.08px] text-white transition-colors hover:bg-cta-hover"
     >
       도입문의
-    </button>
+    </a>
   )
 }
 
