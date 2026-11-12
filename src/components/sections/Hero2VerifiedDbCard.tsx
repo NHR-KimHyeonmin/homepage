@@ -72,10 +72,10 @@ const SOURCES: DbSource[] = [
  * 한 칸씩 넘어가는 연출의 단계. 출처 칩과 점선은 처음부터 이어져 있고,
  * 연출은 시험명 목록이 내려오는 데서 시작한다.
  *
- *   1 시험명 목록 → 2 시험명 선택 → 3 점수 입력 → 4 점수 완료
- *   → 5 학교명 목록 → 6 학교명 선택 → 7 주전공 입력 → 8 주전공 완료
+ *   1 시험명 목록 → 2 TOEIC 선택(점수 880 도 같이 채워짐 — 성적 DB 에서 불러온다)
+ *   → 3 학교명 목록 → 4 학교명 선택 → 5 주전공 입력 → 6 주전공 완료
  */
-const STEP_DELAYS = [500, 1100, 520, 1100, 520, 1100, 520, 1100]
+const STEP_DELAYS = [500, 1100, 700, 1100, 520, 1100]
 
 /** 각 열이 쓰는 단계 번호. 위 주석의 순서를 그대로 옮긴 것이다. */
 interface ColumnSteps {
@@ -86,8 +86,9 @@ interface ColumnSteps {
 }
 
 const COLUMN_STEPS: ColumnSteps[] = [
-  { first: [1, 2], second: [3, 4] },
-  { first: [5, 6], second: [7, 8] },
+  // 점수는 타이핑하지 않는다(입력 시작 -1 = 없음) — 시험을 고르는 순간 함께 채워진다.
+  { first: [1, 2], second: [-1, 2] },
+  { first: [3, 4], second: [5, 6] },
 ]
 
 function Field({ field, busy, done }: { field: DbField; busy: boolean; done: boolean }) {

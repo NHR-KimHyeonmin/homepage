@@ -229,18 +229,18 @@ const TABS = ['평가내용', '과거 지원 이력', '전체 평가자 결과']
 type DemoFrame = { at: string; press?: boolean; set?: { panel?: number; tab?: number }; hold: number }
 
 const DEMO: DemoFrame[] = [
-  { at: 'tab1', hold: 450 },
-  { at: 'tab1', press: true, set: { tab: 1 }, hold: 1500 },
-  { at: 'tab2', hold: 450 },
-  { at: 'tab2', press: true, set: { tab: 2 }, hold: 1700 },
-  { at: 'stats', hold: 450 },
-  { at: 'stats', press: true, set: { panel: 1 }, hold: 1900 },
-  { at: 'eval', hold: 450 },
+  { at: 'tab1', hold: 400 },
+  { at: 'tab1', press: true, set: { tab: 1 }, hold: 1000 },
+  { at: 'tab2', hold: 400 },
+  { at: 'tab2', press: true, set: { tab: 2 }, hold: 1100 },
+  { at: 'stats', hold: 400 },
+  { at: 'stats', press: true, set: { panel: 1 }, hold: 1300 },
+  { at: 'eval', hold: 400 },
   { at: 'eval', press: true, set: { panel: 0, tab: 0 }, hold: 800 },
 ]
 
 /** 첫 칸이 뜨기까지의 쉼. */
-const DEMO_START = 400
+const DEMO_START = 200
 
 /** useSequence 의 n 번째 값은 n 번째 칸이 켜지기 **전** 기다리는 시간이다.
  *  hold 는 그 칸이 켜진 **뒤** 기다리는 시간이라 한 칸씩 밀어 넣는다 — 그대로
@@ -881,7 +881,7 @@ export function Hero4EvalScreen() {
                       key={label}
                       type="button"
                       data-demo={index === 0 ? 'eval' : 'stats'}
-                      data-hint-target
+                      data-hint-target="inset"
                       aria-pressed={index === panel}
                       onClick={() => {
                         setPicked({ panel: index, tab })

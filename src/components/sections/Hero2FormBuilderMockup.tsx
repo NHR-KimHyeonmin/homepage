@@ -91,6 +91,7 @@ function SidebarRow({
     <button
       type="button"
       data-demo={demo}
+      data-hint-target={disabled ? undefined : true}
       disabled={disabled}
       onClick={onToggle}
       aria-pressed={disabled ? undefined : on}
@@ -203,8 +204,11 @@ export function Hero2FormBuilderMockup() {
     }
 
     const run = async () => {
-      if (!reduceMotion) setTabsHint(true)
-      await sleep(1500)
+      // 섹션에 막 들어온 순간은 아직 스크롤 중이라 놓친다 — 한 박자 쉬고 짚은 뒤, 테두리가 다 사라지면 커서를 띄운다.
+      await sleep(700)
+      if (cancelled) return
+      setTabsHint(true)
+      await sleep(1300)
       if (cancelled) return
 
       // 스위치는 행 오른쪽 끝에 있으므로 가운데가 아니라 그쪽을 겨냥한다.
@@ -264,7 +268,7 @@ export function Hero2FormBuilderMockup() {
         ref={stageRef}
         onPointerDownCapture={() => setTakenOver(true)}
         // 버튼마다 걸린 cursor-pointer 가 이기므로 안쪽을 전부 상속으로 돌린다.
-        className="relative overflow-hidden rounded-card bg-white [&_*]:cursor-[inherit]"
+        className={clsx('relative overflow-hidden rounded-card bg-white [&_*]:cursor-[inherit]', tabsHint && 'hint-outline-on')}
         style={{
           width: DESIGN_WIDTH,
           height: DESIGN_HEIGHT,
@@ -281,9 +285,9 @@ export function Hero2FormBuilderMockup() {
           <div className="flex w-[350px] shrink-0 items-center justify-between pl-6">
             <span className="text-[12.5px] font-medium text-[#4d5761]">경력지원서</span>
             <div
+              data-hint-target
               className={clsx(
                 'flex h-[39.5px] shrink-0 overflow-hidden rounded-ui border-[0.667px] border-[#d2d6db] bg-white',
-                tabsHint && '[animation:hint-outline_0.9s_ease-in-out_1]',
               )}
             >
               {TABS.map((tab, index) => {

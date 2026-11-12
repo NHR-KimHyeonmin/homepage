@@ -60,7 +60,7 @@ const DRAW_MS = 950
 
 /** [이 장면을 머무는 시간(ms), 앞 장면에서 바뀌는 것] */
 const STEPS: [number, Partial<Scene>][] = [
-  [900, {}],
+  [400, {}],
   [650, { cursor: 'yellowStart', move: 600 }],
   [120, { down: true }],
   [DRAW_MS, { yellow: true, cursor: 'yellowEnd', move: DRAW_MS, drawing: true }],

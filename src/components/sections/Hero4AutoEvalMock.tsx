@@ -56,7 +56,7 @@ const FIRST: Scene = {
 /** [이 장면을 머무는 시간(ms), 앞 장면에서 바뀌는 것] */
 const STEPS: [number, Partial<Scene>][] = [
   // 필터형이 선택된 채로 시작하고, 한 바퀴를 돌면 이 상태로 돌아온다.
-  [1900, {}],
+  [700, {}],
   [650, { cursor: AT_BONUS }],
   [170, { down: true, tab: '가산점형' }],
   [2100, { down: false }],

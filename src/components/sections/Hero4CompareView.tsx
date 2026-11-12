@@ -118,7 +118,7 @@ const FIRST: Scene = { cursor: 'start', shown: true, down: false, count: MAX_COU
 
 /** [이 장면을 머무는 시간(ms), 앞 장면에서 바뀌는 것] */
 const STEPS: [number, Partial<Scene>][] = [
-  [1200, {}],
+  [400, {}],
   [750, { cursor: 'minus' }],
   [240, { down: true }],
   [1500, { down: false, count: 3 }],

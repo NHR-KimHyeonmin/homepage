@@ -86,12 +86,12 @@ const CELL = 'flex h-7 shrink-0 items-center border-r border-[#d6dade] px-2 text
  * 폼으로 그룹을 만들고 그 그룹을 시트에서 지원자에게 붙인다 — 두 칸이 한
  * 가지 일의 앞뒤라는 걸 글로 적는 대신 한 번 해 보인다.
  */
-const DEMO_STEPS = [480, 540, 1150, 150, 480, 900, 360, 620, 760]
+const DEMO_STEPS = [250, 300, 750, 150, 480, 900, 360, 620, 760]
 
 /** 단계별 이동 시간(초). 첫 걸음은 길게 — 커서가 어디서 나와 어디로 가는지
  *  눈이 따라붙을 틈이 있어야 한다. 7 은 목록 위에서 맨 아래까지 한 번에
  *  내려가는 구간이다. */
-const TRAVEL: Record<number, number> = { 2: 1.05, 7: 0.55 }
+const TRAVEL: Record<number, number> = { 2: 0.7, 7: 0.55 }
 
 /** 시트에서 연출이 건드리는 줄(박서윤). */
 const DEMO_APPLICANT = 2

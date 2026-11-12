@@ -26,7 +26,7 @@ const FORK_PATHS = [
 ]
 
 /** 1 화살표 → 2 회원 창 → 3 비회원 창. "지원하기" 는 눌리는 연출 없이 그대로 둔다. */
-const STEP_DELAYS = [600, 480, 780]
+const STEP_DELAYS = [150, 480, 780]
 
 const FIELD = 'relative h-[34px] rounded-ui border border-[#d2d6db] px-[10px] flex items-center'
 const FIELD_LABEL = 'absolute -top-[7px] left-[9px] bg-white px-1 text-[10px] leading-[14px] text-[#6c737f]'

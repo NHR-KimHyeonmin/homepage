@@ -34,7 +34,7 @@ const FIRST: Scene = { cursor: 'start', cursorShown: true, down: false, popup: f
 
 /** [이 장면을 머무는 시간(ms), 앞 장면에서 바뀌는 것] */
 const STEPS: [number, Partial<Scene>][] = [
-  [1000, {}],
+  [400, {}],
   [750, { cursor: 'ai' }],
   [260, { down: true }],
   [450, { down: false, cursorShown: false, popup: true }],

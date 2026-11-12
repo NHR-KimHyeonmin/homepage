@@ -47,7 +47,7 @@ const FIRST: Scene = {
 
 /** [이 장면을 머무는 시간(ms), 앞 장면에서 바뀌는 것] */
 const STEPS: [number, Partial<Scene>][] = [
-  [900, {}],
+  [400, {}],
   [650, { cursor: 'phone' }],
   [220, { down: true }],
   [850, { down: false, selected: 'phone', boxesShown: true }],

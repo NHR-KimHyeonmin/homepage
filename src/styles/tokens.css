@@ -144,6 +144,23 @@
 .hint-outline-on [data-hint-target] {
   animation: hint-outline 0.9s ease-in-out 1;
 }
+/* 칸 끝까지 꽉 찬 탭은 바깥 링이 이웃 칸·테두리에 가려 안 보인다 — 선을 4px 안쪽에 긋고 그 바깥 띠를 옅게 칠한다. */
+@keyframes hint-outline-inset {
+  0%,
+  100% {
+    outline-color: rgba(29, 78, 216, 0);
+    box-shadow: inset 0 0 0 0 rgba(29, 78, 216, 0);
+  }
+  50% {
+    outline-color: #1d4ed8;
+    box-shadow: inset 0 0 0 4px rgba(29, 78, 216, 0.14);
+  }
+}
+.hint-outline-on [data-hint-target='inset'] {
+  outline: 1px solid transparent;
+  outline-offset: -4px;
+  animation: hint-outline-inset 0.9s ease-in-out 1;
+}
 @media (prefers-reduced-motion: reduce) {
   .hint-outline-on [data-hint-target] {
     animation: none;
