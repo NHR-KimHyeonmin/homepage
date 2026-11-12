@@ -135,6 +135,9 @@ export function Hero2ClientShowcase() {
 
   // 카드 한 벌 길이 — 첫 벌의 첫 카드에서 둘째 벌의 첫 카드까지.
   loopRef.current = CARDS.length * (cardWidth + GAP)
+  // 첫 카드는 제목과 왼쪽을 맞추되, 그 왼쪽도 앞 벌의 카드로 채운다.
+  const insetRef = useRef(inset)
+  insetRef.current = inset
 
   // 띠는 늘 흐른다(마우스를 올려도 멈추지 않는다). 끄는 동안만 손을 따라가고,
   // 손을 떼면 그 자리에서 다시 흐른다. 흐름과 끌기가 같은 offset 하나를 움직이고
@@ -149,7 +152,7 @@ export function Hero2ClientShowcase() {
       if (!drag.current && !reduceMotion) offset.current += AUTO_SCROLL_PX_PER_SEC * dt
       const loop = loopRef.current
       if (loop > 0) offset.current = ((offset.current % loop) + loop) % loop
-      if (trackRef.current) trackRef.current.style.transform = `translate3d(${-offset.current}px, 0, 0)`
+      if (trackRef.current) trackRef.current.style.transform = `translate3d(${insetRef.current - loop - offset.current}px, 0, 0)`
       frame = requestAnimationFrame(tick)
     }
     frame = requestAnimationFrame(tick)
@@ -218,19 +221,20 @@ export function Hero2ClientShowcase() {
         onDragStart={(event) => event.preventDefault()}
         className={`mt-16 w-full touch-pan-y overflow-hidden ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
       >
-        {/* 카드를 두 벌 깐다. 한 벌 길이만큼 흘렀을 때 그만큼 되돌리면 같은
-            그림이라 이음매가 보이지 않는다 — 끝에서 0 으로 튀는 것과 다르다.
-            둘째 벌은 같은 내용의 복제라 보조기기에서는 뺀다. */}
+        {/* 카드를 세 벌 깔고 가운데 벌의 첫 카드를 제목 줄에 맞춘다. 앞 벌은
+            그 왼쪽을, 뒤 벌은 오른쪽을 채워 처음부터 화면 양쪽이 차 있다.
+            한 벌 길이만큼 흘렀을 때 그만큼 되돌리면 같은 그림이라 이음매가
+            보이지 않는다. 앞·뒤 벌은 복제라 보조기기에서는 뺀다. */}
         <div
           ref={trackRef}
           className="flex w-max items-stretch will-change-transform"
-          style={{ gap: GAP, paddingLeft: inset, paddingRight: 24 }}
+          style={{ gap: GAP }}
         >
-          {[0, 1].map((copy) =>
+          {[0, 1, 2].map((copy) =>
             CARDS.map((card) => (
               <div
                 key={`${copy}-${card.name}`}
-                aria-hidden={copy === 1}
+                aria-hidden={copy !== 1}
                 className="shrink-0"
                 style={{ width: cardWidth }}
               >
