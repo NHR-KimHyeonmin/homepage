@@ -118,6 +118,7 @@ function NavRow({ item, active, onSelect }: { item: NavItem; active: boolean; on
     <button
       type="button"
       onClick={() => onSelect(view)}
+      data-hint-target
       aria-current={active ? 'page' : undefined}
       className={clsx(
         base,

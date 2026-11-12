@@ -115,7 +115,7 @@ const DRAFT = {
  *  눌러서 입력하는 칸인지 그냥 네모 박스인지 구분되지 않는다. */
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="relative flex h-[38px] cursor-pointer flex-col justify-center rounded-chip border border-[#d2d6db] px-3.5 transition-colors hover:border-[#0042b7]">
+    <div data-hint-target className="relative flex h-[38px] cursor-pointer flex-col justify-center rounded-chip border border-[#d2d6db] px-3.5 transition-colors hover:border-[#0042b7]">
       <span className="absolute -top-[7px] left-[10px] bg-white px-1 text-[11px] leading-none text-[#6c737f]">{label}</span>
       {children}
     </div>
@@ -263,6 +263,7 @@ function DatePicker({ value, onChange }: { value: string; onChange: (next: strin
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label="면접 일자 (선택)"
+        data-hint-target
         className="flex w-full cursor-pointer items-center justify-between h-[38px] rounded-chip border border-[#d2d6db] px-3.5 text-left text-sm transition-colors hover:border-[#0042b7]"
       >
         <span className={value ? 'text-[#212121]' : 'text-[#9ca3af]'}>{value || '날짜 선택(선택)'}</span>
@@ -419,6 +420,7 @@ function ApplicantSheet({
                   aria-expanded={open}
                   aria-label={`${applicant.name} 평가 그룹 지정`}
                   data-demo-cell={applicant.id === DEMO_APPLICANT || undefined}
+                  data-hint-target
                   className={clsx(
                     'flex h-7 w-full cursor-pointer items-center gap-1 border-r border-[#d6dade] px-2 text-left text-[12px] transition-colors',
                     open || focusRow === applicant.id
@@ -529,6 +531,7 @@ function GroupCard({
             type="button"
             onClick={onDelete}
             aria-label={`${group.name} 그룹 삭제`}
+            data-hint-target
             className="cursor-pointer whitespace-nowrap rounded-chip border border-[#f3c0c0] px-2.5 py-1 text-[13px] text-[#d92d20] transition-colors hover:bg-[#fef3f2]"
           >
             그룹 삭제
@@ -593,6 +596,8 @@ export function Hero3EvalGroups() {
   const demoOpen = !reduceMotion && !demoOff && step >= 6 && step < DEMO_STEPS.length
   /** 연출이 "그룹 생성" 을 누르고 있는 순간. */
   const demoPress = !reduceMotion && !demoOff && step === 3
+  /** 연출이 끝났다 — 눌러 볼 수 있는 칸들을 한 번 짚는다. */
+  const demoDone = !reduceMotion && !demoOff && step === DEMO_STEPS.length
 
   /** 커서가 가야 할 자리를 단계마다 실측한다. 무대는 scale 이 걸려 있으므로
    *  화면 px 을 설계 px 로 되돌려야 absolute 좌표와 맞는다. */
@@ -718,7 +723,7 @@ export function Hero3EvalGroups() {
         onPointerDown={() => setDemoOff(true)}
         // 누를 수 있는 것들은 저마다 cursor-pointer 를 들고 있어 그대로 두면
         // 판 위에서만 모양이 갈린다. 버튼은 판의 모양을 물려받게 한다.
-        className="relative [&_button]:cursor-[inherit]!"
+        className={clsx('relative [&_button]:cursor-[inherit]!', demoDone && 'hint-outline-on')}
         style={{
           width: W,
           height: H,
@@ -776,7 +781,7 @@ export function Hero3EvalGroups() {
 
           <DatePicker value={date} onChange={setDate} />
 
-          <div className="flex h-[38px] items-center rounded-chip border border-[#d2d6db] px-3.5 transition-colors hover:border-[#0042b7]">
+          <div data-hint-target className="flex h-[38px] items-center rounded-chip border border-[#d2d6db] px-3.5 transition-colors hover:border-[#0042b7]">
             <input
               value={place}
               onChange={(event) => setPlace(event.target.value)}

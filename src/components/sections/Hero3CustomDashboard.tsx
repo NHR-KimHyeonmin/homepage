@@ -73,6 +73,8 @@ export function Hero3CustomDashboard() {
   const [fullHeight, setFullHeight] = useState<number>()
   const gridRef = useRef<HTMLDivElement>(null)
   const [takenOver, setTakenOver] = useState(false)
+  // 데모가 끝났다 — 오른쪽 줄들을 한 번 짚어 눌러 볼 수 있다는 걸 알린다.
+  const [demoDone, setDemoDone] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { amount: 0.3 })
 
@@ -85,6 +87,7 @@ export function Hero3CustomDashboard() {
       setHidden(ALL_HIDDEN)
       setPressing(null)
       setTakenOver(false)
+      setDemoDone(false)
     }
   }, [inView, reduceMotion])
 
@@ -101,6 +104,9 @@ export function Hero3CustomDashboard() {
         }, at + PRESS_MS),
       ]
     })
+
+    // 마지막 카드가 떠오르는 0.8초를 기다린 뒤 짚는다.
+    timers.push(window.setTimeout(() => setDemoDone(true), FIRST_DELAY + (CHARTS.length - 1) * STEP + PRESS_MS + 900))
 
     return () => timers.forEach((timer) => window.clearTimeout(timer))
   }, [inView, reduceMotion, takenOver])
@@ -178,7 +184,7 @@ export function Hero3CustomDashboard() {
           </AnimatePresence>
         </div>
 
-        <div className="flex w-full flex-col gap-2 md:w-[293px]">
+        <div className={clsx('flex w-full flex-col gap-2 md:w-[293px]', demoDone && !takenOver && 'hint-outline-on')}>
           {CHARTS.map((chart) => {
             const showing = !hidden[chart.id]
             return (
@@ -186,6 +192,7 @@ export function Hero3CustomDashboard() {
                 key={chart.id}
                 type="button"
                 onClick={() => toggle(chart.id)}
+                data-hint-target
                 aria-pressed={showing}
                 aria-label={`${chart.label} ${showing ? '제외' : '추가'}`}
                 /* 테두리만 있던 걸 면으로 채웠다. 네 줄이 늘 같은 자리에 서

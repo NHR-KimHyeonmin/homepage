@@ -336,7 +336,7 @@ export function Hero00Screening() {
               칸이 통째로 칠해지면 멀리서도 걸린다. 칸 폭이 저마다 달라
               미끄러질 거리는 실측해 둔다. */}
           {/* 휴대폰에서는 세 칸이 한 줄에 다 안 들어가 잘렸다 — 같은 폭 세 칸으로 나누고 글이 두 줄로 접히게 한다. */}
-          <nav ref={navRef} data-hint className="relative mx-auto grid w-full grid-cols-3 items-stretch gap-0.5 rounded-[16px] bg-white p-1.5 shadow-soft md:flex md:w-fit md:items-center md:gap-1 md:rounded-full">
+          <nav ref={navRef} className="relative mx-auto grid w-full grid-cols-3 items-stretch gap-0.5 rounded-[16px] bg-white p-1.5 shadow-soft md:flex md:w-fit md:items-center md:gap-1 md:rounded-full">
             {thumb && (
               <motion.span
                 aria-hidden

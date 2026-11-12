@@ -229,19 +229,25 @@ const TABS = ['평가내용', '과거 지원 이력', '전체 평가자 결과']
 type DemoFrame = { at: string; press?: boolean; set?: { panel?: number; tab?: number }; hold: number }
 
 const DEMO: DemoFrame[] = [
-  { at: 'tab1', hold: 700 },
+  { at: 'tab1', hold: 450 },
   { at: 'tab1', press: true, set: { tab: 1 }, hold: 1500 },
-  { at: 'tab2', hold: 480 },
+  { at: 'tab2', hold: 450 },
   { at: 'tab2', press: true, set: { tab: 2 }, hold: 1700 },
-  { at: 'stats', hold: 480 },
+  { at: 'stats', hold: 450 },
   { at: 'stats', press: true, set: { panel: 1 }, hold: 1900 },
-  { at: 'eval', hold: 480 },
+  { at: 'eval', hold: 450 },
   { at: 'eval', press: true, set: { panel: 0, tab: 0 }, hold: 800 },
 ]
 
-/** useSequence 는 모듈 상수 배열을 받아야 한다 — 렌더마다 새로 만들면
+/** 첫 칸이 뜨기까지의 쉼. */
+const DEMO_START = 400
+
+/** useSequence 의 n 번째 값은 n 번째 칸이 켜지기 **전** 기다리는 시간이다.
+ *  hold 는 그 칸이 켜진 **뒤** 기다리는 시간이라 한 칸씩 밀어 넣는다 — 그대로
+ *  넣었더니 누르기 직전에 1.5초씩 멈췄다가, 누른 뒤에는 바로 떠났다.
+ *  useSequence 는 모듈 상수 배열을 받아야 한다 — 렌더마다 새로 만들면
  *  타이머가 다시 깔려 연출이 처음으로 되감긴다. */
-const DEMO_DELAYS = DEMO.map((frame) => frame.hold)
+const DEMO_DELAYS = [DEMO_START, ...DEMO.slice(0, -1).map((frame) => frame.hold)]
 
 const FITS = ['우수', '보통', '미흡']
 
@@ -681,6 +687,8 @@ export function Hero4EvalScreen() {
   const step = useSequence(DEMO_DELAYS, inView && !reduceMotion && !held)
   const frame = step > 0 && step <= DEMO.length ? DEMO[step - 1] : null
   const demoLive = !held && step > 0 && step < DEMO.length
+  /** 연출이 끝났다 — 눌러 볼 수 있는 탭들을 한 번 짚는다. */
+  const demoDone = !held && !reduceMotion && step === DEMO.length
   const [spot, setSpot] = useState<{ x: number; y: number } | null>(null)
 
   /** 섹션을 벗어나면 손을 뗀 기록도 지운다 — 다시 들어왔을 때 연출이
@@ -725,7 +733,7 @@ export function Hero4EvalScreen() {
           <div
             ref={stageRef}
             data-eval-screen
-            className="relative overflow-hidden rounded-card border border-[#e1e4e8] bg-white font-sans [&_*]:cursor-[inherit]"
+            className={`relative overflow-hidden rounded-card border border-[#e1e4e8] bg-white font-sans [&_*]:cursor-[inherit] ${demoDone ? 'hint-outline-on' : ''}`}
             style={{
               width: W,
               height: H,
@@ -873,6 +881,7 @@ export function Hero4EvalScreen() {
                       key={label}
                       type="button"
                       data-demo={index === 0 ? 'eval' : 'stats'}
+                      data-hint-target
                       aria-pressed={index === panel}
                       onClick={() => {
                         setPicked({ panel: index, tab })
@@ -913,6 +922,7 @@ export function Hero4EvalScreen() {
                         key={label}
                         type="button"
                         data-demo={`tab${index}`}
+                        data-hint-target
                         aria-pressed={index === tab}
                         onClick={() => {
                           setPicked({ panel, tab: index })

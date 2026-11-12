@@ -143,7 +143,8 @@ export function Hero2ThemeShowcase() {
               바꾸면 탁해지므로 색 대신 바탕을 중화했다. 흰색 55% 에서
               최소 대비가 1.61 → 2.19, 평균 2.42 → 3.30 으로 올라가면서도
               뒤 그라데이션이 비쳐 유리 느낌이 남는다. */}
-          <div data-hint className="flex items-center gap-[2px] rounded-full bg-white/55 px-1.5 py-0.5 md:px-2 md:py-1 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65),0_8px_24px_rgba(15,26,61,0.12)] backdrop-blur-md">
+          {/* 섹션에 들어오면 칩들을 한 번 짚어 눌러 볼 수 있다는 걸 알린다. */}
+          <div className={clsx('flex items-center gap-[2px] rounded-full bg-white/55 px-1.5 py-0.5 md:px-2 md:py-1 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65),0_8px_24px_rgba(15,26,61,0.12)] backdrop-blur-md', inView && !takenOver && 'hint-outline-on')}>
             {PALETTE.map((hex) => {
               const isSelected = hex.toLowerCase() === selectedColor.toLowerCase()
               return (
@@ -153,6 +154,7 @@ export function Hero2ThemeShowcase() {
                   aria-label={`테마 색상 ${hex} 선택`}
                   aria-pressed={isSelected}
                   onClick={() => pickColor(hex)}
+                  data-hint-target
                   className="flex size-[34px] items-center justify-center rounded-full md:size-[50px]"
                 >
                   {/* 선택 표시는 테두리 대신 "집어 올린 칩" — 한 칸 커지고

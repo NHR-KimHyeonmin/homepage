@@ -305,7 +305,8 @@ export function Hero1() {
         initial={{ opacity: 0, y: 48 }}
         animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 48 }}
         transition={{ ...REVEAL_TRANSITION, delay: revealed ? IMAGE_DELAY_S : 0 }}
-        className={`relative w-full overflow-hidden rounded-media bg-white lg:w-[min(80vw,1280px)] ${revealed ? '' : 'pointer-events-none'}`}
+        // 그림이 다 떠오른 순간(done) 첫 자동 넘김(3.5초) 전에 누를 수 있는 왼쪽 메뉴들을 한 번 짚는다.
+        className={`relative w-full overflow-hidden rounded-media bg-white lg:w-[max(min(80vw,1280px),69vw)] ${revealed ? '' : 'pointer-events-none'} ${phase === 'done' && !navTakenOver ? 'hint-outline-on' : ''}`}
         style={{ boxShadow: DASHBOARD_SHADOW }}
       >
         <div

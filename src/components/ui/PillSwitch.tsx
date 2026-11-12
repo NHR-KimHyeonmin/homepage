@@ -60,7 +60,6 @@ export function PillSwitch<T extends string>({
     <nav
       ref={navRef}
       aria-label={label}
-      data-hint
       className={clsx(
         'relative mx-auto max-w-full bg-white p-1.5 shadow-soft md:flex md:w-fit md:items-center md:gap-1 md:rounded-full',
         // 셋 이하는 같은 폭 칸으로 나눠 한 줄에 둔다. 좁은 폰(360)에서 마지막 칸이 화면 밖으로 밀렸다.

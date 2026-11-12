@@ -25,8 +25,8 @@ const FORK_PATHS = [
   'M320 12H479Q485 12 485 18V34M480.5 29.5L485 34L489.5 29.5',
 ]
 
-/** 1 "지원하기" 눌림 → 2 손 뗌 · 화살표 → 3 회원 창 → 4 비회원 창 */
-const STEP_DELAYS = [750, 260, 480, 780]
+/** 1 화살표 → 2 회원 창 → 3 비회원 창. "지원하기" 는 눌리는 연출 없이 그대로 둔다. */
+const STEP_DELAYS = [600, 480, 780]
 
 const FIELD = 'relative h-[34px] rounded-ui border border-[#d2d6db] px-[10px] flex items-center'
 const FIELD_LABEL = 'absolute -top-[7px] left-[9px] bg-white px-1 text-[10px] leading-[14px] text-[#6c737f]'
@@ -200,14 +200,7 @@ export function Hero2MemberGuestApply() {
   
             <button
                 type="button"
-                /* 눌린 티. 줄어들기만 하면 0.2초짜리라 놓치기 쉬워서,
-                   색이 한 번 짙어지고 테두리에 빛이 번졌다 돌아온다. */
-                className={clsx(
-                  'h-[36px] shrink-0 rounded-ui px-[16px] text-[13px] font-bold text-white transition-all duration-150',
-                  step === 1
-                    ? 'scale-95 bg-[#002f80] shadow-[0_0_0_5px_rgba(0,66,183,0.25)]'
-                    : 'scale-100 bg-primary shadow-none',
-                )}
+                  className="h-[36px] shrink-0 rounded-ui bg-primary px-[16px] text-[13px] font-bold text-white"
               >
                 지원하기
               </button>
@@ -230,7 +223,7 @@ export function Hero2MemberGuestApply() {
           <div style={{ height: FORK_HEIGHT }}>
             <div
               className="overflow-hidden transition-[height] duration-500 ease-out"
-              style={{ height: step >= 2 ? FORK_HEIGHT : 0 }}
+              style={{ height: step >= 1 ? FORK_HEIGHT : 0 }}
             >
               <svg
                 aria-hidden
@@ -252,7 +245,7 @@ export function Hero2MemberGuestApply() {
   
           {/* 두 갈래. 한 번에 하나씩 나타나고, 끝나면 나란히 선다. */}
           <div className="grid grid-cols-2 items-start gap-5">
-            <Panel badge="회원" note="인증된 내 정보로 지원" tone="member" shown={step >= 3}>
+            <Panel badge="회원" note="인증된 내 정보로 지원" tone="member" shown={step >= 2}>
               <div className="flex flex-col gap-[10px]">
                 <Field label="이메일" value="honggildong@nhr.kr" />
                 <div className={`${FIELD} justify-between`}>
@@ -284,7 +277,7 @@ export function Hero2MemberGuestApply() {
               </button>
             </Panel>
   
-            <Panel badge="비회원" note="로그인 없이 바로 시작" tone="guest" closable shown={step >= 4}>
+            <Panel badge="비회원" note="로그인 없이 바로 시작" tone="guest" closable shown={step >= 3}>
               <div className="flex flex-col gap-[10px]">
                 <Field label="이메일" value="honggildong@nhr.kr" />
                 <div className="flex gap-2">

@@ -141,7 +141,10 @@ export function Hero2FormBuilderMockup() {
   const stageRef = useRef<HTMLDivElement>(null)
   const inView = useInView(stageRef, { amount: 0.45 })
   const reduceMotion = useReducedMotion()
-  const [cursor, setCursor] = useState<{ x: number; y: number; down: boolean } | null>(null)
+  // ms: 다음 자리까지 미끄러지는 시간. 탭 사이는 거리가 짧아 더 빨리 옮긴다.
+  const [cursor, setCursor] = useState<{ x: number; y: number; down: boolean; ms: number } | null>(null)
+  // 데모를 시작하기 전에 탭 묶음을 한 번 빛내 눌러 볼 수 있다는 걸 알린다.
+  const [tabsHint, setTabsHint] = useState(false)
   // 사람이 직접 누르면 그 자리에서 멈춘다 — 손으로 고른 상태를 데모가
   // 빼앗는 건 고장으로 읽힌다. 섹션을 다시 들어오면 풀린다.
   const [takenOver, setTakenOver] = useState(false)
@@ -153,6 +156,7 @@ export function Hero2FormBuilderMockup() {
       setTakenOver(false)
       setCursor(null)
       setHint(false)
+      setTabsHint(false)
       return
     }
     if (takenOver || reduceMotion) {
@@ -184,10 +188,10 @@ export function Hero2FormBuilderMockup() {
       }
     }
 
-    const moveTo = async (selector: string, bias?: number) => {
+    const moveTo = async (selector: string, bias?: number, ms = 600) => {
       const point = pointAt(selector, bias)
-      if (point) setCursor({ ...point, down: false })
-      await sleep(620)
+      if (point) setCursor({ ...point, down: false, ms })
+      await sleep(ms + 20)
     }
 
     const press = async (action: () => void) => {
@@ -199,6 +203,7 @@ export function Hero2FormBuilderMockup() {
     }
 
     const run = async () => {
+      if (!reduceMotion) setTabsHint(true)
       await sleep(1500)
       if (cancelled) return
 
@@ -214,11 +219,11 @@ export function Hero2FormBuilderMockup() {
       if (cancelled) return
 
       for (const next of ['retro', 'applicant', 'basic'] as const) {
-        await moveTo(`[data-demo="tab-${next}"]`)
+        await moveTo(`[data-demo="tab-${next}"]`, undefined, 320)
         if (cancelled) return
         await press(() => setView(next))
         if (cancelled) return
-        await sleep(900)
+        await sleep(600)
         if (cancelled) return
       }
 
@@ -275,7 +280,12 @@ export function Hero2FormBuilderMockup() {
         <div className="flex border-b border-[#e5e7eb] bg-white" style={{ height: TOOLBAR_HEIGHT }}>
           <div className="flex w-[350px] shrink-0 items-center justify-between pl-6">
             <span className="text-[12.5px] font-medium text-[#4d5761]">경력지원서</span>
-            <div className="flex h-[39.5px] shrink-0 overflow-hidden rounded-ui border-[0.667px] border-[#d2d6db] bg-white">
+            <div
+              className={clsx(
+                'flex h-[39.5px] shrink-0 overflow-hidden rounded-ui border-[0.667px] border-[#d2d6db] bg-white',
+                tabsHint && '[animation:hint-outline_0.9s_ease-in-out_1]',
+              )}
+            >
               {TABS.map((tab, index) => {
                 const isActive = tab.view === view
                 return (
@@ -394,8 +404,8 @@ export function Hero2FormBuilderMockup() {
         {cursor && (
           <div
             aria-hidden
-            className="pointer-events-none absolute z-20 transition-[left,top] duration-[600ms] ease-in-out"
-            style={{ left: cursor.x, top: cursor.y }}
+            className="pointer-events-none absolute z-20 transition-[left,top] ease-in-out"
+            style={{ left: cursor.x, top: cursor.y, transitionDuration: `${cursor.ms}ms` }}
           >
             <span
               className={clsx(
