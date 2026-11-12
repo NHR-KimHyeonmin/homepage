@@ -1,10 +1,19 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
+import apr from '../../assets/sections/hero2-showcase/apr.webp'
+import dongjin from '../../assets/sections/hero2-showcase/dongjin.webp'
+import hankookilbo from '../../assets/sections/hero2-showcase/hankookilbo.webp'
+import kbam from '../../assets/sections/hero2-showcase/kbam.webp'
+import semes from '../../assets/sections/hero2-showcase/semes.webp'
+import sirloin from '../../assets/sections/hero2-showcase/sirloin.webp'
 import es from '../../assets/sections/hero2-showcase/es.webp'
 import hyundai from '../../assets/sections/hero2-showcase/hyundai.webp'
+import lotteAx from '../../assets/sections/hero2-showcase/lotte-ax.webp'
+import lx from '../../assets/sections/hero2-showcase/lx-international.webp'
 import mbc from '../../assets/sections/hero2-showcase/mbc.webp'
 import samsungMedicine from '../../assets/sections/hero2-showcase/samsung-medicine.webp'
 import sbs from '../../assets/sections/hero2-showcase/sbs.webp'
+import skEcoplant from '../../assets/sections/hero2-showcase/sk-ecoplant.webp'
 import { useContentInsetLeft } from '../../hooks/useContentInsetLeft'
 import { useDragScroll } from '../../hooks/useDragScroll'
 import { Container } from '../ui/Container'
@@ -18,11 +27,20 @@ interface ShowcaseCard {
 }
 
 const CARDS: ShowcaseCard[] = [
-  { name: 'sbs', label: 'SBS', image: sbs },
+  { name: 'lx', label: 'LX인터내셔널', image: lx, href: 'https://lxinternational-recruit.com/' },
+  { name: 'sk-ecoplant', label: 'SK에코플랜트', image: skEcoplant, href: 'https://recruit-skecoplant.com/' },
+  { name: 'apr', label: 'APR', image: apr, href: 'https://26mkt-aprcareers.com/' },
+  { name: 'lotte-ax', label: '롯데 AX 챌린지', image: lotteAx, href: 'https://lotteaxchallenge.com/preview' },
+  { name: 'hyundai', label: '현대그룹', image: hyundai, href: 'https://careers.hyundaigroup.com/' },
+  { name: 'es', label: '대학내일ES', image: es, href: 'https://univ.careerlink.kr/' },
+  { name: 'dongjin', label: '동진쎄미켐', image: dongjin, href: 'https://dongjin.careerlink.kr/' },
+  { name: 'sirloin', label: '설로인', image: sirloin, href: 'https://sirloin.careerlink.kr/' },
+  { name: 'kbam', label: 'KB자산운용', image: kbam, href: 'https://kbam.careerlink.kr/' },
   { name: 'mbc', label: 'iMBC', image: mbc, href: 'https://imbc.careerlink.kr/' },
-  { name: 'es', label: '대학내일ES', image: es },
-  { name: 'hyundai', label: '현대그룹', image: hyundai },
-  { name: 'samsung-medicine', label: '삼성메디슨', image: samsungMedicine },
+  { name: 'hankookilbo', label: '한국일보', image: hankookilbo, href: 'https://hankookilbo.careerlink.kr/' },
+  { name: 'semes', label: '세메스', image: semes, href: 'https://semes.careerlink.kr/' },
+  { name: 'sbs', label: 'SBS', image: sbs, href: 'https://sbs.careerlink.kr/' },
+  { name: 'samsung-medicine', label: '삼성메디슨', image: samsungMedicine, href: 'https://samsungmedison.careerlink.kr/' },
 ]
 
 /** Track gap, matching the reference row (tana.inc UseCaseSection_row). */
@@ -64,7 +82,7 @@ function ShowcaseCardItem({ card }: { card: ShowcaseCard }) {
   const shell = 'relative block aspect-[360/220] w-full overflow-hidden rounded-media'
 
   return card.href ? (
-    <a href={card.href} target="_self" className={shell}>
+    <a href={card.href} target="_blank" rel="noopener noreferrer" draggable={false} className={shell}>
       {body}
     </a>
   ) : (
