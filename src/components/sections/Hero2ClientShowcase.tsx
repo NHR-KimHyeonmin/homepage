@@ -66,7 +66,7 @@ function cardsInView(viewportWidth: number): number {
 function ShowcaseCardItem({ card }: { card: ShowcaseCard }) {
   const body = (
     <>
-      <img loading="lazy" decoding="async" src={card.image} alt={card.label} className="absolute inset-0 size-full object-cover" />
+      <img loading="lazy" decoding="async" src={card.image} alt={card.label} className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 motion-reduce:transition-none" />
       {/* Reference scrim (tana.inc UseCaseSection_scrim): a touch of black at
           the very top, then weighted to the bottom so the company name reads
           against any screenshot underneath it. */}
@@ -85,7 +85,7 @@ function ShowcaseCardItem({ card }: { card: ShowcaseCard }) {
   const shell = 'relative block aspect-[360/220] w-full overflow-hidden rounded-media'
 
   return card.href ? (
-    <a href={card.href} target="_blank" rel="noopener noreferrer" draggable={false} className={shell}>
+    <a href={card.href} target="_blank" rel="noopener noreferrer" draggable={false} className={`group ${shell}`}>
       {body}
     </a>
   ) : (
