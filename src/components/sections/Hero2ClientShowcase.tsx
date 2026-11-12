@@ -10,6 +10,9 @@ import hyundai from '../../assets/sections/hero2-showcase/hyundai.webp'
 import lotteAx from '../../assets/sections/hero2-showcase/lotte-ax.webp'
 import lx from '../../assets/sections/hero2-showcase/lx-international.webp'
 import mbc from '../../assets/sections/hero2-showcase/mbc.webp'
+import mbcRecruit from '../../assets/sections/hero2-showcase/mbc-recruit.webp'
+import meritz from '../../assets/sections/hero2-showcase/meritz.webp'
+import hanalife from '../../assets/sections/hero2-showcase/hanalife.webp'
 import samsungMedicine from '../../assets/sections/hero2-showcase/samsung-medicine.webp'
 import sbs from '../../assets/sections/hero2-showcase/sbs.webp'
 import skEcoplant from '../../assets/sections/hero2-showcase/sk-ecoplant.webp'
@@ -38,6 +41,9 @@ const CARDS: ShowcaseCard[] = [
   { name: 'semes', label: '세메스', image: semes, href: 'https://semes.careerlink.kr/' },
   { name: 'sbs', label: 'SBS', image: sbs, href: 'https://sbs.careerlink.kr/' },
   { name: 'samsung-medicine', label: '삼성메디슨', image: samsungMedicine, href: 'https://samsungmedison.careerlink.kr/' },
+  { name: 'meritz', label: '메리츠증권', image: meritz, href: 'https://recruit-meritz.com/' },
+  { name: 'mbc-recruit', label: 'MBC', image: mbcRecruit, href: 'https://mbc.careerlink.kr/' },
+  { name: 'hanalife', label: '하나생명', image: hanalife, href: 'https://hanalife.careerlink.kr/' },
 ]
 
 /** Track gap, matching the reference row (tana.inc UseCaseSection_row). */
