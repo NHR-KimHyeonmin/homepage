@@ -53,7 +53,7 @@ const CARDS: SecurityCard[] = [
     icon: iconPin,
     iconSize: 28,
     title: 'IP 접근 제어',
-    description: '등록된 IP에서만 관리자 사이트에 접속할 수 있도록 제한해, 외부의 무단 접근을 차단 할 수 있습니다.',
+    description: '등록된 IP에서만 관리자 사이트에 접속할 수 있도록 제한해, 외부의 무단 접근을 차단할 수 있습니다.',
   },
 ]
 

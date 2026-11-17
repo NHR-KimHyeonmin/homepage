@@ -91,13 +91,13 @@ export function SiteBuilderView() {
       <At x={32} y={42} h={22} className="flex items-center text-[16px] font-medium">
         사이트 활성
         <span className="ml-[13px] mr-[17px]"><Toggle on /></span>
-        <span className="font-bold underline decoration-[#c4c8ce] underline-offset-[3px]">guidance.careerlink.kr</span>
+        <span className="font-bold underline decoration-[#c4c8ce] underline-offset-[3px]">recruit.careerlink.kr</span>
       </At>
       <At x={827} y={42} h={22} className="flex items-center text-[16px] font-medium">
         <IconHelpCircle size={18} stroke={1.6} className="mr-[7px] text-[#4d5761]" />
         그룹사 디자인 적용
         <span className="ml-[9px] mr-[23px]"><Toggle on={false} /></span>
-        <span className="font-bold underline decoration-[#c4c8ce] underline-offset-[3px]">sample.careerlink.kr</span>
+        <span className="font-bold underline decoration-[#c4c8ce] underline-offset-[3px]">recruit.careerlink.kr</span>
         <IconExternalLink size={18} stroke={1.6} className="ml-[13px] text-[#4d5761]" />
         <IconCopy size={18} stroke={1.6} className="ml-[18px] text-[#4d5761]" />
       </At>

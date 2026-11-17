@@ -185,27 +185,6 @@ export function Hero3ScreeningToggle() {
         </div>
       </div>
 
-      {/* 점 둘. 뒤엣장을 눌러 넘길 수 있다는 건 눌러 보기 전엔 모르는데,
-          점은 "넘길 게 둘 있고 지금은 이쪽" 이라는 걸 그 전에 말해 준다.
-          무대(scale) 바깥에 둔다 — 안에 넣으면 좁은 화면에서 점까지 같이
-          줄어들어 누를 자리가 사라진다. */}
-      <div className="mt-6 flex items-center justify-center gap-2">
-        {SCREENINGS.map((screening) => {
-          const isSelected = screening.id === selected
-          return (
-            <button
-              key={screening.id}
-              type="button"
-              onClick={() => pick(screening.id)}
-              aria-label={`${screening.label} 보기`}
-              aria-current={isSelected}
-              className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${
-                isSelected ? 'w-6 bg-[#4f6272]' : 'w-2 bg-[#d3d9df] hover:bg-[#9aa5b1]'
-              }`}
-            />
-          )
-        })}
-      </div>
     </div>
   )
 }
