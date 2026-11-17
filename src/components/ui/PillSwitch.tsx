@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
+import { useHintOnView } from '../../hooks/useHintOnView'
 
 export interface PillSwitchItem<T extends string> {
   id: T
@@ -41,6 +42,7 @@ export function PillSwitch<T extends string>({
   const [thumb, setThumb] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
   // 항목이 넷 이상이면 휴대폰에서는 한 줄에 다 안 들어가 가로로 밀렸다 — 두 칸씩 접는다.
   const wrap = items.length > 3
+  const hint = useHintOnView(navRef)
 
   useLayoutEffect(() => {
     const nav = navRef.current
@@ -61,6 +63,7 @@ export function PillSwitch<T extends string>({
       ref={navRef}
       aria-label={label}
       className={clsx(
+        hint && 'hint-outline-on',
         'relative mx-auto max-w-full bg-white p-1.5 shadow-soft md:flex md:w-fit md:items-center md:gap-1 md:rounded-full',
         // 셋 이하는 같은 폭 칸으로 나눠 한 줄에 둔다. 좁은 폰(360)에서 마지막 칸이 화면 밖으로 밀렸다.
         wrap ? 'grid w-full grid-cols-2 gap-0.5 rounded-[16px] sm:max-w-[400px] md:max-w-full' : 'grid w-full auto-cols-fr grid-flow-col gap-0.5 rounded-[16px]',
@@ -87,6 +90,7 @@ export function PillSwitch<T extends string>({
             onClick={() => onChange(item.id)}
             aria-pressed={isActive}
             data-pill={item.id}
+            data-hint-target
             className={clsx(
               'relative z-10 flex cursor-pointer items-center justify-center gap-1.5 rounded-[10px] px-2 py-2 md:rounded-full text-center text-[13px] leading-[1.3] md:whitespace-nowrap font-semibold tracking-[-0.09px] transition-colors duration-200 md:gap-2 md:px-4 md:text-[16px] md:leading-normal',
               isActive ? 'text-title' : 'text-sub hover:text-body',

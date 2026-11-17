@@ -8,6 +8,8 @@ import card3 from '../../assets/sections/hero8-gallery/card-3.webp'
 import card4 from '../../assets/sections/hero8-gallery/card-4.webp'
 import card5 from '../../assets/sections/hero8-gallery/card-5.webp'
 import card6 from '../../assets/sections/hero8-gallery/card-6.webp'
+import careet from '../../assets/sections/hero8-gallery/careet.webp'
+import culture from '../../assets/sections/hero8-gallery/culture.webp'
 import { Container } from '../ui/Container'
 import { Section } from '../ui/Section'
 
@@ -45,6 +47,12 @@ export const CARDS: ServiceCard[] = [
     description: '채용 전 과정을 관리하고 운영하며, 기업에서 원하는 적합한 인재를 채용할 수 있도록 HR 전반에 대한 솔루션을 제공합니다.',
   },
   {
+    name: '조직문화',
+    href: 'https://nhr.kr/project_Internal',
+    image: culture,
+    description: '내부 구성원 대상 리텐션 / 얼라인먼트 / 비전 공유 등 조직문화를 위한 효과적인 통합 HR 솔루션 제공합니다.',
+  },
+  {
     name: 'peak',
     href: 'https://peak.io.kr/',
     image: card4,
@@ -55,6 +63,12 @@ export const CARDS: ServiceCard[] = [
     href: 'https://www.20slab.org/',
     image: card6,
     description: '세대를 통해 시대를 읽은 20대 전문 연구 기관',
+  },
+  {
+    name: '캐릿',
+    href: 'https://www.careet.net/',
+    image: careet,
+    description: '‘Z세대가 뭘 좋아하는지, 왜 좋아하는지’를 알려드려요. 실제 Z세대의 생생한 의견을 듣고, 유행의 타임라인까지 정확하게 확인하세요.',
   },
 ]
 
@@ -73,7 +87,7 @@ const RATIO = 0.44
  *
  * 한 장만 펼쳐 두고 나머지는 띠로 접어 오른쪽에 세워 둔다. 띠를 누르면 그
  * 장이 펴지고, 펴져 있던 장은 그 자리에서 띠로 접힌다 — 접힌 장이 왼쪽에
- * 쌓이고 아직 안 본 장이 오른쪽에 남아, 여섯 장 중 지금 어디쯤인지가 자리로
+ * 쌓이고 아직 안 본 장이 오른쪽에 남아, 몇 번째 장 지금 어디쯤인지가 자리로
  * 드러난다.
  *
  * 펼친 폭과 접힌 폭은 늘 같다. 장마다 크기가 달라지면 "고른 것" 이 아니라
@@ -92,7 +106,7 @@ const RATIO_M = 0.72
 
 export function Hero8Gallery() {
   const stageRef = useRef<HTMLDivElement>(null)
-  // 휴대폰 폭에서는 띠 여섯 장을 가로로 세울 자리가 없어, 세로로 쌓고 고른 장만 아래로 펼친다.
+  // 휴대폰 폭에서는 띠 여러 장을 가로로 세울 자리가 없어, 세로로 쌓고 고른 장만 아래로 펼친다.
   const [vertical, setVertical] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches)
   useEffect(() => {
     const list = window.matchMedia('(max-width: 767px)')

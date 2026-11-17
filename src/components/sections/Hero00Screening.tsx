@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
+import { useHintOnView } from '../../hooks/useHintOnView'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 import iconDocTabInactive from '../../assets/sections/hero00/icon-doc-tab-inactive.svg'
 import iconInterviewTabInactive from '../../assets/sections/hero00/icon-interview-tab.svg'
@@ -230,6 +231,7 @@ export function Hero00Screening() {
    */
   /** 켜진 칸의 자리와 폭. 글자 길이가 달라 고정값으로는 맞출 수 없다. */
   const navRef = useRef<HTMLElement>(null)
+  const hint = useHintOnView(navRef)
   const [thumb, setThumb] = useState<{ x: number; w: number } | null>(null)
 
   useLayoutEffect(() => {
@@ -336,7 +338,7 @@ export function Hero00Screening() {
               칸이 통째로 칠해지면 멀리서도 걸린다. 칸 폭이 저마다 달라
               미끄러질 거리는 실측해 둔다. */}
           {/* 휴대폰에서는 세 칸이 한 줄에 다 안 들어가 잘렸다 — 같은 폭 세 칸으로 나누고 글이 두 줄로 접히게 한다. */}
-          <nav ref={navRef} className="relative mx-auto grid w-full grid-cols-3 items-stretch gap-0.5 rounded-[16px] bg-white p-1.5 shadow-soft md:flex md:w-fit md:items-center md:gap-1 md:rounded-full">
+          <nav ref={navRef} className={clsx(hint && 'hint-outline-on', "relative mx-auto grid w-full grid-cols-3 items-stretch gap-0.5 rounded-[16px] bg-white p-1.5 shadow-soft md:flex md:w-fit md:items-center md:gap-1 md:rounded-full")}>
             {thumb && (
               <motion.span
                 aria-hidden
@@ -353,6 +355,7 @@ export function Hero00Screening() {
                   key={tab.id}
                   type="button"
                   data-tab={tab.id}
+                  data-hint-target
                   onClick={() => selectTab(tab.id)}
                   aria-pressed={isActive}
                   className={clsx(
