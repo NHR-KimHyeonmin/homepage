@@ -240,14 +240,16 @@ export function Hero2JobPromoMockup() {
           깔려 있으면 선이 "이미 있던 곳" 으로 가는 셈이라 연결된 느낌이 약하다. */}
       <motion.div
         initial={false}
-        animate={on ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.96, y: 6 }}
+        // 위로 올라오는 움직임(y)은 뺐다 — 끝이 길게 늘어지는 곡선이라 다 나타난 뒤에도
+        // 받침과 로고가 1px 씩 천천히 기어올라 버벅이는 것처럼 보였다.
+        animate={on ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }}
         transition={{ duration: 0.4, ease: EASE, delay: at(T.tray) }}
         aria-hidden={!on}
         /* 받침은 "테마 색상" 스와치가 앉은 유리 알약과 같은 처리다 — 흰색
            55% 에 안쪽 흰 테두리 한 줄과 번지는 그림자. 회색 판으로 두면
            카드 틴트 위에서 혼자 때가 탄 것처럼 보이는데, 유리로 두면 뒤
            배경색이 비쳐 카드와 한 면으로 붙는다. */
-        className="absolute left-[40px] top-[252px] flex origin-top gap-[15px] rounded-[12px] bg-white/55 p-[16px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65),0_8px_24px_rgba(15,26,61,0.12)] backdrop-blur-md"
+        className="absolute left-[40px] top-[252px] flex origin-top will-change-transform gap-[15px] rounded-[12px] bg-white/55 p-[16px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.65),0_8px_24px_rgba(15,26,61,0.12)] backdrop-blur-md"
       >
         {CHANNELS.map((ch, i) => (
           <motion.div
@@ -255,10 +257,12 @@ export function Hero2JobPromoMockup() {
             initial={false}
             // 신호가 도착하는 순간 한 번 튀어오르게 한다 — 그냥 나타나면
             // 받았다기보다 원래 있던 것처럼 보인다.
-            animate={on ? { opacity: 1, y: 0, scale: [0.85, 1.09, 1] } : { opacity: 0, y: 10, scale: 0.9 }}
-            transition={{ duration: 0.45, ease: EASE, delay: at(T.channels + i * T.perChannel) }}
+            animate={on ? { opacity: 1, scale: [0.85, 1.09, 1] } : { opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.45, ease: 'easeOut', delay: at(T.channels + i * T.perChannel) }}
             aria-hidden={!on}
-            className="flex size-[52px] items-center justify-center rounded-[10px] bg-white shadow-[0_1px_4px_rgba(32,40,45,0.10)]"
+            // 연출이 끝나 transform 이 풀리는 순간 브라우저가 칸을 다른 층에서 다시 그리며
+            // 반 px 씩 위로 맞춰 붙어 로고가 끝에 살짝 움찔했다 — 층을 계속 유지한다.
+            className="flex size-[52px] items-center justify-center rounded-[10px] bg-white shadow-[0_1px_4px_rgba(32,40,45,0.10)] will-change-transform"
           >
             <img src={ch.src} alt={ch.alt} style={{ width: ch.w }} className="h-auto" />
           </motion.div>
