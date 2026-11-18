@@ -16,7 +16,7 @@ import { SectionEyebrow } from '../components/ui/SectionEyebrow'
 const SOURCES = ['검색(네이버·구글 등)', '지인 추천', '커리어톡', 'SNS·광고', '기타']
 const OTHER = '기타'
 
-const INBOUND_API = 'https://api.inhr.co.kr/v1/post/inbound/insert'
+const INBOUND_API = 'https://apidev.inhr.co.kr/v1/post/inbound/insert'
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 const PRIVACY = `주식회사 엔에이치알은 아래와 같이 개인정보를 수집 및 이용합니다.
