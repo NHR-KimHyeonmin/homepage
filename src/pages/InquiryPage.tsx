@@ -14,6 +14,10 @@ import { SectionEyebrow } from '../components/ui/SectionEyebrow'
  */
 
 const SOURCES = ['검색(네이버·구글 등)', '지인 추천', '커리어톡', 'SNS·광고', '기타']
+const OTHER = '기타'
+
+const INBOUND_API = 'https://apidev.inhr.co.kr/v1/post/inbound/insert'
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 const PRIVACY = `주식회사 엔에이치알은 아래와 같이 개인정보를 수집 및 이용합니다.
 
@@ -29,22 +33,56 @@ const PRIVACY = `주식회사 엔에이치알은 아래와 같이 개인정보�
 4. 동의를 거부할 권리
 - 개인정보 수집 및 이용에 동의하지 않을 수 있으나, 동의하지 않으면 문의 접수가 제한됩니다.`
 
+const ERROR = '!border-[#e5484d] focus:!ring-[#e5484d]/10'
+
 const FIELD =
   'w-full rounded-ui border border-[#d6dade] bg-white px-4 text-[15px] text-title outline-none transition-colors placeholder:text-[#9aa5b1] hover:border-[#b8c2cc] focus:border-primary focus:ring-3 focus:ring-primary/10'
 
 export function InquiryPage() {
-  const [form, setForm] = useState({ company: '', name: '', email: '', phone: '', source: '', message: '' })
+  const [form, setForm] = useState({ company: '', name: '', email: '', phone: '', source: '', sourceEtc: '', message: '' })
   const [agreed, setAgreed] = useState(false)
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [failed, setFailed] = useState(false)
+  /** 이메일 칸을 한 번 떠났는지 — 치는 도중부터 빨갛게 하지 않는다. */
+  const [emailTouched, setEmailTouched] = useState(false)
+  /** 연락처에 숫자 아닌 글자를 쳤다 — 그 글자는 버리고 안내만 띄운다. */
+  const [phoneWarn, setPhoneWarn] = useState(false)
   const set = (key: keyof typeof form) => (value: string) => setForm((current) => ({ ...current, [key]: value }))
 
-  const ready = agreed && form.company.trim() && form.name.trim() && form.email.trim() && form.phone.trim()
+  const emailValid = EMAIL_RE.test(form.email.trim())
+  const emailError = emailTouched && form.email.trim() !== '' && !emailValid
+  const ready = agreed && form.company.trim() && form.name.trim() && emailValid && form.phone.trim() && !sending
 
-  const submit = (event: FormEvent) => {
+  const submit = async (event: FormEvent) => {
     event.preventDefault()
     if (!ready) return
-    // ponytail: 받을 곳(메일·API)이 정해지면 여기서 보낸다. 지금은 접수 화면만 보여 준다.
-    setSent(true)
+    const refer = form.source === OTHER ? form.sourceEtc.trim() || OTHER : form.source
+    setSending(true)
+    setFailed(false)
+    try {
+      const response = await fetch(INBOUND_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          coNm: form.company.trim(),
+          asgnrNm: form.name.trim(),
+          email: form.email.trim(),
+          cnryNo: '82',
+          tel: form.phone,
+          titl: refer ? `도입 문의 (유입경로 : ${refer})` : '도입 문의',
+          refer,
+          cntn: form.message.trim(),
+          privacyAgreeYn: 'Y',
+        }),
+      })
+      if (!response.ok) throw new Error(String(response.status))
+      setSent(true)
+    } catch {
+      setFailed(true)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -130,16 +168,73 @@ export function InquiryPage() {
               <form onSubmit={submit} className="flex flex-col gap-3.5">
                 <input aria-label="기업명" required placeholder="기업명" value={form.company} onChange={(e) => set('company')(e.target.value)} className={`${FIELD} h-12`} />
                 <input aria-label="이름" required placeholder="이름" autoComplete="name" value={form.name} onChange={(e) => set('name')(e.target.value)} className={`${FIELD} h-12`} />
-                <input aria-label="이메일" required type="email" placeholder="이메일" autoComplete="email" value={form.email} onChange={(e) => set('email')(e.target.value)} className={`${FIELD} h-12`} />
-                <input aria-label="연락처" required type="tel" placeholder="연락처" autoComplete="tel" value={form.phone} onChange={(e) => set('phone')(e.target.value)} className={`${FIELD} h-12`} />
+                <div>
+                  <input
+                    aria-label="이메일"
+                    required
+                    type="email"
+                    placeholder="이메일"
+                    autoComplete="email"
+                    value={form.email}
+                    onChange={(e) => set('email')(e.target.value)}
+                    onBlur={() => setEmailTouched(true)}
+                    aria-invalid={emailError}
+                    aria-describedby={emailError ? 'email-error' : undefined}
+                    className={`${FIELD} h-12 ${emailError ? ERROR : ''}`}
+                  />
+                  {emailError && (
+                    <p id="email-error" className="mt-1.5 pl-1 text-[13px] text-[#e5484d]">
+                      이메일 형식으로 입력해 주세요. (예: name@company.com)
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <input
+                    aria-label="연락처"
+                    required
+                    type="tel"
+                    inputMode="numeric"
+                    placeholder="연락처 (숫자만 입력)"
+                    autoComplete="tel"
+                    value={form.phone}
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/\D/g, '')
+                      setPhoneWarn(digits !== e.target.value)
+                      set('phone')(digits)
+                    }}
+                    aria-describedby={phoneWarn ? 'phone-warn' : undefined}
+                    className={`${FIELD} h-12 ${phoneWarn ? ERROR : ''}`}
+                  />
+                  {phoneWarn && (
+                    <p id="phone-warn" role="alert" className="mt-1.5 pl-1 text-[13px] text-[#e5484d]">
+                      숫자만 입력가능합니다.
+                    </p>
+                  )}
+                </div>
                 <Dropdown
                   options={SOURCES}
                   value={form.source}
                   onChange={set('source')}
+                  onClear={() => setForm((current) => ({ ...current, source: '', sourceEtc: '' }))}
                   label="어떻게 알게 되셨나요?"
                   placeholder="어떻게 알게 되셨나요?"
                   buttonClassName={`${FIELD} h-12`}
                 />
+                {form.source === OTHER && (
+                  <div className="relative">
+                    <input
+                      aria-label="유입 경로 직접 입력"
+                      placeholder="어떻게 알게 되셨는지 직접 입력해 주세요."
+                      maxLength={100}
+                      value={form.sourceEtc}
+                      onChange={(e) => set('sourceEtc')(e.target.value)}
+                      className={`${FIELD} h-12 pr-16`}
+                    />
+                    <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[12px] text-[#9aa5b1]">
+                      {form.sourceEtc.length}/100
+                    </span>
+                  </div>
+                )}
                 <textarea
                   aria-label="문의하실 내용"
                   placeholder="문의하실 내용"
@@ -163,12 +258,17 @@ export function InquiryPage() {
                   </div>
                 </div>
 
+                {failed && (
+                  <p role="alert" className="mt-1 text-[13px] leading-[1.6] text-[#e5484d]">
+                    문의를 보내지 못했습니다. 잠시 후 다시 시도하시거나 careerlink@nhr.kr 로 보내 주세요.
+                  </p>
+                )}
                 <button
                   type="submit"
                   disabled={!ready}
                   className="mt-2 h-[52px] cursor-pointer rounded-full bg-cta text-[16px] font-semibold text-white transition-colors hover:bg-cta-hover disabled:cursor-not-allowed disabled:bg-[#d6dade] disabled:text-white"
                 >
-                  문의하기
+                  {sending ? '보내는 중…' : '문의하기'}
                 </button>
               </form>
             )}
