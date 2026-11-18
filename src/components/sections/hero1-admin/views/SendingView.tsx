@@ -27,6 +27,8 @@ const TOOLS: [Icon, number][] = [
   [IconPhoto, 531.5], [IconClearFormatting, 574.5],
 ]
 const TAGS = ['회사명', '공고명', '직무', '이름', '경력구분', '고용형태', '제출일']
+/** 면접 안내용으로 새로 붙인 매핑 항목 — 파란 칩으로 구분한다. */
+const NEW_TAGS = ['면접일', 'URL', 'ID', '비밀번호']
 
 /** 폼 한 줄: 왼쪽 라벨 + 오른쪽 입력칸. top 은 본문 박스 기준. */
 function Row({ top, label, children }: { top: number; label: string; children: ReactNode }) {
@@ -127,19 +129,18 @@ export function SendingView() {
               ))}
             </div>
             <div className="px-[14px] pt-[6px] text-[16px] leading-[24px] text-[#212121]">
-              <p><T>#공고명</T></p>
-              <p>전형 결과 안내드립니다.</p>
+              <p className="font-bold"><T>#이름</T> 님, 서류 전형 합격을 진심으로 축하드립니다!</p>
               <br />
-              <p>안녕하세요, <T>#이름</T>님,</p>
-              <p><T>#회사명</T>입니다.</p>
+              <p>저희 커리어링크에 지원하여 주신 것을 다시 한번 감사드립니다.</p>
+              <p>앞으로 남은 전형에서도 좋은 결과가 있기를 기원하며, 다음 전형 단계 안내드리오니 확인을 부탁드립니다.</p>
               <br />
-              <p><T>#공고명</T> 전형에 합격하셨습니다.</p>
-              <p>전형에 합격하신 것을 진심으로 축하 드리며, 저희 <T>#회사명</T>에 지원해주셔서 다시 한 번 감사 드립니다.</p>
-              <p>다음 전형 일정은 개별 안내드리도록 하겠습니다.</p>
+              <p><b>* 면접 일시</b> : <T>#면접일</T></p>
+              <p><b>* 사용 플랫폼</b> : Zoom ( Zoom.us )</p>
+              <p><b>- 접속URL</b> : <T>#URL</T></p>
+              <p><b>- 회의ID</b> : <T>#ID</T> &nbsp;/&nbsp; <b>PW</b> : <T>#비밀번호</T></p>
               <br />
-              <p>감사합니다.</p>
-              <br />
-              <p className="text-center"><T>#회사명</T> 드림</p>
+              <p>* 접속 시 본인의 이름_수험번호로 변경하여 입장해주세요.</p>
+              <p>- 본 화상면접 사전Test는 본인의 마이크 및 카메라, 인터넷 환경 점검을 위한 Test입니다.</p>
             </div>
           </div>
           <div className="ml-[16px] w-[242px] border-l border-[#eceef1] pt-[18px] pl-[16px]">
@@ -156,8 +157,14 @@ export function SendingView() {
               제목에는 적용이 불가합니다.
             </p>
             <div className="mt-[9px] flex w-[180px] flex-wrap gap-x-[10px] gap-y-[12px]">
-              {TAGS.map((t) => (
-                <span key={t} className="flex h-[24px] min-w-[68px] items-center justify-center rounded-[6px] bg-[#f3f4f6] px-[10px] text-[13px] font-semibold text-[#212121]">
+              {[...TAGS, ...NEW_TAGS].map((t) => (
+                <span
+                  key={t}
+                  className={clsx(
+                    'flex h-[24px] min-w-[68px] items-center justify-center rounded-[6px] px-[10px] text-[13px] font-semibold',
+                    NEW_TAGS.includes(t) ? 'bg-[#d3eafd] text-[#0042b7]' : 'bg-[#f3f4f6] text-[#212121]',
+                  )}
+                >
                   # {t}
                 </span>
               ))}
