@@ -161,8 +161,8 @@ export function SendingView() {
                 <span
                   key={t}
                   className={clsx(
-                    'flex h-[24px] min-w-[68px] items-center justify-center rounded-[6px] px-[10px] text-[13px] font-semibold',
-                    NEW_TAGS.includes(t) ? 'bg-[#d3eafd] text-[#0042b7]' : 'bg-[#f3f4f6] text-[#212121]',
+                    'flex h-[24px] min-w-[68px] items-center justify-center rounded-[6px] px-[10px] pt-px text-[13px] leading-none font-semibold',
+                    NEW_TAGS.includes(t) ? 'bg-[#eaf4fe] text-[#0042b7]' : 'bg-[#f3f4f6] text-[#212121]',
                   )}
                 >
                   # {t}
