@@ -23,7 +23,7 @@ const CHAPTERS: { id: string; label: string }[] = [
   { id: 'screening', label: '외부 검사 연동' },
   { id: 'security', label: '보안' },
   { id: 'support', label: '서비스' },
-  { id: 'testimonials', label: '후기' },
+  // { id: 'testimonials', label: '후기' }, — 후기 섹션 숨김 중(App.tsx 의 Hero7 과 함께 되살린다)
   { id: 'faq', label: 'FAQ' },
 ]
 

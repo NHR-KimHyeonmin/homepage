@@ -20,7 +20,7 @@ import { Hero3Dashboard } from './components/sections/Hero3Dashboard'
 import { Hero4EvalScreen } from './components/sections/Hero4EvalScreen'
 import { Hero4FeatureCards } from './components/sections/Hero4FeatureCards'
 import { Hero6FeatureGallery } from './components/sections/Hero6FeatureGallery'
-import { Hero7 } from './components/sections/Hero7'
+// import { Hero7 } from './components/sections/Hero7' — 후기 섹션 숨김 중
 import { Hero8Gallery } from './components/sections/Hero8Gallery'
 import { Testimonials } from './components/sections/Testimonials'
 import { SectionTitle } from './components/ui/SectionTitle'
@@ -102,8 +102,9 @@ function App() {
         />
         <Hero8Gallery />
 
-        {/* Hero7 still carries its own embedded title in Figma — no standalone SectionTitle here. */}
-        <Hero7 />
+        {/* 후기 섹션은 잠시 숨김(요청). 다시 보이려면 아래 주석을 풀고 ScrollNav 의 '후기' 항목도 되살린다.
+            Hero7 still carries its own embedded title in Figma — no standalone SectionTitle here. */}
+        {/* <Hero7 /> */}
 
         <SectionTitle id="faq" eyebrow="FAQ" heading={['커리어링크에 대해', '무엇이든지 물어보세요']} />
         <FaqList />
