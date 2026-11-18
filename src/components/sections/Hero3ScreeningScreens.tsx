@@ -167,7 +167,7 @@ function Stat({ label, value, unit, dot, bold }: { label: string; value: string;
 
 /**
  * 전형이 한 덩어리씩 쌓인다는 걸 등장 순서로 보인다 — 서류전형이 먼저 서고,
- * 그 아래로 커리어앤, 일반 전형(평가형)이 차례로 들어온다. 이 화면이 "전형
+ * 그 아래로 커리어앤, 면접전형이 차례로 들어온다. 이 화면이 "전형
  * 단위로 짜고 옮긴다" 는 말을 글 없이 하는 방법이다.
  */
 const ROW_IN = { opacity: 1, y: 0 }
@@ -343,7 +343,7 @@ export function StandardScreen({ active = true }: { active?: boolean }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <P.user size={24} stroke={STROKE} className="text-[#4d5761]" />
-            <p className="text-[24px] font-bold tracking-[-0.12px] text-ink">일반 전형 (평가형)</p>
+            <p className="text-[24px] font-bold tracking-[-0.12px] text-ink">면접전형</p>
           </div>
           <div className="flex items-center gap-2.5 text-[#6c737f]">
             <HeadActions />
