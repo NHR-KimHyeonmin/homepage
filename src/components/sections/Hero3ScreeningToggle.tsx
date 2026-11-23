@@ -50,14 +50,14 @@ const SCREENINGS = [
   {
     id: 'standard',
     label: '일반 전형',
-    note: '전형보드 형태로, 다수의 지원자를 위한 전형 관리에 적합합니다.',
+    note: '전형보드 형태로, 공채와 같은 다수의 지원자를 위한 전형 관리에 적합합니다.',
     Screen: StandardScreen,
     alt: '일반 전형으로 운영되는 전형 관리 화면',
   },
   {
     id: 'simple',
     label: '간편 전형',
-    note: '칸반보드 형태로, 소규모 채용을 위한 전형 관리에 적합합니다.',
+    note: '칸반보드 형태로, 수시 채용과 같은 소규모 채용을 위한 전형 관리에 적합합니다.',
     Screen: SimpleScreen,
     alt: '간편 전형으로 운영되는 전형 관리 화면',
   },

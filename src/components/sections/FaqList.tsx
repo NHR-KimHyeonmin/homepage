@@ -10,9 +10,9 @@ interface FaqItem {
   answer: string
 }
 
-const FAQS: FaqItem[] = [
+export const FAQS: FaqItem[] = [
   {
-    question: 'ATS(입사지원시스템)을 처음 이용해보는 사람도 사용할 수 있을까요?',
+    question: 'ATS(채용 관리 솔루션)를 처음 이용해보는 사람도 사용할 수 있을까요?',
     answer:
       '네, 가능합니다. 커리어링크 도입 시 온보딩 교육을 진행해 드리며, 관리자뿐만 아니라 평가자를 대상으로 한 맞춤 교육도 함께 제공하고 있습니다.\n화상 미팅으로도 진행 가능하며, 원하시는 시간에 맞춰 일정을 조율해 드리니 부담 없이 이용해 보세요.',
   },

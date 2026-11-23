@@ -91,6 +91,8 @@ export function BrandCursorFollower({ targetRef }: { targetRef: RefObject<HTMLEl
     }
   }, [targetRef, reduceMotion])
 
+  // 빌드 때 서버 렌더(document 없음)에서는 그리지 않는다.
+  if (typeof document === 'undefined') return null
   return createPortal(
     <div ref={pillRef} aria-hidden className="pointer-events-none fixed left-0 top-0 z-40 will-change-transform">
       <div
