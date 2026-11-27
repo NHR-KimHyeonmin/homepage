@@ -23,5 +23,4 @@
 
 - [홈페이지](https://www.careerlink.kr/): 기능 소개, 고객사 사례, FAQ
 - [도입 문의](https://www.careerlink.kr/inquiry): 상담·견적 신청
-- [CI](https://www.careerlink.kr/ci): 로고·브랜드 가이드
 - 문의 메일: careerlink@nhr.kr

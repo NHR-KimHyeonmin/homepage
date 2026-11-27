@@ -6,6 +6,7 @@ import { Section } from '../ui/Section'
 import { Hero1TypedHeadline } from './Hero1TypedHeadline'
 import { AdminFrame, FRAME_HEIGHT, FRAME_WIDTH, VIEW_ORDER, type AdminView } from './hero1-admin/AdminShell'
 import { VIEWS } from './hero1-admin/views'
+import { INQUIRY_URL } from '../../site'
 
 /** 자동 순회 간격. */
 const NAV_AUTOPLAY_MS = 3500
@@ -294,7 +295,7 @@ export function Hero1() {
           animate={{ opacity: revealed ? 1 : 0, y: revealed ? 0 : 24 }}
           transition={{ ...REVEAL_TRANSITION, delay: revealed ? CTA_DELAY_S : 0 }}
         >
-          <Button href="/inquiry" variant="dark" className="px-5 py-2.5 text-[16px] md:px-7 md:py-3.5 md:text-[19px]">
+          <Button href={INQUIRY_URL} variant="dark" className="px-5 py-2.5 text-[16px] md:px-7 md:py-3.5 md:text-[19px]">
             도입 문의하기
           </Button>
         </motion.div>

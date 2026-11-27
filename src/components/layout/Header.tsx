@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { IconArrowUpRight, IconChevronDown, IconMenu2, IconX } from '@tabler/icons-react'
 import logoMark from '../../assets/sections/header/logo-mark.png'
 import { CARDS as NHR_SERVICES } from '../sections/Hero8Gallery'
+import { INQUIRY_URL } from '../../site'
 
 /**
  * 상단 탭. 각 항목은 홈의 해당 섹션으로 내려간다. /ci 같은 다른 페이지에서도
@@ -32,7 +33,9 @@ function OutLink({ name, href, className }: { name: string; href: string; classN
 function InquiryButton() {
   return (
     <a
-      href="/inquiry"
+      href={INQUIRY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
       className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full bg-cta px-3.5 py-1.5 text-[14px] md:px-4 md:py-2 md:text-[15px] font-semibold tracking-[-0.08px] text-white transition-colors hover:bg-cta-hover"
     >
       도입문의

@@ -24,7 +24,7 @@ export function Button({ variant = 'primary', className, children, href, ...prop
   )
   if (href)
     return (
-      <a href={href} className={classes}>
+      <a href={href} className={classes} {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
         {children}
       </a>
     )
